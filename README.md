@@ -1,2 +1,0 @@
-# yyovvo-homepage
-yyovvo-homepage
