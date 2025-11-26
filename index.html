@@ -308,6 +308,7 @@
         text-transform: uppercase;
         letter-spacing: 0.21em;
         color: var(--text-soft);
+        flex-wrap: wrap;
       }
 
       .strip span {
@@ -324,6 +325,13 @@
         background: rgba(127, 29, 29, 0.45);
         font-size: 10px;
         letter-spacing: 0.16em;
+      }
+
+      .strip-count {
+        font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 11px;
+        color: #e5e7eb;
       }
 
       /* HOOK TILE */
@@ -596,45 +604,75 @@
         margin-top: 18px;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
+        gap: 10px;
       }
 
       .wall-tile {
+        position: relative;
         aspect-ratio: 3 / 4;
-        border-radius: 14px;
+        border-radius: 18px;
+        overflow: hidden;
         background: radial-gradient(
           circle at top,
-          rgba(56, 189, 248, 0.35),
-          rgba(15, 23, 42, 0.96)
+          rgba(56, 189, 248, 0.45),
+          rgba(15, 23, 42, 1)
         );
-        position: relative;
-        overflow: hidden;
-        opacity: 0.76;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        box-shadow: 0 0 40px rgba(15, 23, 42, 1);
+        opacity: 0.9;
+        transform: translateZ(0);
+        transition: transform 0.18s ease, box-shadow 0.18s ease,
+          opacity 0.18s ease;
+      }
+
+      .wall-tile::before {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background: conic-gradient(
+          from 180deg,
+          rgba(236, 72, 153, 0),
+          rgba(236, 72, 153, 0.35),
+          rgba(56, 189, 248, 0.2),
+          rgba(56, 189, 248, 0)
+        );
+        opacity: 0.6;
+        animation: wallWave 10s linear infinite;
       }
 
       .wall-tile::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(
-          circle at bottom,
-          rgba(15, 23, 42, 0.65),
-          transparent
-        );
+        background:
+          radial-gradient(circle at top, rgba(15, 23, 42, 0.4), transparent 55%),
+          radial-gradient(circle at bottom, rgba(15, 23, 42, 0.9), transparent 70%);
       }
 
       .wall-tile-small-tag {
         position: absolute;
-        bottom: 6px;
-        left: 7px;
+        bottom: 10px;
+        left: 10px;
+        padding: 4px 8px;
+        border-radius: 999px;
         font-size: 9px;
         text-transform: uppercase;
         letter-spacing: 0.18em;
-        color: #e5e7eb;
+        color: #f9fafb;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        z-index: 1;
+      }
+
+      .wall-tile:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 0 60px rgba(15, 23, 42, 1),
+          0 0 30px rgba(236, 72, 153, 0.4);
+        opacity: 1;
       }
 
       .wall-caption {
-        margin-top: 14px;
+        margin-top: 18px;
         font-size: 13px;
         color: var(--text-soft);
       }
@@ -778,6 +816,18 @@
         }
       }
 
+      @keyframes wallWave {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       /* RESPONSIVE */
 
       @media (min-width: 720px) {
@@ -917,13 +967,16 @@
               <span>Now trending in AI Christmas searches</span>
               <span>
                 <span class="badge-live">LIVE</span>
-                People are sending yyovvos right now
+                <span>yyovvos sent</span>
+                <span class="strip-count" id="yyovvo-strip-count">
+                  1,777,777
+                </span>
               </span>
             </div>
           </div>
         </section>
 
-        <!-- PHONE PREVIEW (NOW DIRECTLY UNDER HERO STRIP) -->
+        <!-- PHONE PREVIEW -->
         <section class="section section-dark">
           <div class="section inner two-col">
             <div>
@@ -1122,12 +1175,13 @@
     </div>
 
     <script>
-      // Subtle yyovvo counter:
-      // starts at 1,777,777 and increases by +777,777 per day.
-      (function () {
+      // yyovvo counter:
+      // - starts at 1,777,777
+      // - increases by 777,777 per day since launch
+      // - rolls like a slot on load
+      document.addEventListener("DOMContentLoaded", function () {
         const baseCount = 1777777;
         const perDay = 777777;
-        // Set a "Day 0" reference (e.g. launch date)
         const launchDate = new Date("2025-11-26T00:00:00Z");
         const now = new Date();
         const msPerDay = 24 * 60 * 60 * 1000;
@@ -1135,13 +1189,36 @@
           0,
           Math.floor((now.getTime() - launchDate.getTime()) / msPerDay)
         );
-        const count = baseCount + perDay * diffDays;
+        const finalCount = baseCount + perDay * diffDays;
 
-        const el = document.getElementById("yyovvo-count");
-        if (el) {
-          el.textContent = count.toLocaleString("en-US");
+        const elements = [
+          document.getElementById("yyovvo-count"),
+          document.getElementById("yyovvo-strip-count"),
+        ].filter(Boolean);
+
+        if (!elements.length) return;
+
+        const duration = 1600; // ms
+        const startValue = Math.max(0, finalCount - 777777 * 3); // roll up a bit
+        const startTime = performance.now();
+
+        function frame(now) {
+          const progress = Math.min(1, (now - startTime) / duration);
+          const current =
+            progress < 1
+              ? Math.floor(
+                  startValue + (finalCount - startValue) * progress
+                )
+              : finalCount;
+          const formatted = current.toLocaleString("en-US");
+          elements.forEach((el) => (el.textContent = formatted));
+          if (progress < 1) {
+            requestAnimationFrame(frame);
+          }
         }
-      })();
+
+        requestAnimationFrame(frame);
+      });
     </script>
   </body>
 </html>
