@@ -7,8 +7,12 @@ if (!id) {
 }
 
 async function loadData() {
-  // TODO: if your Base44 URL is different, only change the domain
-  const res = await fetch(`https://studio.yyovvo.com/api/yyovvo/${id}`);
+  // Call the REAL Base44 yyovvoGet function
+  const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(
+    id
+  )}`;
+
+  const res = await fetch(url);
   if (!res.ok) {
     throw new Error("Failed to load yyovvo data");
   }
@@ -25,7 +29,7 @@ async function init() {
     const outro = document.getElementById("overlay-outro");
     const jingle = document.getElementById("yyo-jingle");
 
-    // 1) Play mood video
+    // 1) Play Mood video
     scene.src = data.mood_video_url;
     await scene.play().catch(() => {
       // Autoplay might fail on some browsers if not muted; we already set muted in HTML.
@@ -34,7 +38,7 @@ async function init() {
     // Intro appears at 5 seconds
     setTimeout(() => {
       if (data.intro_text) {
-        intro.textContent = data.intro_text;
+        intro.textContent = data.intro_text || "";
         intro.classList.add("show");
       }
     }, 5000);
@@ -72,7 +76,6 @@ async function init() {
       outro.classList.add("show");
       jingle.play().catch(() => {});
     }, outroStart);
-
   } catch (e) {
     console.error(e);
   }
