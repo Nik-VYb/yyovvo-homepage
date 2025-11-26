@@ -483,16 +483,13 @@
         position: relative;
       }
 
-      .phone-faux-video {
+      .phone-video {
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(56, 189, 248, 0.35),
-          rgba(236, 72, 153, 0.35)
-        );
-        opacity: 0.75;
-        mix-blend-mode: screen;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.95;
       }
 
       .phone-label-top {
@@ -926,6 +923,64 @@
           </div>
         </section>
 
+        <!-- PHONE PREVIEW (NOW DIRECTLY UNDER HERO STRIP) -->
+        <section class="section section-dark">
+          <div class="section inner two-col">
+            <div>
+              <div class="phone-frame">
+                <div class="phone-screen">
+                  <video
+                    class="phone-video"
+                    src="/videos/yyovvo-hero.mp4"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                  ></video>
+                  <div class="phone-label-top">AI CHRISTMAS YYOVVO</div>
+                  <div class="phone-label-bottom-left">From: You</div>
+                  <div class="phone-label-bottom-right">To: Them</div>
+                  <div class="phone-audio-pill">
+                    <span class="phone-audio-dot"></span>
+                    <span>yyo-voice</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="col-text-title">
+                Made for TikTok. Sent in private.
+              </div>
+              <div class="col-text-body">
+                Your yyovvo feels like a trending TikTok — but it exists only
+                between you and them.
+                <br /><br />
+                <strong>You choose the mood.</strong> You whisper the words.
+                <br />
+                <strong>We wrap it in snow, motion and the yyovvo outro.</strong>
+              </div>
+              <ul class="bullet-list">
+                <li>
+                  <span class="bullet-dot"></span>
+                  <span>One-tap link to share anywhere</span>
+                </li>
+                <li>
+                  <span class="bullet-dot"></span>
+                  <span>Built to be screenshotted and saved</span>
+                </li>
+                <li>
+                  <span class="bullet-dot"></span>
+                  <span>Cinematic outro they’ll replay all year</span>
+                </li>
+              </ul>
+              <!-- TODO: change href to real Base44 create URL -->
+              <a href="#create" class="primary-cta">
+                <span>Create a yyovvo</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
         <!-- PROMISE + REACTIONS -->
         <section class="section section-dark">
           <div class="section inner">
@@ -985,57 +1040,6 @@
             <div class="reactions-caption">
               These are real reactions to yyovvos. People aren’t just opening
               them. They’re <em>feeling</em> them.
-            </div>
-          </div>
-        </section>
-
-        <!-- PHONE PREVIEW -->
-        <section class="section section-dark">
-          <div class="section inner two-col">
-            <div>
-              <div class="phone-frame">
-                <div class="phone-screen">
-                  <div class="phone-faux-video"></div>
-                  <div class="phone-label-top">AI CHRISTMAS YYOVVO</div>
-                  <div class="phone-label-bottom-left">From: You</div>
-                  <div class="phone-label-bottom-right">To: Them</div>
-                  <div class="phone-audio-pill">
-                    <span class="phone-audio-dot"></span>
-                    <span>yyo-voice</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="col-text-title">
-                Made for TikTok. Sent in private.
-              </div>
-              <div class="col-text-body">
-                Your yyovvo feels like a trending TikTok — but it exists only
-                between you and them.
-                <br /><br />
-                <strong>You choose the mood.</strong> You whisper the words.
-                <br />
-                <strong>We wrap it in snow, motion and the yyovvo outro.</strong>
-              </div>
-              <ul class="bullet-list">
-                <li>
-                  <span class="bullet-dot"></span>
-                  <span>One-tap link to share anywhere</span>
-                </li>
-                <li>
-                  <span class="bullet-dot"></span>
-                  <span>Built to be screenshotted and saved</span>
-                </li>
-                <li>
-                  <span class="bullet-dot"></span>
-                  <span>Cinematic outro they’ll replay all year</span>
-                </li>
-              </ul>
-              <!-- TODO: change href to real Base44 create URL -->
-              <a href="#create" class="primary-cta">
-                <span>Create a yyovvo</span>
-              </a>
             </div>
           </div>
         </section>
