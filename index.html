@@ -1027,7 +1027,7 @@
         </div>
         <a href="https://studio.yyovvo.com" class="nav-cta">
           <span class="icon">✶</span>
-          <span>Create a yyovvo</span>
+          <span>Send a yyovvo</span>
         </a>
       </div>
     </header>
@@ -1037,28 +1037,28 @@
       <section class="hero">
         <div class="hero-left">
           <div class="hero-pill">
-            <span class="hero-pill-tag">This isn’t about your Christmas</span>
-            <span>It’s about how you make them feel.</span>
+            <span class="hero-pill-tag">Christmas 2025 hits different.</span>
+            <span>Designed for emotion.</span>
           </div>
 
           <h1 class="hero-title">
-            It’s not a message.<br />
-            It’s a <span class="orange">moment they remember forever.</span>
+            <span class="orange">yyovvo</span> is a moment<br />
+            they will remember forever.
           </h1>
 
           <p class="hero-sub">
-            This Christmas, over 1,000,000,000 messages will fly across the internet.
-            Most will feel like notifications. A yyovvo feels like a scene they can replay
+            This Christmas, over 1,000,000,000 yyovvos will be sent.
+            Make yours one of them. A yyovvo feels like a scene they can replay
             whenever they miss you.
           </p>
 
           <p class="hero-quote">
-            “People don’t remember what you sent. They remember how you made them feel.”
+            “People always remember how you made them feel.”
           </p>
 
           <div class="hero-actions">
             <a href="https://studio.yyovvo.com" class="hero-primary">
-              <span>Create a yyovvo</span>
+              <span>Send a yyovvo</span>
               <span>↗</span>
             </a>
             <button class="hero-secondary" type="button" id="scroll-preview">
@@ -1068,8 +1068,10 @@
           </div>
 
           <div class="hero-meta">
-            <span><span class="hero-meta-dot"></span> Ultra-personal yyovvo scenes – A5 portrait, TikTok-ready</span>
-            <span><span class="hero-meta-dot"></span> No apps. No accounts. Just a link and a feeling.</span>
+            <span>
+              <span class="hero-meta-dot"></span>
+              Ultra-personal. TikTok-ready. Super shareable. Vibe tuned.
+            </span>
           </div>
         </div>
 
@@ -1346,7 +1348,7 @@
           </p>
           <div class="cta-actions">
             <a href="https://studio.yyovvo.com" class="cta-primary">
-              <span>Make someone feel something</span>
+              <span>Send a yyovvo</span>
               <span>↗</span>
             </a>
             <a href="#how" class="cta-secondary">
@@ -1375,7 +1377,7 @@
   (function () {
     const START_COUNT = 1777777;
     const DAILY_INCREMENT = 777777;
-    // Launch date (UTC) – adjust if needed
+    // Launch date (UTC)
     const LAUNCH_DATE = new Date("2025-11-25T00:00:00Z");
 
     function calculateTarget() {
@@ -1412,7 +1414,6 @@
     }
 
     function animateToTarget(container, target) {
-      // Start slightly below target for slot-machine feel
       let current = Math.max(0, target - Math.floor(Math.random() * 77777) - 7777);
       const steps = 24;
       let frame = 0;
@@ -1435,7 +1436,6 @@
     const container = document.getElementById("yy-counter");
     if (container) {
       const target = calculateTarget();
-      // Initial scrambled digits
       renderDigits(container, formatDigits(9999999));
       setTimeout(() => animateToTarget(container, target), 400);
     }
