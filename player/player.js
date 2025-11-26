@@ -6,13 +6,42 @@ if (!id) {
   console.error("No yyovvo id provided in URL (?id=...)");
 }
 
-async function loadData() {
-  // Base44 yyovvoGet endpoint
-  const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(
-    id
-  )}`;
+// Base44 yyovvoGet endpoint (keep this domain as-is)
+const YYOVVO_GET_URL = "https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet";
 
+// Local mood + skin pools
+const MOOD_POOL = [
+  "/videos/mood-snow.mp4",
+  "/videos/mood-night.mp4",
+  "/videos/mood-warm-glow.mp4",
+  "/videos/mood-pink-haze.mp4",
+  "/videos/mood-ice-pulse.mp4",
+  "/videos/mood-aurora-drift.mp4",
+  "/videos/mood-gold-dust.mp4",
+  "/videos/mood-midnight-fog.mp4"
+];
+
+const SKIN_POOL = [
+  "/skins/frosted-glass.png",
+  "/skins/midnight-pink-pulse.png",
+  "/skins/snow-glow.png",
+  "/skins/christmas-lights-warm.png",
+  "/skins/ice-shatter.png",
+  "/skins/neon-green-aurora.png",
+  "/skins/metallic-gold-glow.png",
+  "/skins/blue-electric-snow.png"
+];
+
+function choice(arr) {
+  if (!arr || arr.length === 0) return null;
+  const idx = Math.floor(Math.random() * arr.length);
+  return arr[idx];
+}
+
+async function loadData() {
+  const url = `${YYOVVO_GET_URL}?id=${encodeURIComponent(id)}`;
   console.log("Fetching yyovvo from:", url);
+
   const res = await fetch(url);
 
   console.log("Response status:", res.status);
@@ -33,7 +62,6 @@ async function loadData() {
 
   console.log("Raw yyovvo response:", raw);
 
-  // Unwrap whatever Base44 returns
   let data = raw;
   if (raw.data && (raw.data.fields || raw.data.record)) {
     data = raw.data.fields || raw.data.record;
@@ -46,39 +74,23 @@ async function loadData() {
   }
 
   console.log("Unwrapped yyovvo data:", data);
-  return data;
+  return data || {};
 }
 
 async function init() {
+  if (!id) return;
+
+  const scene = document.getElementById("scene");
+  const skinOverlay = document.getElementById("skin-overlay");
+  const introEl = document.getElementById("overlay-intro");
+  const mainTextEl = document.getElementById("overlay-main-text");
+  const outroEl = document.getElementById("overlay-outro");
+  const jingle = document.getElementById("yyo-jingle");
+  const soundHint = document.getElementById("sound-hint");
+  const replyCta = document.getElementById("reply-cta");
+
   try {
     const data = await loadData();
-
-    // --- Auto-save this view to the Wall (best-effort, non-blocking) ---
-    try {
-      await fetch(
-        "https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/wallAdd",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            yyovvo_id: id,
-          }),
-        }
-      );
-      console.log("Wall add OK for yyovvo:", id);
-    } catch (err) {
-      console.warn("Wall add failed (non-blocking):", err);
-    }
-    // -------------------------------------------------------------------
-
-    const scene = document.getElementById("scene");
-    const intro = document.getElementById("overlay-intro");
-    const mainText = document.getElementById("overlay-main-text");
-    const outro = document.getElementById("overlay-outro");
-    const jingle = document.getElementById("yyo-jingle");
-
     if (!data) {
       console.error("No data returned from yyovvoGet");
       return;
@@ -86,57 +98,62 @@ async function init() {
 
     console.log("Playing yyovvo with data:", data);
 
-    // TIMING (ms)
-    const INTRO_START_MS = 1000;   // 1s
-    const INTRO_END_MS   = 3500;   // 3.5s
-    const MAIN_START_MS  = 3500;   // 3.5s
+    // --- TIMING (ms) ---
+    const INTRO_START_MS = 900;
+    const MAIN_START_MS = 3200;
     const MAIN_DURATION_MS = (Number(data.content_duration) || 10) * 1000;
     const OUTRO_START_MS = MAIN_START_MS + MAIN_DURATION_MS;
 
-    // 1) M O O D  (immediately)
-    // If Base44 mood_video_url exists, use it, else use our 20s hero mood
-    const moodUrl =
-      data.mood_video_url || "/videos/yyovvo-hero.mp4";
+    // --- CHOOSE MOOD + SKIN ---
 
-    console.log("Mood video URL:", moodUrl);
+    const fallbackMood = "/videos/yyovvo-hero.mp4";
+    const moodUrl = data.mood_video_url || choice(MOOD_POOL) || fallbackMood;
 
+    const skinUrl = choice(SKIN_POOL);
+
+    if (skinUrl) {
+      skinOverlay.style.backgroundImage = `url('${skinUrl}')`;
+    }
+
+    // Start with mood immediately
     scene.loop = false;
     scene.src = moodUrl;
-    await scene.play().catch((err) => {
-      console.warn("Mood autoplay might be blocked:", err);
+    scene.play().catch((err) => {
+      console.warn("Scene autoplay failed initially (likely mobile policy):", err);
+      // We leave it; user tap will start it.
     });
 
-    // 2) I N T R O  T E X T
+    // --- INTRO TEXT ANIMATION ---
     setTimeout(() => {
       if (data.intro_text) {
-        intro.textContent = data.intro_text || "";
-        intro.classList.add("show");
-      } else {
-        console.warn("No intro_text in data");
+        introEl.textContent = data.intro_text;
+        introEl.classList.add("show-intro");
       }
     }, INTRO_START_MS);
 
-    setTimeout(() => {
-      intro.classList.remove("show");
-    }, INTRO_END_MS);
-
-    // 3) M A I N  M O M E N T
+    // --- MAIN MOMENT ---
     if (data.content_type === "text") {
+      const text = data.content_text || "";
+
       setTimeout(() => {
-        mainText.textContent = data.content_text || "";
-        mainText.classList.add("show");
+        animateMainText(mainTextEl, text);
       }, MAIN_START_MS);
     } else if (data.content_type === "audio") {
-      const audio = new Audio(data.content_url);
-      setTimeout(() => {
-        audio.play().catch((err) => {
-          console.warn("Main audio play blocked:", err);
-        });
-      }, MAIN_START_MS);
+      const audioUrl = data.content_url;
+      if (audioUrl) {
+        const audio = new Audio(audioUrl);
+        setTimeout(() => {
+          audio.play().catch((err) => {
+            console.warn("Main audio play blocked:", err);
+          });
+        }, MAIN_START_MS);
+      }
     } else if (data.content_type === "video") {
+      const videoUrl = data.content_url;
       setTimeout(() => {
-        if (data.content_url) {
-          scene.src = data.content_url;
+        if (videoUrl) {
+          scene.src = videoUrl;
+          scene.loop = false;
           scene.play().catch((err) => {
             console.warn("Main video play blocked:", err);
           });
@@ -148,54 +165,80 @@ async function init() {
       console.warn("Unknown content_type:", data.content_type);
     }
 
-    // 4) O U T R O  (snow + logo + jingle)
+    // --- OUTRO (snow + logo + jingle) ---
     setTimeout(() => {
-      // hide main text so it doesn’t overlap "yyovvo"
-      if (mainText) {
-        mainText.classList.remove("show");
-      }
+      // Hide main text so it doesn’t overlap logo
+      mainTextEl.classList.remove("show-main");
 
-      const outroVideoUrl = data.outro_video_url || "/videos/outro-snow.mp4";
-      console.log("Starting OUTRO with video:", outroVideoUrl);
-
-      scene.src = outroVideoUrl;
+      // Switch to snow outro loop
+      const outroUrl = data.outro_video_url || "/videos/outro-snow.mp4";
+      scene.src = outroUrl;
       scene.loop = true;
       scene.play().catch((err) => {
-        console.warn("Scene outro play blocked or failed:", err);
+        console.warn("Outro video play blocked:", err);
       });
 
-      // show outro text
-      if (outro) {
-        outro.classList.remove("hidden");
-        outro.classList.add("show");
-      }
+      // Show outro
+      outroEl.classList.remove("hidden");
+      outroEl.classList.add("show-outro");
 
-      // play jingle exactly with outro
-      if (!jingle) {
-        console.error("No #yyo-jingle audio element found");
-        return;
-      }
+      // Show reply CTA
+      replyCta.classList.remove("hidden");
+      replyCta.classList.add("show-reply");
 
-      jingle.currentTime = 0;
-      jingle.play()
+      // Try to play jingle
+      jingle.play().catch((err) => {
+        console.warn("Jingle autoplay blocked:", err);
+        // Show hint so they can tap to trigger
+        soundHint.classList.remove("hidden");
+        soundHint.classList.add("show-sound-hint");
+      });
+    }, OUTRO_START_MS);
+
+    // When user taps sound hint, play jingle
+    soundHint.addEventListener("click", () => {
+      jingle
+        .play()
         .then(() => {
-          console.log("Jingle started");
+          soundHint.classList.remove("show-sound-hint");
+          soundHint.classList.add("hidden");
         })
         .catch((err) => {
-          console.warn("Jingle autoplay blocked, waiting for user click:", err);
-
-          const unlock = () => {
-            jingle.currentTime = 0;
-            jingle.play().catch(() => {});
-            window.removeEventListener("click", unlock);
-          };
-
-          window.addEventListener("click", unlock, { once: true });
+          console.warn("Failed to play jingle even after tap:", err);
         });
-    }, OUTRO_START_MS);
+    });
+
+    // Reply CTA: for now just scroll to homepage or open studio (can refine later)
+    replyCta.addEventListener("click", () => {
+      window.location.href = "https://studio.yyovvo.com/CreateYyovvo";
+    });
   } catch (e) {
     console.error("yyovvo player init error:", e);
   }
+}
+
+// Main text animation: more "materialise" than "typewriter"
+function animateMainText(el, text) {
+  el.textContent = "";
+  el.classList.add("show-main");
+
+  const chars = Array.from(text);
+  let idx = 0;
+
+  function step() {
+    // Reveal in small clusters to avoid pure typewriter feel
+    const clusterSize = Math.floor(Math.random() * 3) + 1; // 1–3 chars
+    const slice = chars.slice(idx, idx + clusterSize).join("");
+    el.textContent += slice;
+    idx += clusterSize;
+
+    if (idx < chars.length) {
+      const delay = 30 + Math.random() * 60; // 30–90ms between bursts
+      setTimeout(step, delay);
+    }
+  }
+
+  step();
 }
 
 init();
