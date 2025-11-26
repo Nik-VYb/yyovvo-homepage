@@ -3,41 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>yyovvo</title>
+  <title>yyovvo – designed for emotion</title>
   <link rel="stylesheet" href="/player/player.css" />
 </head>
 
 <body>
+  <div id="yyovvo-container">
 
-<div id="yyovvo-container">
+    <!-- Mood + main scene video -->
+    <video
+      id="scene"
+      playsinline
+      autoplay
+      muted
+      preload="auto"
+    ></video>
 
-  <!-- Main cinematic video element -->
-  <video id="scene" playsinline autoplay muted></video>
+    <!-- Skin overlay (PNG frame / glow / border) -->
+    <div id="skin-overlay"></div>
 
-  <!-- Intro text overlay -->
-  <div id="overlay-intro" class="overlay-text"></div>
+    <!-- Dim / gradient overlay for cinematic depth -->
+    <div id="gradient-overlay"></div>
 
-  <!-- Text-mode main clip overlay -->
-  <div id="overlay-main-text" class="overlay-text"></div>
+    <!-- Intro text (short line) -->
+    <div id="overlay-intro" class="overlay-text intro-text"></div>
 
-  <!-- Outro overlay -->
-  <div id="overlay-outro" class="overlay-outro hidden">
-    <div class="outro-title">yyovvo</div>
-    <div class="outro-sub">
-      designed for emotion <span class="heart">♡</span>
+    <!-- Main written moment (if content_type === 'text') -->
+    <div id="overlay-main-text" class="overlay-text main-text"></div>
+
+    <!-- Outro logo + tagline -->
+    <div id="overlay-outro" class="overlay-outro hidden">
+      <div class="outro-title">yyovvo</div>
+      <div class="outro-sub">
+        designed for emotion <span class="heart">♡</span>
+      </div>
     </div>
+
+    <!-- Tap for sound (if browser blocks autoplay audio) -->
+    <button id="sound-hint" class="sound-hint hidden">
+      Tap to hear the yyovvo jingle
+    </button>
+
+    <!-- Floating reply CTA (visual only for now) -->
+    <button id="reply-cta" class="reply-cta hidden">
+      Send one back ↗
+    </button>
+
+    <!-- Jingle audio -->
+    <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3" preload="auto"></audio>
   </div>
 
-  <!-- Jingle (preloaded so it’s ready at outro) -->
-  <audio
-    id="yyo-jingle"
-    src="/audio/yyovvo-jingle.mp3"
-    preload="auto"
-  ></audio>
-
-</div>
-
-<script src="/player/player.js"></script>
-
+  <script src="/player/player.js"></script>
 </body>
 </html>
