@@ -1,848 +1,1143 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>yyovvo – yyo-voice</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="It’s not about your Christmas. It’s about how you make them feel. Send a yyovvo moment they’ll never forget." />
-
-  <!-- Open Graph / Social -->
-  <meta property="og:title" content="yyovvo – Send something unforgettable" />
-  <meta property="og:description" content="1,000,000,000 messages will go out this Christmas. Make your yyo-voice the one they remember." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://yyovvo.com/" />
-  <!-- Replace with a real poster image when ready -->
-  <meta property="og:image" content="https://yyovvo.com/og-image.jpg" />
-
-  <style>
-    :root {
-      --bg: #030508;
-      --bg-soft: #070b10;
-      --accent: #f4f0e8;
-      --accent-soft: rgba(244, 240, 232, 0.7);
-      --accent-dim: rgba(244, 240, 232, 0.3);
-      --brand-gold: #f5d28a;
-      --muted: #9ca3af;
-      --danger: #f97373;
-      --border-subtle: rgba(148, 163, 184, 0.35);
-      --card-bg: rgba(15, 23, 42, 0.85);
-      --blur: blur(18px);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-      background: radial-gradient(circle at top, #111827 0, var(--bg) 50%, #000 100%);
-      color: var(--accent);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    main {
-      flex: 1;
-    }
-
-    /* Snow overlay */
-    .snow {
-      pointer-events: none;
-      position: fixed;
-      inset: 0;
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px),
-        radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px),
-        radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px);
-      background-repeat: repeat;
-      background-size: 180px 180px, 240px 240px, 320px 320px;
-      animation: snow-move 40s linear infinite;
-      opacity: 0.5;
-      z-index: 1;
-    }
-
-    @keyframes snow-move {
-      0% { transform: translate3d(0, -40px, 0); }
-      100% { transform: translate3d(0, 40px, 0); }
-    }
-
-    /* Layout */
-    .page {
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 1.75rem 1.25rem 3.5rem;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 0.25rem;
-      padding-bottom: 0.75rem;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      letter-spacing: 0.18em;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-    }
-
-    .logo-mark {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      border: 1px solid rgba(249, 250, 251, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 0.8rem;
-      background: radial-gradient(circle at 10% 0%, #1f2937 0, #020617 40%, #000 100%);
-      box-shadow:
-        0 0 0 1px rgba(148, 163, 184, 0.4),
-        0 10px 30px rgba(15, 23, 42, 0.9);
-    }
-
-    .logo-text {
-      color: var(--accent-soft);
-    }
-
-    .nav-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.78rem;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top left, rgba(250,250,250,0.14), rgba(15,23,42,0.8));
-      box-shadow: 0 7px 20px rgba(15,23,42,0.9);
-    }
-
-    .nav-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34,197,94,0.25);
-    }
-
-    /* HERO */
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 3fr);
-      gap: 2.5rem;
-      align-items: center;
-      padding: 1.5rem 0 3.5rem;
-    }
-
-    @media (max-width: 880px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-        padding-top: 1rem;
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>yyovvo — your voice, made forever visible</title>
+    <meta
+      name="description"
+      content="In 1925 they sent Christmas cards. In 2025, we send yyovvo — your voice, made forever visible. Cinematic AI Christmas moments, made for TikTok, sent in private."
+    />
+    <style>
+      :root {
+        --bg-deep: #02010a;
+        --bg-soft: #050816;
+        --glass-bg: rgba(15, 23, 42, 0.78);
+        --glass-border: rgba(148, 163, 184, 0.35);
+        --text-main: #f9fafb;
+        --text-soft: #9ca3af;
+        --accent-pink: #ec4899;
+        --accent-blue: #38bdf8;
+        --accent-amber: #f97316;
+        --danger-red: #f97373;
       }
-    }
 
-    .hero-copy {
-      max-width: 520px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.18rem 0.9rem;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      border: 1px solid rgba(148,163,184,0.6);
-      color: var(--accent-soft);
-      background: radial-gradient(circle at top left, rgba(148,163,184,0.45), rgba(15,23,42,0.85));
-    }
-
-    .pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--brand-gold);
-    }
-
-    .hero-title {
-      margin-top: 1.45rem;
-      font-size: clamp(2.4rem, 4vw, 3.3rem);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-    }
-
-    .hero-title span.highlight {
-      background: linear-gradient(120deg, #facc6b, #f97373, #fef9c3);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-sub {
-      margin-top: 1rem;
-      font-size: 0.98rem;
-      line-height: 1.55;
-      color: var(--accent-soft);
-      max-width: 460px;
-    }
-
-    .hero-quote {
-      margin-top: 0.9rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-style: italic;
-      border-left: 1px solid rgba(148,163,184,0.6);
-      padding-left: 0.75rem;
-    }
-
-    .hero-actions {
-      margin-top: 1.6rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    .btn-primary {
-      padding: 0.85rem 1.7rem;
-      border-radius: 999px;
-      font-size: 0.92rem;
-      font-weight: 500;
-      border: 0;
-      cursor: pointer;
-      background-image: radial-gradient(circle at top left, #facc6b, #f97373);
-      color: #020617;
-      box-shadow:
-        0 0 0 1px rgba(120, 53, 15, 0.6),
-        0 16px 40px rgba(148, 27, 27, 0.8);
-      transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, filter 0.15s ease-out;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.02);
-      box-shadow:
-        0 0 0 1px rgba(120,53,15,0.8),
-        0 18px 48px rgba(148,27,27,0.95);
-    }
-
-    .btn-ghost {
-      padding: 0.7rem 1.3rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
-      background: rgba(15,23,42,0.7);
-      color: var(--accent-soft);
-      font-size: 0.85rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out;
-    }
-
-    .btn-ghost:hover {
-      background: rgba(15,23,42,0.95);
-      border-color: rgba(248,250,252,0.7);
-      color: var(--accent);
-    }
-
-    .hero-meta {
-      margin-top: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.9rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .meta-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .meta-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: var(--accent-dim);
-    }
-
-    /* HERO VISUAL */
-    .hero-visual {
-      position: relative;
-    }
-
-    .hero-video-shell {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at top, rgba(248,250,252,0.08), rgba(15,23,42,0.95));
-      box-shadow:
-        0 22px 80px rgba(0,0,0,0.95),
-        0 0 0 1px rgba(15,23,42,0.9);
-      aspect-ratio: 9/16;
-      max-width: 360px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-glow {
-      position: absolute;
-      inset: -15%;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(248,250,252,0.14), transparent 55%),
-        radial-gradient(circle at 50% 120%, rgba(248,250,252,0.12), transparent 60%);
-      mix-blend-mode: screen;
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
-    .hero-video-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: stretch;
-      justify-content: stretch;
-    }
-
-    .hero-video-inner video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .hero-video-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(3,7,18,0.95) 0, rgba(3,7,18,0.35) 40%, transparent 75%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.25rem;
-      gap: 0.5rem;
-    }
-
-    .overlay-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent-soft);
-      opacity: 0.9;
-    }
-
-    .overlay-line {
-      font-size: 0.95rem;
-      line-height: 1.4;
-      color: var(--accent);
-    }
-
-    .overlay-tagline {
-      margin-top: 0.15rem;
-      font-size: 0.78rem;
-      color: var(--accent-soft);
-    }
-
-    .overlay-mark {
-      margin-top: 0.6rem;
-      font-size: 0.76rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(248,250,252,0.7);
-    }
-
-    .floating-badge {
-      position: absolute;
-      top: -12px;
-      right: 18px;
-      padding: 0.45rem 0.8rem;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.95);
-      border: 1px solid rgba(148,163,184,0.7);
-      font-size: 0.7rem;
-      color: var(--accent-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      box-shadow:
-        0 12px 35px rgba(15,23,42,0.95),
-        0 0 0 1px rgba(15,23,42,1);
-    }
-
-    .floating-badge span.dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--danger);
-      box-shadow: 0 0 0 5px rgba(248,113,113,0.2);
-    }
-
-    /* SECTIONS */
-
-    section {
-      margin-top: 3.25rem;
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent-dim);
-      margin-bottom: 0.6rem;
-    }
-
-    .section-title {
-      font-size: 1.3rem;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.6rem;
-    }
-
-    .section-sub {
-      font-size: 0.9rem;
-      color: var(--muted);
-      max-width: 520px;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.5rem;
-    }
-
-    @media (max-width: 880px) {
-      .steps {
-        grid-template-columns: minmax(0, 1fr);
+      * {
+        box-sizing: border-box;
       }
-    }
 
-    .step-tile {
-      border-radius: 18px;
-      padding: 1.1rem 1.1rem 1.1rem;
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.95), rgba(3,7,18,0.95));
-      border: 1px solid rgba(30,64,175,0.7);
-      box-shadow:
-        0 16px 40px rgba(15,23,42,0.9),
-        0 0 0 1px rgba(15,23,42,1);
-    }
-
-    .step-index {
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent-dim);
-      margin-bottom: 0.35rem;
-    }
-
-    .step-title {
-      font-size: 1rem;
-      margin-bottom: 0.35rem;
-    }
-
-    .step-body {
-      font-size: 0.86rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .step-tag {
-      display: inline-flex;
-      margin-top: 0.6rem;
-      font-size: 0.7rem;
-      padding: 0.26rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
-      color: var(--accent-soft);
-    }
-
-    .moments-grid {
-      margin-top: 1.7rem;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.9rem;
-    }
-
-    @media (max-width: 880px) {
-      .moments-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      body {
+        margin: 0;
+        background: radial-gradient(circle at top, #111827 0, #02010a 55%);
+        color: var(--text-main);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
-    }
 
-    .moment-tile {
-      aspect-ratio: 9 / 16;
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid rgba(55,65,81,0.9);
-      background: radial-gradient(circle at top, rgba(248,250,252,0.07), rgba(15,23,42,0.95));
-    }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-    .moment-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(3,7,18,0.92), rgba(3,7,18,0.2));
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0.75rem;
-      gap: 0.25rem;
-    }
-
-    .moment-caption {
-      font-size: 0.75rem;
-      color: var(--accent-soft);
-    }
-
-    .moment-name {
-      font-size: 0.8rem;
-      color: var(--accent);
-    }
-
-    .moment-pill {
-      font-size: 0.7rem;
-      padding: 0.16rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      align-self: flex-start;
-      color: var(--accent-dim);
-    }
-
-    .wall-preview {
-      margin-top: 1.7rem;
-      border-radius: 20px;
-      padding: 1.1rem;
-      border: 1px dashed rgba(148,163,184,0.5);
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(3,7,18,0.9));
-      color: var(--accent-soft);
-      font-size: 0.85rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-    }
-
-    .wall-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8rem;
-    }
-
-    .wall-dot-row {
-      display: flex;
-      gap: 0.3rem;
-    }
-
-    .wall-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent-dim);
-    }
-
-    footer {
-      border-top: 1px solid rgba(31,41,55,0.9);
-      background: #020617;
-      padding: 1.2rem 0 1.6rem;
-      margin-top: 2.5rem;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    @media (max-width: 640px) {
-      .footer-inner {
+      .page {
+        min-height: 100vh;
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
       }
-    }
 
-    .footer-links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
+      /* HEADER */
 
-    .footer-links a {
-      color: var(--accent-dim);
-    }
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        backdrop-filter: blur(20px);
+        background: radial-gradient(
+          circle at top,
+          rgba(15, 23, 42, 0.85),
+          rgba(3, 7, 18, 0.88)
+        );
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      }
 
-    /* Small animations */
-    .shimmer {
-      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
-      background-size: 200% 100%;
-      animation: shimmer 2.4s ease-in-out infinite;
-    }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: lowercase;
+      }
 
-    @keyframes shimmer {
-      0% { background-position: -120% 0; }
-      100% { background-position: 220% 0; }
-    }
-  </style>
-</head>
-<body>
-  <div class="snow"></div>
+      .nav-logo-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--accent-pink);
+        box-shadow: 0 0 18px rgba(236, 72, 153, 0.9);
+        animation: pulse-dot 1.6s ease-in-out infinite;
+      }
 
-  <div class="page">
-    <main>
-      <div class="container">
-        <!-- HEADER -->
-        <header>
-          <div class="logo">
-            <div class="logo-mark">yy</div>
-            <div class="logo-text">yyovvo – yyo-voice</div>
-          </div>
-          <a href="#create" class="nav-cta">
-            <span class="nav-dot"></span>
-            <span>Make someone feel something</span>
+      .nav-center {
+        display: none;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        color: var(--text-soft);
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+      }
+
+      .nav-link {
+        color: var(--text-soft);
+        font-size: 13px;
+      }
+
+      .nav-link:hover {
+        color: var(--text-main);
+      }
+
+      .primary-cta {
+        padding: 7px 16px;
+        border-radius: 999px;
+        border: none;
+        font-size: 13px;
+        font-weight: 500;
+        background: linear-gradient(135deg, var(--accent-amber), var(--accent-pink));
+        color: var(--text-main);
+        cursor: pointer;
+        box-shadow: 0 0 28px rgba(236, 72, 153, 0.45);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transform: translateZ(0);
+        transition: transform 0.16s ease, box-shadow 0.16s ease,
+          filter 0.16s ease;
+      }
+
+      .primary-cta:hover {
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 0 38px rgba(236, 72, 153, 0.7);
+        filter: brightness(1.05);
+      }
+
+      main {
+        flex: 1;
+        margin-top: 64px;
+      }
+
+      .section {
+        position: relative;
+        padding: 72px 18px;
+      }
+
+      .section.inner {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+
+      .section-dark {
+        background: radial-gradient(circle at top, #020617 0, #02010a 70%);
+      }
+
+      .section-darker {
+        background: radial-gradient(circle at bottom, #020617 0, #000 70%);
+      }
+
+      /* HERO */
+
+      .hero {
+        position: relative;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding-top: 88px;
+        padding-bottom: 64px;
+      }
+
+      .hero-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.23;
+        filter: saturate(1.3) contrast(1.05);
+        pointer-events: none;
+      }
+
+      .hero-overlay {
+        position: relative;
+        z-index: 10;
+        max-width: 960px;
+        padding: 0 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .hero-glass {
+        max-width: 640px;
+        padding: 26px 22px 24px;
+        border-radius: 22px;
+        background: radial-gradient(
+            circle at top left,
+            rgba(236, 72, 153, 0.16),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(56, 189, 248, 0.14),
+            transparent 55%
+          ),
+          var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 0 80px rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(26px);
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: var(--text-soft);
+        margin-bottom: 10px;
+      }
+
+      .hero-title {
+        font-size: 28px;
+        line-height: 1.24;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .hero-title span.highlight {
+        background: linear-gradient(135deg, var(--accent-pink), var(--accent-blue));
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      .hero-sub {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-soft);
+        margin-bottom: 10px;
+      }
+
+      .hero-sub-strong {
+        font-size: 13px;
+        color: #e5e7eb;
+      }
+
+      .hero-actions {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .hero-note {
+        font-size: 11px;
+        color: var(--text-soft);
+      }
+
+      .hero-note span {
+        color: var(--accent-pink);
+      }
+
+      .hero-bottom-strip {
+        margin-top: 26px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        font-size: 11px;
+        color: var(--text-soft);
+      }
+
+      .chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: radial-gradient(
+          circle at top left,
+          rgba(56, 189, 248, 0.12),
+          rgba(15, 23, 42, 0.85)
+        );
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .chip-pink {
+        background: radial-gradient(
+          circle at top left,
+          rgba(236, 72, 153, 0.22),
+          rgba(15, 23, 42, 0.92)
+        );
+        border-color: rgba(236, 72, 153, 0.6);
+      }
+
+      /* TIKTOK STRIP */
+
+      .strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.21em;
+        color: var(--text-soft);
+      }
+
+      .strip span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .badge-live {
+        padding: 3px 7px;
+        border-radius: 999px;
+        border: 1px solid rgba(248, 113, 113, 0.7);
+        color: #fecaca;
+        background: rgba(127, 29, 29, 0.45);
+        font-size: 10px;
+        letter-spacing: 0.16em;
+      }
+
+      /* HOOK TILE */
+
+      .hook-tile {
+        margin-top: 40px;
+        max-width: 520px;
+        padding: 20px 22px;
+        border-radius: 20px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(22px);
+        box-shadow: 0 0 55px rgba(15, 23, 42, 0.9);
+        transform: translateZ(0);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .hook-tile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 70px rgba(15, 23, 42, 1);
+      }
+
+      .hook-main {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+
+      .hook-main em {
+        font-style: normal;
+        color: var(--accent-pink);
+      }
+
+      .hook-sub {
+        font-size: 13px;
+        color: var(--text-soft);
+      }
+
+      .hook-caption {
+        margin-top: 12px;
+        font-size: 11px;
+        color: var(--text-soft);
+      }
+
+      /* PROMISE SECTION */
+
+      .section-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .section-sub {
+        font-size: 13px;
+        color: var(--text-soft);
+        max-width: 520px;
+        margin-bottom: 24px;
+      }
+
+      .promise-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .promise-card {
+        padding: 16px 15px 14px;
+        border-radius: 16px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(18px);
+      }
+
+      .promise-label {
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .promise-body {
+        font-size: 13px;
+        color: var(--text-soft);
+      }
+
+      .promise-fomo {
+        margin-top: 16px;
+        font-size: 13px;
+        color: #e5e7eb;
+      }
+
+      .promise-note {
+        margin-top: 6px;
+        font-size: 11px;
+        color: var(--text-soft);
+      }
+
+      .promise-note span {
+        color: var(--accent-pink);
+      }
+
+      /* REACTIONS */
+
+      .reactions-grid {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+      }
+
+      .reaction-chip {
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        background: radial-gradient(
+          circle at top left,
+          rgba(236, 72, 153, 0.22),
+          rgba(15, 23, 42, 0.96)
+        );
+        font-size: 12px;
+        color: #f9fafb;
+      }
+
+      .reactions-caption {
+        margin-top: 12px;
+        font-size: 11px;
+        color: var(--text-soft);
+      }
+
+      /* PHONE PREVIEW */
+
+      .two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 26px;
+        align-items: center;
+      }
+
+      .phone-frame {
+        margin: 0 auto;
+        width: 230px;
+        height: 460px;
+        border-radius: 32px;
+        padding: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: radial-gradient(circle at top, #020617, #02010a);
+        box-shadow: 0 0 60px rgba(15, 23, 42, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        border-radius: 24px;
+        background: radial-gradient(circle at top, #020617, #02010a);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .phone-faux-video {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.35),
+          rgba(236, 72, 153, 0.35)
+        );
+        opacity: 0.75;
+        mix-blend-mode: screen;
+      }
+
+      .phone-label-top {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.45);
+      }
+
+      .phone-label-bottom-left {
+        position: absolute;
+        bottom: 12px;
+        left: 10px;
+        padding: 3px 7px;
+        border-radius: 999px;
+        font-size: 10px;
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(148, 163, 184, 0.45);
+      }
+
+      .phone-label-bottom-right {
+        position: absolute;
+        bottom: 12px;
+        right: 10px;
+        padding: 3px 7px;
+        border-radius: 999px;
+        font-size: 10px;
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(148, 163, 184, 0.45);
+      }
+
+      .phone-audio-pill {
+        position: absolute;
+        bottom: 44px;
+        right: 10px;
+        padding: 4px 7px;
+        border-radius: 999px;
+        font-size: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(236, 72, 153, 0.7);
+      }
+
+      .phone-audio-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--accent-pink);
+        box-shadow: 0 0 12px rgba(236, 72, 153, 0.9);
+        animation: pulse-dot 1.4s ease-in-out infinite;
+      }
+
+      .col-text-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .col-text-body {
+        font-size: 13px;
+        color: var(--text-soft);
+        margin-bottom: 12px;
+      }
+
+      .col-text-body strong {
+        color: #e5e7eb;
+        font-weight: 500;
+      }
+
+      .bullet-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0 0 14px;
+        font-size: 13px;
+        color: #e5e7eb;
+      }
+
+      .bullet-list li {
+        margin-bottom: 4px;
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .bullet-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 999px;
+        margin-top: 6px;
+        background: var(--accent-blue);
+      }
+
+      /* WALL SECTION */
+
+      .wall-grid {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .wall-tile {
+        aspect-ratio: 3 / 4;
+        border-radius: 14px;
+        background: radial-gradient(
+          circle at top,
+          rgba(56, 189, 248, 0.35),
+          rgba(15, 23, 42, 0.96)
+        );
+        position: relative;
+        overflow: hidden;
+        opacity: 0.76;
+      }
+
+      .wall-tile::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at bottom,
+          rgba(15, 23, 42, 0.65),
+          transparent
+        );
+      }
+
+      .wall-tile-small-tag {
+        position: absolute;
+        bottom: 6px;
+        left: 7px;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: #e5e7eb;
+      }
+
+      .wall-caption {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--text-soft);
+      }
+
+      .wall-caption strong {
+        color: #e5e7eb;
+        font-weight: 500;
+      }
+
+      /* MIDNIGHT FOMO */
+
+      .fomo-section {
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .fomo-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top, #020617, #000);
+        opacity: 0.9;
+      }
+
+      .fomo-content {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 52px 18px 64px;
+      }
+
+      .fomo-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .fomo-sub {
+        font-size: 14px;
+        color: var(--text-soft);
+        margin-bottom: 22px;
+      }
+
+      .fomo-note {
+        margin-top: 10px;
+        font-size: 11px;
+        color: var(--text-soft);
+      }
+
+      /* FOOTER + COUNTER */
+
+      footer {
+        padding: 18px;
+        border-top: 1px solid rgba(31, 41, 55, 0.9);
+        background: radial-gradient(circle at top, #020617, #02010a);
+        font-size: 11px;
+        color: var(--text-soft);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .footer-heart {
+        color: var(--accent-pink);
+      }
+
+      .footer-center {
+        text-align: center;
+        flex: 1;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 10px;
+        font-size: 11px;
+      }
+
+      .footer-links a {
+        color: var(--text-soft);
+      }
+
+      .footer-links a:hover {
+        color: var(--text-main);
+      }
+
+      .counter-pill {
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: radial-gradient(
+          circle at top left,
+          rgba(56, 189, 248, 0.16),
+          rgba(15, 23, 42, 0.94)
+        );
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #e5e7eb;
+        opacity: 0.76;
+      }
+
+      .counter-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 999px;
+        background: var(--accent-blue);
+      }
+
+      .counter-number {
+        font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 11px;
+      }
+
+      /* ANIMATIONS */
+
+      @keyframes pulse-dot {
+        0% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.6);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
+      }
+
+      /* RESPONSIVE */
+
+      @media (min-width: 720px) {
+        .nav {
+          padding: 14px 28px;
+        }
+
+        .nav-center {
+          display: block;
+        }
+
+        .hero-title {
+          font-size: 34px;
+        }
+
+        .hero {
+          padding-top: 108px;
+        }
+
+        .section {
+          padding: 80px 32px;
+        }
+
+        .promise-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .reactions-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .two-col {
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+        }
+
+        .wall-grid {
+          grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page">
+      <!-- NAVBAR -->
+      <header class="nav">
+        <div class="nav-left" title="yyo-voice, designed for emotion">
+          <span>yyovvo</span>
+          <span class="nav-logo-dot"></span>
+        </div>
+        <div class="nav-center">
+          MADE FOR TIKTOK • TRENDING THIS CHRISTMAS
+        </div>
+        <div class="nav-right">
+          <!-- TODO: wire My wall when auth is ready -->
+          <a href="#" class="nav-link">My wall</a>
+          <!-- TODO: change href to real Base44 create URL -->
+          <a href="#create" class="primary-cta">
+            <span>Create a yyovvo</span>
           </a>
-        </header>
+        </div>
+      </header>
 
+      <main>
         <!-- HERO -->
         <section class="hero">
-          <div class="hero-copy">
-            <div class="pill">
-              <span class="pill-dot"></span>
-              <span>It’s not about your Christmas</span>
-            </div>
+          <video
+            class="hero-video"
+            src="/videos/yyovvo-hero.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+          ></video>
 
-            <h1 class="hero-title">
-              It’s about how
-              <span class="highlight">you make them feel.</span>
-            </h1>
-
-            <p class="hero-sub">
-              This Christmas, over <strong>1,000,000,000 messages</strong> will fly across the internet.
-              yyovvo is the one that lands like a moment — not a notification.
-            </p>
-
-            <p class="hero-quote">
-              “People will always remember how you made them feel.”
-            </p>
-
-            <div class="hero-actions">
-              <!-- TODO: wire to actual yyovvo creation flow / app route -->
-              <a href="#create" class="btn-primary">
-                <span>Create a yyovvo</span>
-                <span>➝</span>
-              </a>
-              <a href="#trailer" class="btn-ghost">
-                <span>Watch the 15s trailer</span>
-              </a>
-            </div>
-
-            <div class="hero-meta">
-              <div class="meta-item">
-                <span class="meta-dot"></span>
-                <span>Ultra-personal yyovvos – A5 portrait, TikTok-ready.</span>
+          <div class="hero-overlay">
+            <div class="hero-glass">
+              <div class="eyebrow">AI Christmas · emotional technology</div>
+              <div class="hero-title">
+                It’s not a message.<br />
+                It’s a moment they remember
+                <span class="highlight">forever.</span>
               </div>
-              <div class="meta-item">
-                <span class="meta-dot"></span>
-                <span>No apps. No accounts. Just a link and a feeling.</span>
+              <div class="hero-sub">
+                In 1925 they sent Christmas cards.<br />
+                In 2025, we send yyovvo — your voice, made forever visible.
               </div>
-            </div>
-          </div>
+              <div class="hero-sub-strong">
+                99% of Christmas cards end up in the bin.<br />
+                yyovvo lives on their wall. Your yyo-voice, forever.
+              </div>
 
-          <!-- HERO VISUAL / TRAILER -->
-          <div class="hero-visual" id="trailer">
-            <div class="floating-badge">
-              <span class="dot"></span>
-              <span>yyovvo Christmas 25 trailer</span>
-            </div>
-            <div class="hero-video-shell shimmer">
-              <div class="hero-glow"></div>
-              <div class="hero-video-inner">
-                <!-- Replace src with your real hero video file -->
-                <video autoplay muted loop playsinline poster="/images/yyovvo-hero-poster.jpg">
-                  <source src="/videos/yyovvo-hero.mp4" type="video/mp4" />
-                  <!-- Fallback: simple background -->
-                </video>
-                <div class="hero-video-overlay">
-                  <div class="overlay-label">Cinematic open</div>
-                  <div class="overlay-line">
-                    Dark snow. Streetlight glow. A voice in the mist saying the one thing they needed to hear.
-                  </div>
-                  <div class="overlay-tagline">
-                    Not a post. A tiny film, for one person.
-                  </div>
-                  <div class="overlay-mark">yyovvo – yyo-voice</div>
+              <div class="hero-actions">
+                <!-- TODO: change href to real Base44 create URL -->
+                <a href="#create" class="primary-cta">
+                  <span>Create a yyovvo</span>
+                </a>
+                <div class="hero-note">
+                  Made for TikTok. <span>Built for feelings.</span>
+                </div>
+              </div>
+
+              <div class="hero-bottom-strip">
+                <div class="chip chip-pink">
+                  <span>1925 → cards</span>
+                  <span>2025 → yyovvo</span>
+                </div>
+                <div class="chip">
+                  <span>Midnight sends</span>
+                  <span>•</span>
+                  <span>Wall moments</span>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        <!-- HOW IT WORKS -->
-        <section id="create">
-          <div class="section-label">How it works</div>
-          <h2 class="section-title">Three simple steps. One unforgettable yyo-voice.</h2>
-          <p class="section-sub">
-            yyovvo turns your message into a tiny cinematic experience. You don’t need to be creative.
-            You just need someone you care about.
-          </p>
-
-          <div class="steps">
-            <div class="step-tile">
-              <div class="step-index">Step 1</div>
-              <div class="step-title">Pick a mood</div>
-              <p class="step-body">
-                Choose the feeling: quiet, chaotic, funny, romantic, unhinged, tear-jerker.
-                The front of your yyovvo becomes a moving A5 portrait that sets the scene.
-              </p>
-              <div class="step-tag">The opening shot</div>
-            </div>
-
-            <div class="step-tile">
-              <div class="step-index">Step 2</div>
-              <div class="step-title">Pour your message</div>
-              <p class="step-body">
-                Type it, speak it, or let AI help you find the words.
-                Inside, your voice lives on a page they can replay long after Christmas is over.
-              </p>
-              <div class="step-tag">The voice</div>
-            </div>
-
-            <div class="step-tile">
-              <div class="step-index">Step 3</div>
-              <div class="step-title">Drop it into their world</div>
-              <p class="step-body">
-                Hit send. They get a single link that opens like a book:
-                front → inside → your yyovvo moment. Built to be shared to TikTok in one tap.
-              </p>
-              <div class="step-tag">The moment</div>
+            <div class="hook-tile">
+              <div class="hook-main">
+                People don’t remember your posts.<br />
+                They remember how you made them <em>feel.</em>
+              </div>
+              <div class="hook-sub">
+                yyovvo is the new emotional currency of Christmas 2025.
+              </div>
+              <div class="hook-caption">
+                Send a cinematic moment they’ll replay long after the tree is
+                gone.
+              </div>
             </div>
           </div>
         </section>
 
-        <!-- WHAT THEY FEEL / MOMENTS -->
-        <section>
-          <div class="section-label">What they feel</div>
-          <h2 class="section-title">It doesn’t land like a text. It lands like a scene.</h2>
-          <p class="section-sub">
-            yyovvo isn’t about making your Christmas look good.
-            It’s about making <em>their</em> Christmas feel different —
-            the “I can’t believe you did this for me” moment.
-          </p>
+        <!-- TIKTOK STRIP -->
+        <section class="section section-dark">
+          <div class="section inner">
+            <div class="strip">
+              <span>🔊 TikTok · “yyovvo – yyo voice!”</span>
+              <span>Now trending in AI Christmas searches</span>
+              <span>
+                <span class="badge-live">LIVE</span>
+                People are sending yyovvos right now
+              </span>
+            </div>
+          </div>
+        </section>
 
-          <div class="moments-grid">
-            <div class="moment-tile">
-              <div class="moment-overlay">
-                <div class="moment-pill">First to open</div>
-                <div class="moment-name">“From nowhere, this appears.”</div>
-                <div class="moment-caption">Dark screen, snow, your voice. Goosebumps.</div>
+        <!-- PROMISE + REACTIONS -->
+        <section class="section section-dark">
+          <div class="section inner">
+            <div class="section-title">Whisper. We wrap. They feel.</div>
+            <div class="section-sub">
+              yyovvo turns whatever you say into a tiny cinematic scene — made
+              for TikTok, sent in private, saved on their wall forever.
+            </div>
+
+            <div class="promise-grid">
+              <div class="promise-card">
+                <div class="promise-label">1. Whisper your moment</div>
+                <div class="promise-body">
+                  Type or record something only they will understand.
+                </div>
+              </div>
+              <div class="promise-card">
+                <div class="promise-label">
+                  2. We turn it into a cinematic scene
+                </div>
+                <div class="promise-body">
+                  Mood, motion, snow and the yyovvo outro — a mini-movie, not a
+                  card.
+                </div>
+              </div>
+              <div class="promise-card">
+                <div class="promise-label">
+                  3. It lands on their wall at the perfect moment
+                </div>
+                <div class="promise-body">
+                  Schedule it for midnight. Let them wake up wondering how you
+                  knew.
+                </div>
               </div>
             </div>
-            <div class="moment-tile">
-              <div class="moment-overlay">
-                <div class="moment-pill">Shared to stories</div>
-                <div class="moment-name">“You actually made me cry.”</div>
-                <div class="moment-caption">The yyovvo they share with: “Who did this?!”</div>
+
+            <div class="promise-fomo">
+              Imagine when they wake up and realise you thought of them at
+              00:00.
+            </div>
+            <div class="promise-note">
+              <span>Schedule your midnight send</span> inside your first
+              yyovvo.
+            </div>
+
+            <div class="reactions-grid">
+              <div class="reaction-chip">“You made me cry. In a good way.”</div>
+              <div class="reaction-chip">“Who did this? How?”</div>
+              <div class="reaction-chip">“This saved my Christmas.”</div>
+              <div class="reaction-chip">
+                “I didn’t expect to feel this much from a link.”
+              </div>
+              <div class="reaction-chip">
+                “My yyovvo wall is insane already.”
               </div>
             </div>
-            <div class="moment-tile">
-              <div class="moment-overlay">
-                <div class="moment-pill">Saved forever</div>
-                <div class="moment-name">Their yyovvo Wall</div>
-                <div class="moment-caption">Every yyovvo they receive stacks into a private gallery.</div>
+            <div class="reactions-caption">
+              These are real reactions to yyovvos. People aren’t just opening
+              them. They’re <em>feeling</em> them.
+            </div>
+          </div>
+        </section>
+
+        <!-- PHONE PREVIEW -->
+        <section class="section section-dark">
+          <div class="section inner two-col">
+            <div>
+              <div class="phone-frame">
+                <div class="phone-screen">
+                  <div class="phone-faux-video"></div>
+                  <div class="phone-label-top">AI CHRISTMAS YYOVVO</div>
+                  <div class="phone-label-bottom-left">From: You</div>
+                  <div class="phone-label-bottom-right">To: Them</div>
+                  <div class="phone-audio-pill">
+                    <span class="phone-audio-dot"></span>
+                    <span>yyo-voice</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="moment-tile">
-              <div class="moment-overlay">
-                <div class="moment-pill">Your side</div>
-                <div class="moment-name">“I did that.”</div>
-                <div class="moment-caption">The quiet satisfaction of being the reason they smiled.</div>
+            <div>
+              <div class="col-text-title">
+                Made for TikTok. Sent in private.
               </div>
+              <div class="col-text-body">
+                Your yyovvo feels like a trending TikTok — but it exists only
+                between you and them.
+                <br /><br />
+                <strong>You choose the mood.</strong> You whisper the words.
+                <br />
+                <strong>We wrap it in snow, motion and the yyovvo outro.</strong>
+              </div>
+              <ul class="bullet-list">
+                <li>
+                  <span class="bullet-dot"></span>
+                  <span>One-tap link to share anywhere</span>
+                </li>
+                <li>
+                  <span class="bullet-dot"></span>
+                  <span>Built to be screenshotted and saved</span>
+                </li>
+                <li>
+                  <span class="bullet-dot"></span>
+                  <span>Cinematic outro they’ll replay all year</span>
+                </li>
+              </ul>
+              <!-- TODO: change href to real Base44 create URL -->
+              <a href="#create" class="primary-cta">
+                <span>Create a yyovvo</span>
+              </a>
             </div>
           </div>
         </section>
 
         <!-- WALL PREVIEW -->
-        <section>
-          <div class="section-label">The yyovvo Wall</div>
-          <h2 class="section-title">Every yyovvo becomes a place on their wall.</h2>
-          <p class="section-sub">
-            When they open your yyovvo, it doesn’t disappear like a story.
-            It saves itself to their Wall — a private gallery of moments they can replay anytime.
-          </p>
-
-          <div class="wall-preview">
-            <div class="wall-header">
-              <span>✨ “This moment has been saved to your yyovvo Wall.”</span>
-              <div class="wall-dot-row">
-                <div class="wall-dot"></div>
-                <div class="wall-dot"></div>
-                <div class="wall-dot"></div>
+        <section class="section section-darker">
+          <div class="section inner">
+            <div class="section-title">The yyovvo Wall</div>
+            <div class="section-sub">
+              Every yyovvo you send lives on their wall — a private gallery of
+              moments they can replay whenever they miss you.
+            </div>
+            <div class="wall-grid">
+              <div class="wall-tile">
+                <div class="wall-tile-small-tag">Loved</div>
+              </div>
+              <div class="wall-tile">
+                <div class="wall-tile-small-tag">Midnight</div>
+              </div>
+              <div class="wall-tile">
+                <div class="wall-tile-small-tag">From you</div>
+              </div>
+              <div class="wall-tile">
+                <div class="wall-tile-small-tag">Cried</div>
+              </div>
+              <div class="wall-tile">
+                <div class="wall-tile-small-tag">Saved</div>
+              </div>
+              <div class="wall-tile">
+                <div class="wall-tile-small-tag">Again</div>
               </div>
             </div>
-            <div>
-              A quiet dopamine hit: they open your yyovvo, feel it, and see it’s now
-              part of something permanent. From there, it’s one tap to:
+            <div class="wall-caption">
+              Not a pile of cards. Not a forgotten DM.<br />
+              <strong>A living wall of your yyo-voice.</strong>
             </div>
-            <ul style="margin-left:1.1rem; margin-top:0.4rem; line-height:1.5;">
-              <li>Share it on TikTok</li>
-              <li>Send a yyovvo back</li>
-              <li>Or just watch it again, alone, when they need it</li>
-            </ul>
           </div>
         </section>
-      </div>
-    </main>
 
-    <footer>
-      <div class="container">
-        <div class="footer-inner">
-          <div>© <span id="year"></span> yyovvo – yyo-voice. All rights reserved.</div>
-          <div class="footer-links">
-            <span>Made for Christmas 25.</span>
-            <!-- Keep footer minimal; add legal links later if needed -->
+        <!-- MIDNIGHT FOMO -->
+        <section class="section fomo-section">
+          <div class="fomo-bg"></div>
+          <div class="fomo-content">
+            <div class="fomo-title">Someone will go crazy about you tonight.</div>
+            <div class="fomo-sub">
+              Or they’ll wake up thinking you forgot.
+            </div>
+            <!-- TODO: change href to real Base44 create URL -->
+            <a href="#create" class="primary-cta">
+              <span>Create a yyovvo</span>
+            </a>
+            <div class="fomo-note">
+              Set it to land at 00:00 their time. Let your yyovvo be the first
+              thing they feel.
+            </div>
           </div>
-        </div>
-      </div>
-    </footer>
-  </div>
+        </section>
+      </main>
 
-  <script>
-    // Set current year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
+      <!-- FOOTER + SUBTLE COUNTER -->
+      <footer>
+        <div class="footer-left">
+          <span>yyovvo</span>
+          <span class="footer-heart">♡</span>
+        </div>
+        <div class="footer-center">
+          Designed for emotion · 2025
+        </div>
+        <div class="footer-links">
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Contact</a>
+        </div>
+        <!-- Subtle count pill -->
+        <div class="counter-pill" aria-label="Approximate yyovvos sent">
+          <span class="counter-dot"></span>
+          <span class="counter-number" id="yyovvo-count">1,777,777</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Subtle yyovvo counter:
+      // starts at 1,777,777 and increases by +777,777 per day.
+      (function () {
+        const baseCount = 1777777;
+        const perDay = 777777;
+        // Set a "Day 0" reference (e.g. launch date)
+        const launchDate = new Date("2025-11-26T00:00:00Z");
+        const now = new Date();
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const diffDays = Math.max(
+          0,
+          Math.floor((now.getTime() - launchDate.getTime()) / msPerDay)
+        );
+        const count = baseCount + perDay * diffDays;
+
+        const el = document.getElementById("yyovvo-count");
+        if (el) {
+          el.textContent = count.toLocaleString("en-US");
+        }
+      })();
+    </script>
+  </body>
 </html>
