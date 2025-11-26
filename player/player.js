@@ -53,6 +53,26 @@ async function init() {
   try {
     const data = await loadData();
 
+    // --- Auto-save this view to the Wall (best-effort, non-blocking) ---
+    try {
+      await fetch(
+        "https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/wallAdd",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            yyovvo_id: id,
+          }),
+        }
+      );
+      console.log("Wall add OK for yyovvo:", id);
+    } catch (err) {
+      console.warn("Wall add failed (non-blocking):", err);
+    }
+    // -------------------------------------------------------------------
+
     const scene = document.getElementById("scene");
     const intro = document.getElementById("overlay-intro");
     const mainText = document.getElementById("overlay-main-text");
@@ -74,9 +94,9 @@ async function init() {
     const OUTRO_START_MS = MAIN_START_MS + MAIN_DURATION_MS;
 
     // 1) M O O D  (immediately)
-    // If Base44 mood_video_url exists, use it, else use our snow-soft mood
+    // If Base44 mood_video_url exists, use it, else use our 20s hero mood
     const moodUrl =
-      data.mood_video_url || "/videos/snow-soft.mp4";
+      data.mood_video_url || "/videos/yyovvo-hero.mp4";
 
     console.log("Mood video URL:", moodUrl);
 
