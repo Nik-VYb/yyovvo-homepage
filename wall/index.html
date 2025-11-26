@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,maximum-scale=1"
+  />
+  <title>The yyovvo Wall – where moments live forever.</title>
+  <meta
+    name="description"
+    content="The yyovvo Wall is where all the tiny scenes that made them feel something live forever."
+  />
+  <style>
+    :root {
+      --bg-void: #02030a;
+      --bg-deep: #050814;
+      --glass: rgba(15, 23, 42, 0.78);
+      --glass-soft: rgba(15, 23, 42, 0.6);
+      --glass-border: rgba(148, 163, 184, 0.42);
+      --accent-pink: #ff4bcb;
+      --accent-blue: #38bdf8;
+      --accent-gold: #facc6b;
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-soft: 0 26px 90px rgba(15, 23, 42, 0.95);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1220 0, #02010a 56%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px 16px 60px;
+    }
+
+    /* HEADER */
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #facc6b, #fb923c 55%, #1f2937);
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9),
+        0 14px 30px rgba(0, 0, 0, 0.8);
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-title {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .nav-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+    }
+
+    .nav-cta {
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: radial-gradient(circle at 0% 0%, #38bdf8 0, #4f46e5 32%, #db2777);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.6),
+        0 12px 40px rgba(15, 23, 42, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(248, 250, 252, 0.5), transparent);
+      transform: translateX(-120%);
+      animation: cta-sheen 3.2s infinite;
+      opacity: 0.9;
+    }
+
+    .nav-cta span.icon {
+      font-size: 16px;
+    }
+
+    @keyframes cta-sheen {
+      0% {
+        transform: translateX(-120%);
+      }
+      12% {
+        transform: translateX(120%);
+      }
+      100% {
+        transform: translateX(120%);
+      }
+    }
+
+    /* HERO SECTION */
+
+    .hero {
+      margin-top: 12px;
+      border-radius: var(--radius-xl);
+      padding: 18px 16px 20px;
+      background: radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(148, 163, 184, 0.42);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-snow {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 8% 0%, rgba(248, 250, 252, 0.35) 0, transparent 40%),
+        radial-gradient(circle at 90% 0%, rgba(248, 250, 252, 0.28) 0, transparent 55%);
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-blue);
+    }
+
+    .hero-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .hero-title span {
+      color: #fb923c;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      max-width: 620px;
+      line-height: 1.5;
+    }
+
+    .hero-sub strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .hero-quote {
+      font-size: 12px;
+      color: var(--text-soft);
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    .hero-actions {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hero-primary {
+      padding: 9px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: radial-gradient(circle at 0% 0%, #38bdf8 0, #4f46e5 45%, #db2777);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.7),
+        0 18px 40px rgba(15, 23, 42, 0.95);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-primary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(248, 250, 252, 0.5), transparent);
+      transform: translateX(-120%);
+      animation: cta-sheen 3s infinite;
+    }
+
+    .hero-secondary {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-soft);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-meta {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    /* GRID SECTION */
+
+    .section {
+      margin-top: 32px;
+    }
+
+    .section-head {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-blue);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      max-width: 620px;
+      line-height: 1.45;
+    }
+
+    .wall-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .wall-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wall-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .wall-card {
+      border-radius: var(--radius-lg);
+      padding: 12px 12px 14px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 130px;
+    }
+
+    .wall-card::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle at 0% 0%, rgba(248, 250, 252, 0.18), transparent 55%);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .wall-card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .wall-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(226, 232, 240, 0.85);
+      margin-bottom: 6px;
+    }
+
+    .wall-main {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .wall-body {
+      font-size: 11px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .wall-meta {
+      margin-top: 8px;
+      font-size: 10px;
+      color: rgba(148, 163, 184, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .wall-pill {
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 9px;
+    }
+
+    /* FINAL CTA STRIP */
+
+    .bottom-cta {
+      margin-top: 32px;
+      border-radius: var(--radius-xl);
+      padding: 16px 16px 18px;
+      background: radial-gradient(circle at 0% 0%, rgba(220, 38, 120, 0.26), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(248, 250, 252, 0.1);
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bottom-snow {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 8% 0%, rgba(248, 250, 252, 0.35) 0, transparent 40%),
+        radial-gradient(circle at 90% 0%, rgba(248, 250, 252, 0.28) 0, transparent 55%);
+      opacity: 0.38;
+      pointer-events: none;
+    }
+
+    .bottom-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .bottom-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .bottom-body {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 12px;
+    }
+
+    .bottom-heartline {
+      font-size: 11px;
+      color: rgba(248, 250, 252, 0.9);
+      margin-bottom: 12px;
+    }
+
+    .bottom-heartline span {
+      color: var(--accent-pink);
+    }
+
+    .bottom-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .bottom-primary {
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: radial-gradient(circle at 0% 0%, #38bdf8 0, #4f46e5 45%, #db2777);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.9),
+        0 18px 40px rgba(15, 23, 42, 0.95);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bottom-primary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(248, 250, 252, 0.5), transparent);
+      transform: translateX(-120%);
+      animation: cta-sheen 2.8s infinite;
+    }
+
+    .bottom-secondary {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.35);
+      background: rgba(15, 23, 42, 0.9);
+      color: rgba(248, 250, 252, 0.92);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* FOOTER */
+
+    .footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      padding-bottom: 10px;
+      border-top: 1px solid rgba(51, 65, 85, 0.9);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer span.brand {
+      font-weight: 500;
+      color: rgba(248, 250, 252, 0.9);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 640px) {
+      .inner {
+        padding-inline: 14px;
+      }
+      .hero {
+        padding-inline: 14px;
+      }
+      .bottom-cta {
+        padding-inline: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="inner">
+    <!-- NAV -->
+    <header class="nav">
+      <div class="nav-left">
+        <div class="logo-pill">yy</div>
+        <div class="nav-brand">
+          <div class="nav-title">YYOVVO</div>
+          <div class="nav-sub">The Wall · designed for emotion ♡</div>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-pill">
+          <span class="nav-pill-dot"></span>
+          <span>Private gallery of feelings</span>
+        </div>
+        <a href="https://studio.yyovvo.com" class="nav-cta">
+          <span class="icon">✶</span>
+          <span>Send a yyovvo</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-snow"></div>
+      <div class="hero-inner">
+        <div class="hero-kicker">The yyovvo Wall</div>
+        <h1 class="hero-title">
+          Every <span>yyovvo</span> becomes a place on their wall.
+        </h1>
+        <p class="hero-sub">
+          This isn’t a feed. It isn’t a chat. It’s a quiet wall where only the tiny scenes
+          that made them feel something live. Each yyovvo takes its place here, glowing softly
+          for the nights they need it most.
+        </p>
+        <p class="hero-quote">
+          “In 1925 they sent cards. In 2025, they replay yyovvos.”
+        </p>
+        <div class="hero-actions">
+          <a href="https://studio.yyovvo.com" class="hero-primary">
+            <span>Send a yyovvo</span>
+            <span>↗</span>
+          </a>
+          <a href="https://yyovvo.com" class="hero-secondary">
+            <span>Back to homepage</span>
+          </a>
+        </div>
+        <div class="hero-meta">
+          Right now you’re looking at what their Christmas could feel like when you stop sending notifications
+          and start sending scenes.
+        </div>
+      </div>
+    </section>
+
+    <!-- WALL GRID -->
+    <section class="section">
+      <div class="section-head">
+        <div class="section-kicker">Scenes on the wall</div>
+        <h2 class="section-title">A gallery that only fills with feelings.</h2>
+        <p class="section-sub">
+          Here’s how a yyovvo wall might look when a few people who really care decided not to send just “Merry Christmas x”.
+        </p>
+      </div>
+
+      <div class="wall-grid">
+        <!-- LOVED -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Loved</div>
+            <div class="wall-main">“I did this just for you.”</div>
+            <div class="wall-body">
+              Dark snow, soft piano, their name at the bottom of the screen.
+              No emojis. No noise. Just the one line they replay on the days they need it.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Replay · 27 times</span>
+            <span class="wall-pill">Saved</span>
+          </div>
+        </article>
+
+        <!-- MIDNIGHT -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Midnight</div>
+            <div class="wall-main">Scheduled for 00:01.</div>
+            <div class="wall-body">
+              Everyone else texts “Merry Christmas” at the same time.
+              Your yyovvo appears alone in the dark, exactly as the day flips.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Drop · 00:01</span>
+            <span class="wall-pill">On their wall</span>
+          </div>
+        </article>
+
+        <!-- AGAIN -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Again</div>
+            <div class="wall-main">“Play it one more time.”</div>
+            <div class="wall-body">
+              They don’t scroll past it. They sit with it.
+              They replay your yyovvo instead of re-reading old chats.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Most replayed</span>
+            <span class="wall-pill">Loop</span>
+          </div>
+        </article>
+
+        <!-- APOLOGY -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">The apology</div>
+            <div class="wall-main">“I didn’t know how to say this.”</div>
+            <div class="wall-body">
+              A yyovvo for the thing that’s too big for a text.
+              One scene, one line, one silent “I’m sorry” they can come back to when they’re ready.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Watched · 9 times</span>
+            <span class="wall-pill">Heavy</span>
+          </div>
+        </article>
+
+        <!-- INSIDE JOKE -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Inside joke</div>
+            <div class="wall-main">“Only you will get this.”</div>
+            <div class="wall-body">
+              Stupid, specific, perfect. They hear your laugh in their head every time.
+              These are the ones they show their favourite people.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Shared to 3 people</span>
+            <span class="wall-pill">Secret</span>
+          </div>
+        </article>
+
+        <!-- FAR AWAY -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Far away</div>
+            <div class="wall-main">“I wish I was there.”</div>
+            <div class="wall-body">
+              Different city, different time zone, same snow on the screen.
+              yyovvo turns distance into something they can feel instead of just read.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Timezone offset · +3</span>
+            <span class="wall-pill">Long-distance</span>
+          </div>
+        </article>
+
+        <!-- FAMILY -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Family</div>
+            <div class="wall-main">“I don’t say this enough.”</div>
+            <div class="wall-body">
+              For the parent, the sibling, the person who never asks for anything
+              but deserves the most intentional Christmas message of the year.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Saved to favourites</span>
+            <span class="wall-pill">Home</span>
+          </div>
+        </article>
+
+        <!-- LAST MINUTE -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Last minute</div>
+            <div class="wall-main">“I almost forgot… then I saw this.”</div>
+            <div class="wall-body">
+              You were about to send “Merry Christmas!!” and log off.
+              Instead, you made a yyovvo in two minutes that they’ll remember for years.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>Created in 2 min</span>
+            <span class="wall-pill">Worth it</span>
+          </div>
+        </article>
+
+        <!-- SOMEONE’S FIRST -->
+        <article class="wall-card">
+          <div class="wall-card-inner">
+            <div class="wall-tag">Someone’s first</div>
+            <div class="wall-main">“No one has ever done this for me.”</div>
+            <div class="wall-body">
+              The message they screenshot. The one they keep.
+              The one that quietly rewires what Christmas feels like.
+            </div>
+          </div>
+          <div class="wall-meta">
+            <span>New favourite notification</span>
+            <span class="wall-pill">First yyovvo</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- BOTTOM CTA -->
+    <section class="bottom-cta">
+      <div class="bottom-snow"></div>
+      <div class="bottom-inner">
+        <h2 class="bottom-title">Someone’s wall is empty right now.</h2>
+        <p class="bottom-body">
+          You could leave it that way. Or you could be the first person to put something
+          on it that actually matters. One yyovvo. One scene. One line they replay when
+          Christmas goes quiet.
+        </p>
+        <p class="bottom-heartline">
+          This isn’t content. <span>It’s a feeling with your name on it.</span>
+        </p>
+        <div class="bottom-actions">
+          <a href="https://studio.yyovvo.com" class="bottom-primary">
+            <span>Send a yyovvo</span>
+            <span>↗</span>
+          </a>
+          <a href="https://yyovvo.com" class="bottom-secondary">
+            <span>Back to homepage</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div>
+        <span class="brand">yyovvo</span> · the wall where their moments live forever.
+      </div>
+      <div class="footer-links">
+        <span>© 2025 YYOVVO Inc. USD transactions only.</span>
+        <a href="https://studio.yyovvo.com" target="_blank" rel="noopener">Open studio</a>
+      </div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
