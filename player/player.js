@@ -7,18 +7,17 @@ if (!id) {
 }
 
 async function loadData() {
-  // Call the REAL Base44 yyovvoGet function with ?id=
+  // Base44 yyovvoGet endpoint
   const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(
     id
   )}`;
 
   console.log("Fetching yyovvo from:", url);
-
   const res = await fetch(url);
+
   console.log("Response status:", res.status);
 
   if (!res.ok) {
-    // If the network worked but API returned 4xx/5xx
     const text = await res.text().catch(() => "");
     console.error("Failed to load yyovvo data. Body:", text);
     throw new Error("Failed to load yyovvo data");
@@ -34,13 +33,11 @@ async function loadData() {
 
   console.log("Raw yyovvo response:", raw);
 
-  // Try to unwrap the actual data regardless of shape
+  // Unwrap whatever Base44 returns
   let data = raw;
-
-  if (raw.data && !raw.data.mood_video_url && (raw.data.fields || raw.data.record)) {
-    // Some Base44 patterns wrap in data.fields or data.record
+  if (raw.data && (raw.data.fields || raw.data.record)) {
     data = raw.data.fields || raw.data.record;
-  } else if (raw.data && (raw.data.mood_video_url || raw.data.content_type)) {
+  } else if (raw.data) {
     data = raw.data;
   } else if (raw.record) {
     data = raw.record;
@@ -49,7 +46,6 @@ async function loadData() {
   }
 
   console.log("Unwrapped yyovvo data:", data);
-
   return data;
 }
 
@@ -70,18 +66,24 @@ async function init() {
 
     console.log("Playing yyovvo with data:", data);
 
-    // 1) Play Mood video
-    if (data.mood_video_url) {
-      scene.src = data.mood_video_url;
-    } else {
-      console.warn("No mood_video_url in data");
-    }
+    // TIMING (ms)
+    const INTRO_START_MS = 1000;   // 1s
+    const INTRO_END_MS   = 3500;   // 3.5s
+    const MAIN_START_MS  = 3500;   // 3.5s
+    const MAIN_DURATION_MS = (Number(data.content_duration) || 10) * 1000;
+    const OUTRO_START_MS = MAIN_START_MS + MAIN_DURATION_MS;
 
+    // 1) M O O D  (immediately)
+    const moodUrl =
+      data.mood_video_url || "/videos/yyovvo-hero.mp4"; // fallback hero video
+
+    scene.loop = false;
+    scene.src = moodUrl;
     await scene.play().catch(() => {
-      // Autoplay might fail on some browsers if not muted; we already set muted in HTML.
+      // autoplay might fail, but we try
     });
 
-    // Intro appears at 5 seconds
+    // 2) I N T R O  T E X T
     setTimeout(() => {
       if (data.intro_text) {
         intro.textContent = data.intro_text || "";
@@ -89,27 +91,23 @@ async function init() {
       } else {
         console.warn("No intro_text in data");
       }
-    }, 5000);
+    }, INTRO_START_MS);
 
-    // Hide intro after 3 seconds
     setTimeout(() => {
       intro.classList.remove("show");
-    }, 8000);
+    }, INTRO_END_MS);
 
-    // 2) Main clip logic
-    const mainStartMs = 8000;
-    const durationMs = (Number(data.content_duration) || 10) * 1000;
-
+    // 3) M A I N  M O M E N T
     if (data.content_type === "text") {
       setTimeout(() => {
         mainText.textContent = data.content_text || "";
         mainText.classList.add("show");
-      }, mainStartMs);
+      }, MAIN_START_MS);
     } else if (data.content_type === "audio") {
       const audio = new Audio(data.content_url);
       setTimeout(() => {
         audio.play().catch(() => {});
-      }, mainStartMs);
+      }, MAIN_START_MS);
     } else if (data.content_type === "video") {
       setTimeout(() => {
         if (data.content_url) {
@@ -118,18 +116,27 @@ async function init() {
         } else {
           console.warn("content_type=video but no content_url");
         }
-      }, mainStartMs);
+      }, MAIN_START_MS);
     } else {
       console.warn("Unknown content_type:", data.content_type);
     }
 
-    // 3) Outro at end of main clip
-    const outroStart = mainStartMs + durationMs;
-
+    // 4) O U T R O  (snow + logo + jingle)
     setTimeout(() => {
+      // hide main text so it doesn’t overlap "yyovvo"
+      mainText.classList.remove("show");
+
+      // switch to snow outro loop
+      scene.src = data.outro_video_url || "/videos/outro-snow.mp4";
+      scene.loop = true;
+      scene.play().catch(() => {});
+
+      // show outro text
       outro.classList.add("show");
+
+      // play jingle exactly with outro
       jingle.play().catch(() => {});
-    }, outroStart);
+    }, OUTRO_START_MS);
   } catch (e) {
     console.error("yyovvo player init error:", e);
   }
