@@ -74,13 +74,16 @@ async function init() {
     const OUTRO_START_MS = MAIN_START_MS + MAIN_DURATION_MS;
 
     // 1) M O O D  (immediately)
+    // If Base44 mood_video_url exists, use it, else use our snow-soft mood
     const moodUrl =
-      data.mood_video_url || "/videos/yyovvo-hero.mp4"; // fallback hero video
+      data.mood_video_url || "/videos/snow-soft.mp4";
+
+    console.log("Mood video URL:", moodUrl);
 
     scene.loop = false;
     scene.src = moodUrl;
-    await scene.play().catch(() => {
-      // autoplay might fail, but we try
+    await scene.play().catch((err) => {
+      console.warn("Mood autoplay might be blocked:", err);
     });
 
     // 2) I N T R O  T E X T
@@ -106,13 +109,17 @@ async function init() {
     } else if (data.content_type === "audio") {
       const audio = new Audio(data.content_url);
       setTimeout(() => {
-        audio.play().catch(() => {});
+        audio.play().catch((err) => {
+          console.warn("Main audio play blocked:", err);
+        });
       }, MAIN_START_MS);
     } else if (data.content_type === "video") {
       setTimeout(() => {
         if (data.content_url) {
           scene.src = data.content_url;
-          scene.play().catch(() => {});
+          scene.play().catch((err) => {
+            console.warn("Main video play blocked:", err);
+          });
         } else {
           console.warn("content_type=video but no content_url");
         }
@@ -124,18 +131,47 @@ async function init() {
     // 4) O U T R O  (snow + logo + jingle)
     setTimeout(() => {
       // hide main text so it doesn’t overlap "yyovvo"
-      mainText.classList.remove("show");
+      if (mainText) {
+        mainText.classList.remove("show");
+      }
 
-      // switch to snow outro loop
-      scene.src = data.outro_video_url || "/videos/outro-snow.mp4";
+      const outroVideoUrl = data.outro_video_url || "/videos/outro-snow.mp4";
+      console.log("Starting OUTRO with video:", outroVideoUrl);
+
+      scene.src = outroVideoUrl;
       scene.loop = true;
-      scene.play().catch(() => {});
+      scene.play().catch((err) => {
+        console.warn("Scene outro play blocked or failed:", err);
+      });
 
       // show outro text
-      outro.classList.add("show");
+      if (outro) {
+        outro.classList.remove("hidden");
+        outro.classList.add("show");
+      }
 
       // play jingle exactly with outro
-      jingle.play().catch(() => {});
+      if (!jingle) {
+        console.error("No #yyo-jingle audio element found");
+        return;
+      }
+
+      jingle.currentTime = 0;
+      jingle.play()
+        .then(() => {
+          console.log("Jingle started");
+        })
+        .catch((err) => {
+          console.warn("Jingle autoplay blocked, waiting for user click:", err);
+
+          const unlock = () => {
+            jingle.currentTime = 0;
+            jingle.play().catch(() => {});
+            window.removeEventListener("click", unlock);
+          };
+
+          window.addEventListener("click", unlock, { once: true });
+        });
     }, OUTRO_START_MS);
   } catch (e) {
     console.error("yyovvo player init error:", e);
