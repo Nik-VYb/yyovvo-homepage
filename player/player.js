@@ -57,11 +57,11 @@ async function init() {
   try {
     const data = await loadData();
 
-    const scene  = document.getElementById("scene");
-    const intro  = document.getElementById("overlay-intro");
+    const scene    = document.getElementById("scene");
+    const intro    = document.getElementById("overlay-intro");
     const mainText = document.getElementById("overlay-main-text");
-    const outro  = document.getElementById("overlay-outro");
-    const jingle = document.getElementById("yyo-jingle");
+    const outro    = document.getElementById("overlay-outro");
+    const jingle   = document.getElementById("yyo-jingle");
 
     if (!data) {
       console.error("No data returned from yyovvoGet");
@@ -71,7 +71,7 @@ async function init() {
     console.log("Playing yyovvo with data:", data);
 
     // TIMING (ms)  --- ONE 14s VIDEO + OUTRO
-    const MOOD_DURATION_MS   = 3000;              // 0–3s
+    const MOOD_DURATION_MS   = 3000;              // 0–3s (mood only)
     const INTRO_START_MS     = 3000;              // 3s
     const INTRO_END_MS       = 6000;              // 6s
     const MAIN_START_MS      = 6000;              // 6s
@@ -79,13 +79,12 @@ async function init() {
     const OUTRO_START_MS     = MAIN_START_MS + MAIN_DURATION_MS; // 14000ms
 
     // 1) SINGLE VIDEO: mood + skin combined
-    // For now we fall back to /videos/moodskin01.mp4
-    const moodSkinUrl =
-      data.mood_video_url || "/videos/moodskin01.mp4";
+    // HARD-WIRED to your new file for now
+    const moodSkinUrl = "/videos/moodskin01.mp4";
 
     scene.loop = false;
     scene.src = moodSkinUrl;
-    scene.muted = true; // keep muted for autoplay
+    scene.muted = true; // keep muted for autoplay rules
     scene.playsInline = true;
 
     await scene.play().catch((err) => {
@@ -107,7 +106,7 @@ async function init() {
     }, INTRO_END_MS);
 
     // 3) MAIN MESSAGE (from 6s)
-    if (data.content_type === "text" || !data.content_type) {
+    if (!data.content_type || data.content_type === "text") {
       setTimeout(() => {
         mainText.textContent = data.content_text || "";
         mainText.classList.add("show");
@@ -118,7 +117,7 @@ async function init() {
         audio.play().catch(() => {});
       }, MAIN_START_MS);
     } else if (data.content_type === "video") {
-      // If you ever want to swap to a user video instead of moodskin:
+      // If one day you want to override with user video:
       setTimeout(() => {
         if (data.content_url) {
           scene.src = data.content_url;
@@ -145,7 +144,7 @@ async function init() {
       outro.classList.remove("hidden");
       outro.classList.add("show");
 
-      // try to play jingle (may require user interaction on mobile)
+      // try to play jingle (may need tap on some mobiles)
       jingle.play().catch((err) => {
         console.warn("Jingle autoplay blocked by browser:", err);
       });
