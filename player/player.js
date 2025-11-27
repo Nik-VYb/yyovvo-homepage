@@ -58,6 +58,7 @@ async function init() {
     const mainText = document.getElementById("overlay-main-text");
     const outro = document.getElementById("overlay-outro");
     const jingle = document.getElementById("yyo-jingle");
+    const skin = document.getElementById("skin-overlay");
 
     if (!data) {
       console.error("No data returned from yyovvoGet");
@@ -70,20 +71,20 @@ async function init() {
     const INTRO_START_MS = 1000; // 1s
     const INTRO_END_MS = 3500;   // 3.5s
     const MAIN_START_MS = 3500;  // 3.5s
+    const SKIN_START_MS = 3200;  // skin fades in just before main
     const MAIN_DURATION_MS = (Number(data.content_duration) || 10) * 1000;
     const OUTRO_START_MS = MAIN_START_MS + MAIN_DURATION_MS;
 
-    // 1) M O O D  (immediately)
-    // *** IMPORTANT: use the REAL path that exists on Cloudflare ***
+    // 1) M O O D  (immediately – full screen)
     const moodUrl = data.mood_video_url || "/videos/mood01.mp4";
 
     scene.loop = false;
     scene.src = moodUrl;
     await scene.play().catch(() => {
-      // autoplay might fail, but we try
+      // autoplay might fail, we already set muted in HTML
     });
 
-    // 2) I N T R O  T E X T
+    // 2) INTRO TEXT
     setTimeout(() => {
       if (data.intro_text) {
         intro.textContent = data.intro_text || "";
@@ -97,7 +98,14 @@ async function init() {
       intro.classList.remove("show");
     }, INTRO_END_MS);
 
-    // 3) M A I N  M O M E N T
+    // 3) SKIN FADE-IN (wraps the moment)
+    setTimeout(() => {
+      if (skin) {
+        skin.classList.add("show");
+      }
+    }, SKIN_START_MS);
+
+    // 4) MAIN MOMENT
     if (data.content_type === "text") {
       setTimeout(() => {
         mainText.textContent = data.content_text || "";
@@ -121,10 +129,15 @@ async function init() {
       console.warn("Unknown content_type:", data.content_type);
     }
 
-    // 4) O U T R O  (snow + logo + jingle)
+    // 5) OUTRO (snow + logo + jingle)
     setTimeout(() => {
       // hide main text so it doesn’t overlap "yyovvo"
       mainText.classList.remove("show");
+
+      // hide skin so snow is fully visible
+      if (skin) {
+        skin.classList.remove("show");
+      }
 
       // switch to snow outro loop
       scene.src = data.outro_video_url || "/videos/outro-snow.mp4";
@@ -135,7 +148,7 @@ async function init() {
       outro.classList.remove("hidden");
       outro.classList.add("show");
 
-      // play jingle exactly with outro
+      // play jingle exactly with outro (may require tap on some mobiles)
       jingle.play().catch(() => {});
     }, OUTRO_START_MS);
   } catch (e) {
