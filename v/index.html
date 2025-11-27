@@ -10,16 +10,11 @@
 <body>
 
 <div id="yyovvo-container">
-  <!-- Main cinematic video element -->
+  <!-- Main cinematic video element (mood + content + outro snow) -->
   <video id="scene" playsinline autoplay muted></video>
 
-  <!-- Skin frame overlay (new) -->
-  <img
-    id="skin-layer"
-    class="skin-layer"
-    src="/images/skins/skin01.png"
-    alt=""
-  />
+  <!-- Skin overlay (PNG frame that fades in after mood) -->
+  <div id="skin-overlay" class="skin-overlay"></div>
 
   <!-- Intro text overlay -->
   <div id="overlay-intro" class="overlay-text"></div>
