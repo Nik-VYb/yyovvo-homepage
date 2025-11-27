@@ -14,6 +14,7 @@ async function loadData() {
 
   console.log("Fetching yyovvo from:", url);
   const res = await fetch(url);
+
   console.log("Response status:", res.status);
 
   if (!res.ok) {
@@ -57,7 +58,6 @@ async function init() {
     const mainText = document.getElementById("overlay-main-text");
     const outro = document.getElementById("overlay-outro");
     const jingle = document.getElementById("yyo-jingle");
-    const skin = document.getElementById("skin-layer");
 
     if (!data) {
       console.error("No data returned from yyovvoGet");
@@ -68,30 +68,20 @@ async function init() {
 
     // TIMING (ms)
     const INTRO_START_MS = 1000; // 1s
-    const INTRO_END_MS = 3500; // 3.5s
-    const MAIN_START_MS = 3500; // 3.5s
+    const INTRO_END_MS = 3500;   // 3.5s
+    const MAIN_START_MS = 3500;  // 3.5s
     const MAIN_DURATION_MS = (Number(data.content_duration) || 10) * 1000;
     const OUTRO_START_MS = MAIN_START_MS + MAIN_DURATION_MS;
 
     // 1) M O O D  (immediately)
-    // For now, hard-wire to mood01.mp4 so we can test the art
-    const moodUrl =
-      data.mood_video_url || "/videos/moods/mood01.mp4";
+    // *** IMPORTANT: use the REAL path that exists on Cloudflare ***
+    const moodUrl = data.mood_video_url || "/videos/mood01.mp4";
 
     scene.loop = false;
     scene.src = moodUrl;
     await scene.play().catch(() => {
       // autoplay might fail, but we try
     });
-
-    // fade-in skin frame
-    const skinUrl = data.skin_url || "/images/skins/skin01.png";
-    if (skin) {
-      skin.src = skinUrl;
-      setTimeout(() => {
-        skin.classList.add("show");
-      }, 300);
-    }
 
     // 2) I N T R O  T E X T
     setTimeout(() => {
@@ -142,12 +132,11 @@ async function init() {
       scene.play().catch(() => {});
 
       // show outro text
+      outro.classList.remove("hidden");
       outro.classList.add("show");
 
-      // try to play jingle exactly with outro
-      jingle.play().catch(() => {
-        console.warn("Autoplay for jingle blocked (browser policy).");
-      });
+      // play jingle exactly with outro
+      jingle.play().catch(() => {});
     }, OUTRO_START_MS);
   } catch (e) {
     console.error("yyovvo player init error:", e);
