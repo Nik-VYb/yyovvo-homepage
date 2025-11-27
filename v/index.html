@@ -9,31 +9,36 @@
 
 <body>
 
-<div id="yyovvo-container">
-  <!-- Main cinematic video element (mood + content + outro snow) -->
-  <video id="scene" playsinline autoplay muted></video>
+<div id="yyovvo-root">
 
-  <!-- Skin overlay (PNG frame that fades in after mood) -->
-  <div id="skin-overlay" class="skin-overlay"></div>
+  <!-- SINGLE INTRO VIDEO -->
+  <video 
+      id="intro-video" 
+      src="/videos/mood01.mp4"
+      playsinline 
+      autoplay 
+      muted>
+  </video>
 
-  <!-- Intro text overlay -->
-  <div id="overlay-intro" class="overlay-text"></div>
+  <!-- INTRO TEXT -->
+  <div id="intro-text"></div>
 
-  <!-- Text-mode main clip overlay -->
-  <div id="overlay-main-text" class="overlay-text"></div>
+  <!-- MAIN MESSAGE TEXT -->
+  <div id="message-text"></div>
 
-  <!-- Outro overlay -->
-  <div id="overlay-outro" class="overlay-outro hidden">
+  <!-- OUTRO OVERLAY -->
+  <div id="outro-overlay" class="hidden">
     <div class="outro-title">yyovvo</div>
-    <div class="outro-sub">
-      designed for emotion <span class="heart">♡</span>
-    </div>
+    <div class="outro-sub">designed for emotion ♡</div>
   </div>
 
-  <!-- Jingle -->
-  <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
+  <!-- OUTRO JINGLE -->
+  <audio id="jingle" src="/audio/yyovvo-jingle.mp3"></audio>
+
 </div>
 
 <script src="/player/player.js"></script>
+
 </body>
 </html>
+
