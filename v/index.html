@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>yyovvo</title>
-  <link rel="stylesheet" href="/player/player.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>yyovvo</title>
+    <link rel="stylesheet" href="/player/player.css" />
+  </head>
 
-<body>
+  <body class="mobile_mode">
+    <div id="yyovvo-root">
+      <!-- MAIN CINEMATIC VIDEO (mood + skin combined) -->
+      <!-- NOTE: src is set by player.js, DO NOT hard-code it here -->
+      <video id="scene" playsinline autoplay muted></video>
 
-<div id="yyovvo-root">
+      <!-- INTRO TEXT OVERLAY -->
+      <div id="overlay-intro" class="overlay-text"></div>
 
-  <!-- SINGLE INTRO VIDEO -->
-  <video 
-      id="intro-video" 
-      src="/videos/mood01.mp4"
-      playsinline 
-      autoplay 
-      muted>
-  </video>
+      <!-- MAIN MESSAGE TEXT OVERLAY -->
+      <div id="overlay-main-text" class="overlay-text"></div>
 
-  <!-- INTRO TEXT -->
-  <div id="intro-text"></div>
+      <!-- OUTRO OVERLAY -->
+      <div id="overlay-outro" class="overlay-outro hidden">
+        <div class="outro-title">yyovvo</div>
+        <div class="outro-sub">
+          designed for emotion <span class="heart">♡</span>
+        </div>
+      </div>
 
-  <!-- MAIN MESSAGE TEXT -->
-  <div id="message-text"></div>
+      <!-- JINGLE AUDIO -->
+      <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
+    </div>
 
-  <!-- OUTRO OVERLAY -->
-  <div id="outro-overlay" class="hidden">
-    <div class="outro-title">yyovvo</div>
-    <div class="outro-sub">designed for emotion ♡</div>
-  </div>
-
-  <!-- OUTRO JINGLE -->
-  <audio id="jingle" src="/audio/yyovvo-jingle.mp3"></audio>
-
-</div>
-
-<script src="/player/player.js"></script>
-
-</body>
+    <script src="/player/player.js"></script>
+  </body>
 </html>
-
