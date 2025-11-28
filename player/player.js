@@ -60,11 +60,11 @@ async function init() {
   try {
     const data = await loadData();
 
-    const scene   = document.getElementById("scene");
-    const intro   = document.getElementById("overlay-intro");
-    const mainTxt = document.getElementById("overlay-main-text");
-    const outro   = document.getElementById("overlay-outro");
-    const jingle  = document.getElementById("yyo-jingle");
+    const scene    = document.getElementById("scene");
+    const introEl  = document.getElementById("overlay-intro");
+    const mainEl   = document.getElementById("overlay-main-text");
+    const outroEl  = document.getElementById("overlay-outro");
+    const jingle   = document.getElementById("yyo-jingle");
 
     if (!data) {
       console.error("No data returned from yyovvoGet");
@@ -73,53 +73,24 @@ async function init() {
 
     console.log("Playing yyovvo with data:", data);
 
-    // ---------- HARD WIRED TIMELINE (ms) -------------
+    // -----------------------------------------------------
+    // TIMELINE (ms) – your chosen sequence:
     // 0–3s   = mood only
     // 3–6s   = intro text
     // 6–14s  = main message
     // 14s+   = outro overlay + jingle
-    const MOOD_DURATION_MS = 3000;
+    // -----------------------------------------------------
     const INTRO_START_MS   = 3000;
     const INTRO_END_MS     = 6000;
     const MAIN_START_MS    = 6000;
     const MAIN_END_MS      = 14000;
     const OUTRO_START_MS   = 14000;
 
-    // ---------- FORCE LAYERING + HIDE EVERYTHING ------
-    // video
-    scene.style.position   = "absolute";
-    scene.style.inset      = "0";
-    scene.style.width      = "100%";
-    scene.style.height     = "100%";
-    scene.style.objectFit  = "cover";
-    scene.style.zIndex     = "1";
-
-    // intro text
-    intro.style.position   = "absolute";
-    intro.style.inset      = "0";
-    intro.style.display    = "none";
-    intro.style.opacity    = "0";
-    intro.style.zIndex     = "2";
-
-    // main text
-    mainTxt.style.position = "absolute";
-    mainTxt.style.inset    = "0";
-    mainTxt.style.display  = "none";
-    mainTxt.style.opacity  = "0";
-    mainTxt.style.zIndex   = "2";
-
-    // outro overlay
-    outro.style.position   = "absolute";
-    outro.style.inset      = "0";
-    outro.style.display    = "none";
-    outro.style.opacity    = "0";
-    outro.style.zIndex     = "3";
-
-    // make sure jingle is ready
-    jingle.volume = 1.0;
-
-    // ---------- 3.1 PLAY SINGLE moodskin VIDEO --------
+    // -----------------------------------------------------
+    // 3.1) SINGLE VIDEO: mood + skin combined
+    // -----------------------------------------------------
     const moodSkinUrl = "/videos/moodskin01.mp4";
+
     scene.src = moodSkinUrl;
     scene.loop = false;
     scene.muted = true;
@@ -129,61 +100,61 @@ async function init() {
       console.warn("Autoplay failed, waiting for user interaction.", err);
     });
 
-    // ---------- 3.2 INTRO TEXT (3s–6s) ----------------
+    // -----------------------------------------------------
+    // 3.2) INTRO TEXT (3s–6s)
+    // -----------------------------------------------------
     setTimeout(() => {
-      const introText = data.intro_text || "";
+      const introText =
+        data.intro_text ||
+        data.intro ||
+        "";
+
       console.log("INTRO TEXT:", introText);
 
-      if (introText.trim()) {
-        intro.textContent = introText;
-        intro.style.display = "flex";
-        intro.style.alignItems = "center";
-        intro.style.justifyContent = "center";
-        intro.style.textAlign = "center";
-        intro.style.opacity = "1";
+      if (introText && introText.trim()) {
+        introEl.textContent = introText;
+        introEl.classList.add("show");
       }
     }, INTRO_START_MS);
 
     setTimeout(() => {
-      intro.style.opacity = "0";
-      intro.style.display = "none";
+      introEl.classList.remove("show");
     }, INTRO_END_MS);
 
-    // ---------- 3.3 MAIN MESSAGE (6s–14s) -------------
+    // -----------------------------------------------------
+    // 3.3) MAIN MESSAGE (6s–14s) – TEXT
+    // -----------------------------------------------------
     setTimeout(() => {
-      const text =
+      const mainText =
         data.content_text ||
         data.content ||
         data.message ||
         "";
 
-      console.log("MAIN TEXT:", text);
+      console.log("MAIN TEXT:", mainText);
 
-      if (text.trim()) {
-        mainTxt.textContent = text;
-        mainTxt.style.display = "flex";
-        mainTxt.style.alignItems = "center";
-        mainTxt.style.justifyContent = "center";
-        mainTxt.style.textAlign = "center";
-        mainTxt.style.opacity = "1";
+      if (mainText && mainText.trim()) {
+        mainEl.textContent = mainText;
+        mainEl.classList.add("show");
       }
     }, MAIN_START_MS);
 
     setTimeout(() => {
-      mainTxt.style.opacity = "0";
-      mainTxt.style.display = "none";
+      mainEl.classList.remove("show");
     }, MAIN_END_MS);
 
-    // ---------- 3.4 OUTRO (14s+) ----------------------
+    // -----------------------------------------------------
+    // 3.4) OUTRO (14s+) – LOGO + TAGLINE + JINGLE
+    // -----------------------------------------------------
     setTimeout(() => {
       console.log("OUTRO START");
 
-      outro.style.display = "flex";
-      outro.style.alignItems = "center";
-      outro.style.justifyContent = "center";
-      outro.style.textAlign = "center";
-      outro.style.opacity = "1";
+      // remove main text overlay, show outro block
+      mainEl.classList.remove("show");
+      outroEl.classList.remove("hidden");
+      outroEl.classList.add("show");
 
+      // play jingle
       jingle.currentTime = 0;
       jingle.play().catch((err) => {
         console.warn("Autoplay jingle failed:", err);
