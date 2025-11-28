@@ -4,33 +4,190 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>yyovvo</title>
+
+  <!-- keep your existing CSS (glass, fonts, etc.) -->
   <link rel="stylesheet" href="/player/player.css" />
+  <style>
+    /* HARD OVERRIDES just in case */
+    #yyovvo-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .overlay-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      color: #f9fafb;
+      text-shadow: 0 0 18px rgba(0,0,0,0.9);
+      opacity: 0;
+      z-index: 2;
+      transition: opacity 300ms ease;
+    }
+
+    .overlay-text.show {
+      opacity: 1;
+    }
+
+    .overlay-outro {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      color: #f9fafb;
+      text-shadow: 0 0 22px rgba(0,0,0,0.95);
+      opacity: 0;
+      z-index: 3;
+      transition: opacity 400ms ease;
+    }
+
+    .overlay-outro.show {
+      opacity: 1;
+    }
+
+    .outro-title {
+      font-size: 2.1rem;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
+    }
+
+    .outro-sub {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .heart {
+      display: inline-block;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.18); opacity: 1; }
+    }
+  </style>
 </head>
 
 <body>
   <div id="yyovvo-container">
-
-    <!-- Main cinematic video element -->
+    <!-- MAIN CINEMATIC VIDEO (mood + skin combined) -->
     <video id="scene" playsinline autoplay muted></video>
 
-    <!-- Intro text overlay -->
+    <!-- INTRO TEXT OVERLAY -->
     <div id="overlay-intro" class="overlay-text"></div>
 
-    <!-- Text-mode main clip overlay -->
+    <!-- MAIN MESSAGE TEXT OVERLAY -->
     <div id="overlay-main-text" class="overlay-text"></div>
 
-    <!-- Outro overlay -->
-    <div id="overlay-outro" class="overlay-outro hidden">
+    <!-- OUTRO OVERLAY -->
+    <div id="overlay-outro" class="overlay-outro">
       <div class="outro-title">yyovvo</div>
       <div class="outro-sub">
         designed for emotion <span class="heart">♡</span>
       </div>
     </div>
 
-    <!-- Jingle -->
+    <!-- OUTRO JINGLE -->
     <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
   </div>
 
-  <script src="/player/player.js"></script>
+  <!-- INLINE PLAYER: NO EXTERNAL JS, JUST THIS -->
+  <script>
+    (function () {
+      console.log("YYOVVO INLINE PLAYER v1");
+
+      const scene   = document.getElementById("scene");
+      const introEl = document.getElementById("overlay-intro");
+      const mainEl  = document.getElementById("overlay-main-text");
+      const outroEl = document.getElementById("overlay-outro");
+      const jingle  = document.getElementById("yyo-jingle");
+
+      // TIMELINE (ms)
+      // 0–3000  = mood only
+      // 3000–6000 = intro
+      // 6000–14000 = main message
+      // 14000+ = outro + jingle
+      const INTRO_START_MS = 3000;
+      const INTRO_END_MS   = 6000;
+      const MAIN_START_MS  = 6000;
+      const MAIN_END_MS    = 14000;
+      const OUTRO_START_MS = 14000;
+
+      // 1) single moodskin video
+      const moodSkinUrl = "/videos/moodskin01.mp4";
+      scene.src = moodSkinUrl;
+      scene.loop = false;
+      scene.muted = true;
+      scene.playsInline = true;
+
+      scene.play().catch(err => {
+        console.warn("Autoplay failed, waiting for user interaction.", err);
+      });
+
+      // 2) hardcoded TEST text first (to prove pipeline works)
+      const introText = "THIS IS INTRO TEST";
+      const mainText  = "THIS IS MAIN MESSAGE TEST";
+
+      // intro 3–6s
+      setTimeout(() => {
+        console.log("SHOW INTRO");
+        introEl.textContent = introText;
+        introEl.classList.add("show");
+      }, INTRO_START_MS);
+
+      setTimeout(() => {
+        console.log("HIDE INTRO");
+        introEl.classList.remove("show");
+      }, INTRO_END_MS);
+
+      // main 6–14s
+      setTimeout(() => {
+        console.log("SHOW MAIN");
+        mainEl.textContent = mainText;
+        mainEl.classList.add("show");
+      }, MAIN_START_MS);
+
+      setTimeout(() => {
+        console.log("HIDE MAIN");
+        mainEl.classList.remove("show");
+      }, MAIN_END_MS);
+
+      // outro + jingle 14s+
+      setTimeout(() => {
+        console.log("SHOW OUTRO + JINGLE");
+        outroEl.classList.add("show");
+        try {
+          jingle.currentTime = 0;
+          jingle.play().catch(err => {
+            console.warn("Jingle autoplay failed:", err);
+          });
+        } catch (e) {
+          console.warn("Jingle error:", e);
+        }
+      }, OUTRO_START_MS);
+    })();
+  </script>
 </body>
 </html>
