@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>yyovvo</title>
 
-  <!-- NOTE: ?v=3 busts old cached CSS -->
-  <link rel="stylesheet" href="/player/player.css?v=3" />
+  <!-- Keep it simple: no cache-busting for now -->
+  <link rel="stylesheet" href="/player/player.css" />
 </head>
 
 <body>
   <div id="yyovvo-container">
 
-    <!-- Main cinematic video element -->
+    <!-- MAIN CINEMATIC VIDEO (mood + skin combined) -->
     <video id="scene" playsinline autoplay muted></video>
 
-    <!-- Intro text overlay -->
+    <!-- INTRO TEXT OVERLAY -->
     <div id="overlay-intro" class="overlay-text"></div>
 
-    <!-- Text-mode main clip overlay -->
+    <!-- MAIN MESSAGE TEXT OVERLAY -->
     <div id="overlay-main-text" class="overlay-text"></div>
 
-    <!-- Outro overlay -->
+    <!-- OUTRO OVERLAY -->
     <div id="overlay-outro" class="overlay-outro hidden">
       <div class="outro-title">yyovvo</div>
       <div class="outro-sub">
@@ -29,11 +29,10 @@
       </div>
     </div>
 
-    <!-- Jingle -->
+    <!-- OUTRO JINGLE -->
     <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
   </div>
 
-  <!-- NOTE: ?v=3 busts old cached JS -->
-  <script src="/player/player.js?v=3"></script>
+  <script src="/player/player.js"></script>
 </body>
 </html>
