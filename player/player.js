@@ -1,6 +1,4 @@
-// ---------------------------------------------------------
-// 1) READ ?id= FROM URL ( /v/?id=... )
-// ---------------------------------------------------------
+// Read ?id= from the URL, e.g. /v/?id=UUID
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
@@ -8,10 +6,10 @@ if (!id) {
   console.error("No yyovvo id provided in URL (?id=...)");
 }
 
-// ---------------------------------------------------------
-// 2) LOAD YYOVVO DATA FROM BASE44
-// ---------------------------------------------------------
+// ---------------------- LOAD DATA FROM BASE44 ----------------------
+
 async function loadData() {
+  // Base44 yyovvoGet endpoint
   const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(
     id
   )}`;
@@ -53,18 +51,17 @@ async function loadData() {
   return data;
 }
 
-// ---------------------------------------------------------
-// 3) MAIN CINEMATIC LOGIC – SINGLE moodskin VIDEO
-// ---------------------------------------------------------
+// ------------------------- MAIN CINEMATIC --------------------------
+
 async function init() {
   try {
     const data = await loadData();
 
-    const scene    = document.getElementById("scene");
-    const introEl  = document.getElementById("overlay-intro");
-    const mainEl   = document.getElementById("overlay-main-text");
-    const outroEl  = document.getElementById("overlay-outro");
-    const jingle   = document.getElementById("yyo-jingle");
+    const scene   = document.getElementById("scene");
+    const intro   = document.getElementById("overlay-intro");
+    const mainTxt = document.getElementById("overlay-main-text");
+    const outro   = document.getElementById("overlay-outro");
+    const jingle  = document.getElementById("yyo-jingle");
 
     if (!data) {
       console.error("No data returned from yyovvoGet");
@@ -73,91 +70,110 @@ async function init() {
 
     console.log("Playing yyovvo with data:", data);
 
-    // -----------------------------------------------------
-    // TIMELINE (ms) – your chosen sequence:
-    // 0–3s   = mood only
+    // ---- TIMING (ms)  ----
+    // 0–3s   = moodskin only
     // 3–6s   = intro text
-    // 6–14s  = main message
-    // 14s+   = outro overlay + jingle
-    // -----------------------------------------------------
-    const INTRO_START_MS   = 3000;
-    const INTRO_END_MS     = 6000;
-    const MAIN_START_MS    = 6000;
-    const MAIN_END_MS      = 14000;
-    const OUTRO_START_MS   = 14000;
+    // 6–(6+main) = message (text / audio / video)
+    // then    = outro
+    const MOOD_DURATION_MS  = 3000; // 3s
+    const INTRO_START_MS    = 3000; // 3s
+    const INTRO_END_MS      = 6000; // 6s
+    const MAIN_START_MS     = 6000; // 6s
+    const MAIN_DURATION_MS  = (Number(data.content_duration) || 8000); // default 8s
+    const OUTRO_START_MS    = MAIN_START_MS + MAIN_DURATION_MS;
 
-    // -----------------------------------------------------
-    // 3.1) SINGLE VIDEO: mood + skin combined
-    // -----------------------------------------------------
-    const moodSkinUrl = "/videos/moodskin01.mp4";
+    // 1) MOOD + SKIN (single file for now)
+    // Later we can switch to personality-based URLs like /videos/moodskins/moodskinXX.mp4
+    const moodSkinUrl = data.mood_video_url || "/videos/moodskin01.mp4";
 
     scene.src = moodSkinUrl;
     scene.loop = false;
-    scene.muted = true;
+    scene.muted = true;           // keep muted so autoplay works
     scene.playsInline = true;
 
     await scene.play().catch((err) => {
-      console.warn("Autoplay failed, waiting for user interaction.", err);
+      console.warn("Autoplay failed, will wait for user gesture.", err);
     });
 
-    // -----------------------------------------------------
-    // 3.2) INTRO TEXT (3s–6s)
-    // -----------------------------------------------------
+    // 2) INTRO TEXT (3–6s)
     setTimeout(() => {
-      const introText =
-        data.intro_text ||
-        data.intro ||
-        "";
-
-      console.log("INTRO TEXT:", introText);
-
-      if (introText && introText.trim()) {
-        introEl.textContent = introText;
-        introEl.classList.add("show");
+      const introText = data.intro_text || "";
+      if (introText.trim().length > 0) {
+        intro.textContent = introText;
+        intro.classList.add("show");
       }
     }, INTRO_START_MS);
 
     setTimeout(() => {
-      introEl.classList.remove("show");
+      intro.classList.remove("show");
     }, INTRO_END_MS);
 
-    // -----------------------------------------------------
-    // 3.3) MAIN MESSAGE (6s–14s) – TEXT
-    // -----------------------------------------------------
+    // 3) MAIN MESSAGE (from 6s)
+    const type = (data.content_type || "text").toLowerCase();
+    const contentUrl = data.content_url || "";
+
+    if (type === "text" || !contentUrl) {
+      // Text-only mode: show the main text overlay
+      setTimeout(() => {
+        const msg = data.content_text || "";
+        mainTxt.textContent = msg;
+        mainTxt.classList.add("show");
+      }, MAIN_START_MS);
+    } else if (type === "audio") {
+      // Voice mode: play audio over the moodskin video
+      const voice = new Audio(contentUrl);
+      voice.preload = "auto";
+
+      setTimeout(() => {
+        // Optional: show a small hint in text
+        const msg = data.content_text || "";
+        if (msg.trim().length > 0) {
+          mainTxt.textContent = msg;
+          mainTxt.classList.add("show");
+        }
+
+        voice.play().catch((err) => {
+          console.warn("Voice autoplay failed, needs user tap.", err);
+        });
+      }, MAIN_START_MS);
+    } else if (type === "video") {
+      // Selfie video mode:
+      // After the intro, cut from moodskin to their video
+      setTimeout(() => {
+        if (!contentUrl) {
+          console.warn("content_type=video but no content_url");
+          return;
+        }
+        scene.src = contentUrl;
+        scene.loop = false;
+        scene.muted = false; // let their voice play
+        scene.playsInline = true;
+        scene.play().catch((err) => {
+          console.warn("User video autoplay failed, needs tap.", err);
+        });
+      }, MAIN_START_MS);
+    } else {
+      console.warn("Unknown content_type:", type);
+    }
+
+    // 4) OUTRO (snow + logo + jingle)
     setTimeout(() => {
-      const mainText =
-        data.content_text ||
-        data.content ||
-        data.message ||
-        "";
+      // Hide main text overlay if visible
+      mainTxt.classList.remove("show");
 
-      console.log("MAIN TEXT:", mainText);
+      // Switch to outro snow loop
+      scene.src = data.outro_video_url || "/videos/outro-snow.mp4";
+      scene.loop = true;
+      scene.muted = false; // keep unmuted for ambience if needed
+      scene.play().catch(() => {});
 
-      if (mainText && mainText.trim()) {
-        mainEl.textContent = mainText;
-        mainEl.classList.add("show");
-      }
-    }, MAIN_START_MS);
+      // Show outro overlay
+      outro.classList.add("show");
 
-    setTimeout(() => {
-      mainEl.classList.remove("show");
-    }, MAIN_END_MS);
-
-    // -----------------------------------------------------
-    // 3.4) OUTRO (14s+) – LOGO + TAGLINE + JINGLE
-    // -----------------------------------------------------
-    setTimeout(() => {
-      console.log("OUTRO START");
-
-      // remove main text overlay, show outro block
-      mainEl.classList.remove("show");
-      outroEl.classList.remove("hidden");
-      outroEl.classList.add("show");
-
-      // play jingle
+      // Play jingle
       jingle.currentTime = 0;
       jingle.play().catch((err) => {
-        console.warn("Autoplay jingle failed:", err);
+        console.warn("Jingle autoplay failed (mobile may need tap).", err);
       });
     }, OUTRO_START_MS);
 
