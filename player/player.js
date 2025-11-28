@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
-// yyovvo Cinematic Player
-// Single mood+skin video (moodskin01.mp4) + intro text + main text + outro
+// yyovvo Cinematic Player (fresh build)
+// Single mood+skin video (moodskin01.mp4) + intro + main + outro
 // ---------------------------------------------------------------
 
 // Read ?id= from the URL, e.g. /v/?id=UUID
@@ -38,7 +38,7 @@ async function loadData() {
 
   console.log("Raw yyovvo response:", raw);
 
-  // Unwrap whatever Base44 returns
+  // Unwrap Base44 response
   let data = raw;
   if (raw.data && (raw.data.fields || raw.data.record)) {
     data = raw.data.fields || raw.data.record;
@@ -72,20 +72,18 @@ async function init() {
     console.log("Playing yyovvo with data:", data);
 
     // -----------------------------------------------------------
-    // TIMING (ms)  ONE 14s VIDEO WINDOW
+    // TIMING (ms)   3 mood  + 3 intro + 8 main + 3 outro trigger
     // -----------------------------------------------------------
-    const MOOD_DURATION_MS  = 3000;  // 0–3s  (pure mood)
-    const INTRO_START_MS    = 3000;  // 3s    intro appears
-    const INTRO_END_MS      = 6000;  // 6s    intro fades out
-    const MAIN_START_MS     = 6000;  // 6s    main line in
-    const MAIN_DURATION_MS  = 8000;  // 8s    main line on top of frame
-    const OUTRO_START_MS    = MAIN_START_MS + MAIN_DURATION_MS; // 14s
+    const MOOD_DURATION_MS  = 3000;   // 0–3s (pure mood)
+    const INTRO_START_MS    = 3000;   // 3s intro appears
+    const INTRO_END_MS      = 6000;   // 6s intro fades
+    const MAIN_START_MS     = 6000;   // 6s main line in
+    const MAIN_DURATION_MS  = 8000;   // 8s main message
+    const OUTRO_START_MS    = MAIN_START_MS + MAIN_DURATION_MS; // 14000ms
 
     // -----------------------------------------------------------
-    // 1) SINGLE VIDEO: mood + skin combined
+    // 1) SINGLE VIDEO: mood + skin combined (HARD-WIRED)
     // -----------------------------------------------------------
-    // IGNORE whatever Base44 sends for mood_video_url.
-    // We ALWAYS play /videos/moodskin01.mp4 for now.
     const moodSkinUrl = "/videos/moodskin01.mp4";
 
     introVideo.loop = false;
@@ -101,7 +99,7 @@ async function init() {
     }
 
     // -----------------------------------------------------------
-    // 2) INTRO TEXT  (3s → 6s)
+    // 2) INTRO TEXT (3s → 6s)
     // -----------------------------------------------------------
     setTimeout(() => {
       if (data.intro_text) {
@@ -117,35 +115,32 @@ async function init() {
     }, INTRO_END_MS);
 
     // -----------------------------------------------------------
-    // 3) MAIN MESSAGE  (from 6s)
+    // 3) MAIN MESSAGE (from 6s)
     // -----------------------------------------------------------
     setTimeout(() => {
-      if (data.content_type === "text" || !data.content_type) {
+      if (!data.content_type || data.content_type === "text") {
+        // Default: text message
         mainText.textContent = data.content_text || "";
         mainText.classList.add("show");
       } else if (data.content_type === "audio") {
         const audio = new Audio(data.content_url);
-        audio
-          .play()
-          .then(() => console.log("Playing audio main clip"))
-          .catch(() => {});
+        audio.play().catch(() => {});
       } else if (data.content_type === "video") {
-        // If you ever use content video later, we could
-        // swap the src here – for now we keep one moodskin file.
-        console.log("content_type=video not used yet; keeping moodskin01.mp4");
+        // future: swap to a specific content video
+        console.log("content_type=video not yet implemented; keeping moodskin01.mp4");
       } else {
         console.warn("Unknown content_type:", data.content_type);
       }
     }, MAIN_START_MS);
 
     // -----------------------------------------------------------
-    // 4) OUTRO (snow loop + logo + jingle)  (from 14s)
+    // 4) OUTRO (snow loop + logo + jingle)  (from ~14s)
     // -----------------------------------------------------------
     setTimeout(() => {
       // hide main text so it doesn’t overlap outro
       mainText.classList.remove("show");
 
-      // switch underlying video to snow outro loop
+      // swap underlying video to snow loop
       introVideo.src = "/videos/outro-snow.mp4";
       introVideo.loop = true;
       introVideo.muted = true;
@@ -155,16 +150,13 @@ async function init() {
         .then(() => console.log("Playing outro snow"))
         .catch(() => {});
 
-      // show outro text/branding
+      // show outro overlay
       outro.classList.remove("hidden");
       outro.classList.add("show");
 
       // play jingle with outro
       if (jingle) {
-        jingle
-          .play()
-          .then(() => console.log("Playing yyovvo jingle"))
-          .catch(() => {});
+        jingle.play().catch(() => {});
       }
     }, OUTRO_START_MS);
   } catch (e) {
