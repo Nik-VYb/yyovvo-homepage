@@ -1,9 +1,6 @@
-// ----------------------------------------------------
-// yyovvo Cinematic Player – FINAL CLEAN BUILD
-// Single mood+skin video (moodskin01.mp4) + intro + main + outro
-// ----------------------------------------------------
-
-// Read ?id= from the URL, e.g. /v/?id=UUID
+// --------------------------------------------------------
+// 1) Read ?id from URL
+// --------------------------------------------------------
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
@@ -11,7 +8,9 @@ if (!id) {
   console.error("No yyovvo id provided in URL (?id=...)");
 }
 
-// Load yyovvo data (intro_text, content_text, etc.) from Base44
+// --------------------------------------------------------
+// 2) Load yyovvo data from Base44
+// --------------------------------------------------------
 async function loadData() {
   const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(
     id
@@ -19,7 +18,6 @@ async function loadData() {
 
   console.log("Fetching yyovvo from:", url);
   const res = await fetch(url);
-  console.log("Response status:", res.status);
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
@@ -37,7 +35,7 @@ async function loadData() {
 
   console.log("Raw yyovvo response:", raw);
 
-  // Unwrap Base44-style envelope
+  // Unwrap Base44 shapes
   let data = raw;
   if (raw.data && (raw.data.fields || raw.data.record)) {
     data = raw.data.fields || raw.data.record;
@@ -53,16 +51,18 @@ async function loadData() {
   return data;
 }
 
-// Main player logic
+// --------------------------------------------------------
+// 3) Main cinematic logic
+// --------------------------------------------------------
 async function init() {
   try {
     const data = await loadData();
 
-    const scene    = document.getElementById("scene");
-    const intro    = document.getElementById("overlay-intro");
-    const mainText = document.getElementById("overlay-main-text");
-    const outro    = document.getElementById("overlay-outro");
-    const jingle   = document.getElementById("yyo-jingle");
+    const scene = document.getElementById("scene");
+    const introEl = document.getElementById("overlay-intro");
+    const mainEl = document.getElementById("overlay-main-text");
+    const outroEl = document.getElementById("overlay-outro");
+    const jingle = document.getElementById("yyo-jingle");
 
     if (!data) {
       console.error("No data returned from yyovvoGet");
@@ -71,68 +71,62 @@ async function init() {
 
     console.log("Playing yyovvo with data:", data);
 
-    // TIMING (ms) – 3 mood + 2 intro + main + outro
-    const INTRO_START_MS    = 3000;  // intro at 3s
-    const INTRO_END_MS      = 5000;  // hide intro at 5s
-    const MAIN_START_MS     = 5000;  // main text at 5s
-    const MAIN_DURATION_MS  = (Number(data.content_duration) || 10) * 1000; // seconds → ms
-    const OUTRO_START_MS    = MAIN_START_MS + MAIN_DURATION_MS; // after main
+    // TIMING (ms) – 3s mood, 3s intro, 8s main, 3s outro = 17s total
+    const MOOD_DURATION_MS = 3000;  // 0–3s
+    const INTRO_START_MS   = 3000;  // 3s
+    const INTRO_END_MS     = 6000;  // 6s
+    const MAIN_START_MS    = 6000;  // 6s
+    const MAIN_DURATION_MS = 8000;  // 8s of message
+    const OUTRO_START_MS   = MAIN_START_MS + MAIN_DURATION_MS; // 14s
 
-    // 1) Start mood+skin combined video
+    // 1) Background cinema: ALWAYS moodskin01.mp4 for now
     const moodSkinUrl = "/videos/moodskin01.mp4";
+
     scene.loop = false;
     scene.muted = true;
     scene.playsInline = true;
     scene.src = moodSkinUrl;
 
-    scene.play().catch((err) => {
-      console.warn("Scene autoplay failed (may need user tap):", err);
+    await scene.play().catch((err) => {
+      console.warn("Autoplay failed, waiting for user interaction.", err);
     });
 
-    // 2) Intro text (3s → 5s)
+    // 2) INTRO TEXT (3s–6s)
     setTimeout(() => {
-      if (data.intro_text) {
-        intro.textContent = data.intro_text || "";
-        intro.classList.add("show");
+      const text = data.intro_text || data.intro || "";
+      if (text) {
+        introEl.textContent = `"${text}"`;
+        introEl.classList.add("show");
+      } else {
+        console.warn("No intro_text in data");
       }
     }, INTRO_START_MS);
 
     setTimeout(() => {
-      intro.classList.remove("show");
+      introEl.classList.remove("show");
     }, INTRO_END_MS);
 
-    // 3) Main message (from 5s)
+    // 3) MAIN MESSAGE (6s–14s)
     setTimeout(() => {
-      if (!data.content_type || data.content_type === "text") {
-        mainText.textContent = data.content_text || "";
-        mainText.classList.add("show");
-      } else if (data.content_type === "audio" && data.content_url) {
-        const audio = new Audio(data.content_url);
-        audio.play().catch(() => {});
-      } else if (data.content_type === "video" && data.content_url) {
-        // future: swap to specific main clip
-        console.log("content_type=video not implemented yet; keeping moodskin01.mp4");
+      if (data.content_type === "text" || !data.content_type) {
+        const msg = data.content_text || data.message || "";
+        mainEl.textContent = msg || "";
+        mainEl.classList.add("show");
+      } else {
+        // (Later: audio/video handling)
+        console.warn(
+          "Non-text content_type detected, text mode only in this build:",
+          data.content_type
+        );
       }
     }, MAIN_START_MS);
 
-    // 4) Outro (snow + logo + jingle)
+    // 4) OUTRO (from 14s)
     setTimeout(() => {
-      // hide main text so it doesn’t overlap outro
-      mainText.classList.remove("show");
-
-      // swap to snow outro loop
-      scene.src = "/videos/outro-snow.mp4";
-      scene.loop = true;
-      scene.muted = true;
-      scene.playsInline = true;
-      scene.play().catch(() => {});
-
-      // show outro overlay
-      outro.classList.add("show");
-
-      // play jingle
+      mainEl.classList.remove("show");
+      outroEl.classList.add("show");
       jingle.play().catch((err) => {
-        console.warn("Jingle autoplay blocked:", err);
+        console.warn("Jingle autoplay blocked, waiting for tap.", err);
       });
     }, OUTRO_START_MS);
   } catch (e) {
