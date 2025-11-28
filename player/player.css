@@ -65,3 +65,31 @@ video {
   font-size: 20px;
   color: #aaa;
 }
+/* --- MOBILE TUNING FOR OUTRO --- */
+@media (max-width: 640px) {
+  /* keep the video full screen */
+  #yyovvo-container {
+    padding: 0;
+  }
+
+  .overlay-outro {
+    padding: 0 1.5rem;
+  }
+
+  .overlay-outro .outro-title {
+    font-size: 24px;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .overlay-outro .outro-sub {
+    font-size: 12px;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  .overlay-outro .heart {
+    font-size: 13px;
+  }
+}
