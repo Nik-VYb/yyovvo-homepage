@@ -5,18 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>yyovvo</title>
 
-  <!-- keep your existing CSS (glass, fonts, etc.) -->
+  <!-- keep existing player styles -->
   <link rel="stylesheet" href="/player/player.css" />
+
   <style>
-    /* HARD OVERRIDES just in case */
+    /* MAIN CONTAINER */
     #yyovvo-container {
       position: relative;
       width: 100%;
       height: 100vh;
       overflow: hidden;
       background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      color: #f9fafb;
     }
 
+    /* VIDEO */
     #scene {
       position: absolute;
       inset: 0;
@@ -24,8 +29,10 @@
       height: 100%;
       object-fit: cover;
       z-index: 1;
+      transition: opacity 400ms ease;
     }
 
+    /* INTRO / MAIN TEXT OVERLAYS */
     .overlay-text {
       position: absolute;
       inset: 0;
@@ -35,9 +42,9 @@
       padding: 16px;
       text-align: center;
       font-size: 1.1rem;
-      line-height: 1.4;
+      line-height: 1.5;
       color: #f9fafb;
-      text-shadow: 0 0 18px rgba(0,0,0,0.9);
+      text-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
       opacity: 0;
       z-index: 2;
       transition: opacity 300ms ease;
@@ -47,6 +54,7 @@
       opacity: 1;
     }
 
+    /* OUTRO (yyovvo + tagline) */
     .overlay-outro {
       position: absolute;
       inset: 0;
@@ -57,7 +65,7 @@
       gap: 6px;
       text-align: center;
       color: #f9fafb;
-      text-shadow: 0 0 22px rgba(0,0,0,0.95);
+      text-shadow: 0 0 22px rgba(0, 0, 0, 0.95);
       opacity: 0;
       z-index: 3;
       transition: opacity 400ms ease;
@@ -84,8 +92,202 @@
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.18); opacity: 1; }
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.18);
+        opacity: 1;
+      }
+    }
+
+    /* FINAL END SCREEN (AFTER OUTRO) */
+    .end-screen {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 32px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 4;
+      transition: opacity 500ms ease;
+    }
+
+    .end-screen.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .end-pulse {
+      width: 160px;
+      height: 160px;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, rgba(236, 72, 153, 0.4), transparent 70%);
+      opacity: 0.7;
+      filter: blur(14px);
+      animation: endPulseGlow 2.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes endPulseGlow {
+      0%,
+      100% {
+        transform: scale(0.9);
+        opacity: 0.6;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+      }
+    }
+
+    .end-text-block {
+      position: relative;
+      margin-top: -40px;
+      text-align: center;
+      max-width: 320px;
+    }
+
+    .end-line1 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .end-line2 {
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+
+    .end-buttons {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .end-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(156, 163, 175, 0.5);
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      text-decoration: none;
+      color: #f9fafb;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition:
+        transform 150ms ease,
+        box-shadow 150ms ease,
+        background 150ms ease,
+        border-color 150ms ease,
+        opacity 150ms ease;
+    }
+
+    .end-btn.primary {
+      background: radial-gradient(circle at top left, rgba(236, 72, 153, 0.9), rgba(59, 130, 246, 0.9));
+      border-color: transparent;
+      box-shadow: 0 0 32px rgba(236, 72, 153, 0.4);
+    }
+
+    .end-btn.ghost {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .end-btn.outline {
+      background: transparent;
+      border-color: rgba(148, 163, 184, 0.7);
+      opacity: 0.9;
+    }
+
+    .end-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.8);
+    }
+
+    .end-btn.primary:hover {
+      box-shadow: 0 0 40px rgba(236, 72, 153, 0.7);
+    }
+
+    .end-btn span.label-sub {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .end-footer {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      animation: footerIn 800ms ease forwards 800ms;
+    }
+
+    .end-heart {
+      font-size: 0.9rem;
+    }
+
+    .end-counter {
+      opacity: 0.85;
+      animation: counterRoll 900ms ease-out forwards;
+      transform: translateY(8px);
+    }
+
+    @keyframes footerIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes counterRoll {
+      0% {
+        transform: translateY(8px);
+        opacity: 0;
+      }
+      60% {
+        transform: translateY(-2px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .end-text-block {
+        max-width: 420px;
+      }
+      .end-line1 {
+        font-size: 1.25rem;
+      }
+      .end-line2 {
+        font-size: 1rem;
+      }
+      .end-buttons {
+        max-width: 420px;
+      }
     }
   </style>
 </head>
@@ -101,7 +303,7 @@
     <!-- MAIN MESSAGE TEXT OVERLAY -->
     <div id="overlay-main-text" class="overlay-text"></div>
 
-    <!-- OUTRO OVERLAY -->
+    <!-- OUTRO OVERLAY (yyovvo + tagline) -->
     <div id="overlay-outro" class="overlay-outro">
       <div class="outro-title">yyovvo</div>
       <div class="outro-sub">
@@ -111,31 +313,78 @@
 
     <!-- OUTRO JINGLE -->
     <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
+
+    <!-- FINAL POST-YYOVVO END SCREEN -->
+    <div id="end-screen" class="end-screen">
+      <div class="end-pulse"></div>
+      <div class="end-text-block">
+        <div class="end-line1">This moment was made for you.</div>
+        <div class="end-line2">by someone who cares about you.</div>
+      </div>
+
+      <div class="end-buttons">
+        <!-- 1) Reply -->
+        <a
+          href="https://studio.yyovvo.com/CreateYyovvo"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="end-btn primary"
+        >
+          Reply with your own yyovvo
+        </a>
+
+        <!-- 2) Share -->
+        <button type="button" id="share-btn" class="end-btn ghost">
+          Share this moment on TikTok / Instagram
+        </button>
+
+        <!-- 3) Upgrade -->
+        <a
+          href="https://studio.yyovvo.com/upgrade"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="end-btn outline"
+        >
+          Unlock all yyovvo features
+        </a>
+      </div>
+
+      <div class="end-footer">
+        <span class="end-heart">❤️</span>
+        <span class="end-counter" id="yyovvo-counter">
+          2,777,777 yyovvos sent this season
+        </span>
+      </div>
+    </div>
   </div>
 
-  <!-- INLINE PLAYER: TALKS DIRECTLY TO BASE44 -->
+  <!-- INLINE PLAYER: CINEMA + BASE44 + END SCREEN -->
   <script>
     (async function () {
-      console.log("YYOVVO INLINE PLAYER v2 (Base44 wired)");
+      console.log("YYOVVO INLINE PLAYER v3 (Base44 + End Screen)");
 
       const scene   = document.getElementById("scene");
       const introEl = document.getElementById("overlay-intro");
       const mainEl  = document.getElementById("overlay-main-text");
       const outroEl = document.getElementById("overlay-outro");
       const jingle  = document.getElementById("yyo-jingle");
+      const endScreen = document.getElementById("end-screen");
+      const shareBtn  = document.getElementById("share-btn");
 
       // TIMELINE (ms)
       // 0–3000    = mood only
       // 3000–6000 = intro
       // 6000–14000 = main message
-      // 14000+    = outro + jingle
+      // 14000+    = outro
+      // 18000+    = final end screen
       const INTRO_START_MS = 3000;
       const INTRO_END_MS   = 6000;
       const MAIN_START_MS  = 6000;
       const MAIN_END_MS    = 14000;
       const OUTRO_START_MS = 14000;
+      const END_SCREEN_START_MS = 18000;
 
-      // 1) single moodskin video
+      // 1) SINGLE moodskin VIDEO
       const moodSkinUrl = "/videos/moodskin01.mp4";
       scene.src = moodSkinUrl;
       scene.loop = false;
@@ -147,10 +396,10 @@
       });
 
       // 2) DEFAULT TEXT (in case Base44 fails / no id)
-      let introText = "THIS IS INTRO TEST";
-      let mainText  = "THIS IS MAIN MESSAGE TEST";
+      let introText = "This moment was made for you.";
+      let mainText  = "Someone out there really cares about you.";
 
-      // 3) TRY TO LOAD REAL DATA FROM BASE44 IF ?id= EXISTS
+      // 3) LOAD REAL DATA FROM BASE44 IF ?id EXISTS
       try {
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
@@ -200,7 +449,7 @@
             console.warn("yyovvoGet not ok:", txt);
           }
         } else {
-          console.warn("No ?id= in URL, using default test text.");
+          console.warn("No ?id= in URL, using default emotional text.");
         }
       } catch (err) {
         console.warn("Error loading yyovvo from Base44, using defaults:", err);
@@ -209,7 +458,7 @@
       console.log("FINAL INTRO TEXT:", introText);
       console.log("FINAL MAIN TEXT:", mainText);
 
-      // 4) intro 3–6s
+      // 4) INTRO 3–6s
       setTimeout(() => {
         console.log("SHOW INTRO");
         introEl.textContent = introText;
@@ -221,7 +470,7 @@
         introEl.classList.remove("show");
       }, INTRO_END_MS);
 
-      // 5) main 6–14s
+      // 5) MAIN 6–14s
       setTimeout(() => {
         console.log("SHOW MAIN");
         mainEl.textContent = mainText;
@@ -233,7 +482,7 @@
         mainEl.classList.remove("show");
       }, MAIN_END_MS);
 
-      // 6) outro + jingle 14s+
+      // 6) OUTRO 14–18s (yyovvo + tagline + jingle)
       setTimeout(() => {
         console.log("SHOW OUTRO + JINGLE");
         outroEl.classList.add("show");
@@ -246,6 +495,45 @@
           console.warn("Jingle error:", e);
         }
       }, OUTRO_START_MS);
+
+      // 7) FINAL END SCREEN (AFTER OUTRO)
+      setTimeout(() => {
+        console.log("SHOW END SCREEN");
+        // Fade out video + outro
+        scene.pause();
+        scene.style.opacity = "0";
+        introEl.classList.remove("show");
+        mainEl.classList.remove("show");
+        outroEl.classList.remove("show");
+
+        // Reveal final emotional screen
+        endScreen.classList.add("show");
+      }, END_SCREEN_START_MS);
+
+      // 8) SHARE BUTTON LOGIC
+      if (shareBtn) {
+        shareBtn.addEventListener("click", async () => {
+          const shareUrl = window.location.href;
+          const shareText = "Someone made this yyovvo moment just for me. 💌";
+
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: "yyovvo — designed for emotion",
+                text: shareText,
+                url: shareUrl
+              });
+            } catch (err) {
+              console.warn("Native share cancelled or failed:", err);
+            }
+          } else {
+            alert(
+              "Share this moment by sending this link to TikTok / Instagram / anywhere you like:\n\n" +
+              shareUrl
+            );
+          }
+        });
+      }
     })();
   </script>
 </body>
