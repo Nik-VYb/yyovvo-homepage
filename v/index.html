@@ -6,103 +6,118 @@
     <title>yyovvo</title>
     <link rel="stylesheet" href="/player/player.css" />
     <style>
-      body {
+      /* Hard lock this page to pure cinema */
+      html, body {
         margin: 0;
+        padding: 0;
         background: #000;
         color: #fff;
+        height: 100%;
+        overflow: hidden;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
           "Segoe UI", sans-serif;
       }
 
       #yyovvo-root {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
+        position: fixed;
+        inset: 0;
         background: #000;
       }
 
-      video#scene {
+      #scene {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        background: #000;
+        border: none;
       }
 
       .overlay-text {
         position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 24px;
+        inset-inline: 8%;
         text-align: center;
-        font-size: 22px;
-        line-height: 1.4;
         opacity: 0;
-        transition: opacity 0.6s ease;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+      }
+
+      #overlay-intro {
+        top: 18%;
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      #overlay-main-text {
+        top: 45%;
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        line-height: 1.4;
       }
 
       .overlay-text.show {
         opacity: 1;
       }
 
-      .overlay-outro {
+      #overlay-outro {
         position: absolute;
         inset: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        text-align: center;
         opacity: 0;
-        transition: opacity 0.8s ease;
+        transition: opacity 0.6s ease;
+        pointer-events: none;
       }
 
-      .overlay-outro.show {
+      #overlay-outro.show {
         opacity: 1;
       }
 
       .outro-title {
-        font-size: 32px;
-        letter-spacing: 0.2em;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
         text-transform: lowercase;
-        margin-bottom: 8px;
+        margin-bottom: 0.5rem;
       }
 
       .outro-sub {
-        font-size: 16px;
-        opacity: 0.9;
+        font-size: 0.95rem;
+        letter-spacing: 0.12em;
+        text-transform: lowercase;
+        color: #ff6fb8;
       }
 
       .heart {
-        font-size: 18px;
+        font-size: 1.1rem;
       }
     </style>
   </head>
+
   <body>
     <div id="yyovvo-root">
-      <!-- MAIN CINEMATIC VIDEO (mood+skin combined) -->
-      <!-- src will be set in player.js -->
+      <!-- Single background cinema video -->
       <video id="scene" playsinline autoplay muted></video>
 
-      <!-- INTRO TEXT OVERLAY -->
+      <!-- Intro text -->
       <div id="overlay-intro" class="overlay-text"></div>
 
-      <!-- MAIN MESSAGE TEXT OVERLAY -->
+      <!-- Main message -->
       <div id="overlay-main-text" class="overlay-text"></div>
 
-      <!-- OUTRO OVERLAY -->
-      <div id="overlay-outro" class="overlay-outro">
+      <!-- Outro -->
+      <div id="overlay-outro">
         <div class="outro-title">yyovvo</div>
         <div class="outro-sub">
           designed for emotion <span class="heart">♡</span>
         </div>
       </div>
 
-      <!-- JINGLE AUDIO -->
+      <!-- Jingle -->
       <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
     </div>
 
