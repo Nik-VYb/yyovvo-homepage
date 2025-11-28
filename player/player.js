@@ -1,15 +1,22 @@
-// Read ?id= from the URL, e.g. /v/?id=UUID
+// -------------------------------------------------------
+//  yyovvo cinematic player – clean mood+skin wiring
+//  Single video: /videos/moodskin01.mp4
+//  Text + outro driven by Base44
+// -------------------------------------------------------
+
+// Read ?id= from URL: /v/?id=UUID
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
 if (!id) {
-  console.error("No yyovvo id provided in URL (?id=...)");
+  console.warn("No yyovvo id in URL – will still play default video.");
 }
 
-// --- 1) LOAD DATA FROM BASE44 -----------------------------------------
+// -------- Base44 loader --------------------------------
 
 async function loadData() {
-  // Base44 yyovvoGet endpoint
+  if (!id) return null;
+
   const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(
     id
   )}`;
@@ -17,12 +24,10 @@ async function loadData() {
   console.log("Fetching yyovvo from:", url);
   const res = await fetch(url);
 
-  console.log("Response status:", res.status);
-
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     console.error("Failed to load yyovvo data. Body:", text);
-    throw new Error("Failed to load yyovvo data");
+    return null;
   }
 
   let raw;
@@ -30,12 +35,10 @@ async function loadData() {
     raw = await res.json();
   } catch (e) {
     console.error("JSON parse error:", e);
-    throw e;
+    return null;
   }
 
-  console.log("Raw yyovvo response:", raw);
-
-  // Unwrap whatever Base44 returns
+  // unwrap possible shapes from Base44
   let data = raw;
   if (raw.data && (raw.data.fields || raw.data.record)) {
     data = raw.data.fields || raw.data.record;
@@ -47,57 +50,65 @@ async function loadData() {
     data = raw.fields;
   }
 
-  console.log("Unwrapped yyovvo data:", data);
+  console.log("yyovvo data:", data);
   return data;
 }
 
-// --- 2) MAIN CINEMATIC LOGIC -----------------------------------------
+// -------- Main cinematic logic -------------------------
 
 async function init() {
   try {
     const data = await loadData();
 
-    const scene    = document.getElementById("scene");
-    const intro    = document.getElementById("overlay-intro");
-    const mainText = document.getElementById("overlay-main-text");
-    const outro    = document.getElementById("overlay-outro");
-    const jingle   = document.getElementById("yyo-jingle");
+    const scene   = document.getElementById("scene");
+    const intro   = document.getElementById("overlay-intro");
+    const mainTxt = document.getElementById("overlay-main-text");
+    const outro   = document.getElementById("overlay-outro");
+    const jingle  = document.getElementById("yyo-jingle");
 
-    if (!data) {
-      console.error("No data returned from yyovvoGet");
+    if (!scene) {
+      console.error("No #scene video element found.");
       return;
     }
 
-    console.log("Playing yyovvo with data:", data);
+    // ONE combined file for now
+    const MOODSKIN_URL = "/videos/moodskin01.mp4";
 
-    // TIMING (ms)  --- ONE 14s VIDEO + OUTRO
-    const MOOD_DURATION_MS   = 3000;              // 0–3s (mood only)
-    const INTRO_START_MS     = 3000;              // 3s
-    const INTRO_END_MS       = 6000;              // 6s
-    const MAIN_START_MS      = 6000;              // 6s
-    const MAIN_DURATION_MS   = 8000;              // 8s (6–14s)
-    const OUTRO_START_MS     = MAIN_START_MS + MAIN_DURATION_MS; // 14000ms
+    // TIMING (ms)  -> total ~14s
+    const MOOD_DURATION_MS  = 3000;                   // 0–3s just visual feel
+    const INTRO_START_MS    = 3000;                   // intro starts at 3s
+    const INTRO_END_MS      = 6000;                   // intro ends at 6s
+    const MAIN_START_MS     = 6000;                   // main text from 6s
+    const MAIN_DURATION_MS  =
+      (Number(data?.content_duration) || 8000);       // default 8s
+    const OUTRO_START_MS    = MAIN_START_MS + MAIN_DURATION_MS; // ~14s
+    const OUTRO_FADE_MS     = 3000;                   // visual outro length
 
-    // 1) SINGLE VIDEO: mood + skin combined
-    // HARD-WIRED to your new file for now
-    const moodSkinUrl = "/videos/moodskin01.mp4";
+    console.log("Cinematic timings:", {
+      MOOD_DURATION_MS,
+      INTRO_START_MS,
+      INTRO_END_MS,
+      MAIN_START_MS,
+      MAIN_DURATION_MS,
+      OUTRO_START_MS,
+      OUTRO_FADE_MS
+    });
 
+    // 1) Start the combined mood+skin video immediately
+    scene.src = MOODSKIN_URL;
     scene.loop = false;
-    scene.src = moodSkinUrl;
-    scene.muted = true; // keep muted for autoplay rules
+    scene.muted = true;       // autoplay safety
     scene.playsInline = true;
 
     await scene.play().catch((err) => {
-      console.warn("Autoplay failed, waiting for user interaction.", err);
+      console.warn("Autoplay blocked, will wait for user tap.", err);
     });
 
-    // 2) INTRO TEXT (3s → 6s)
+    // 2) INTRO TEXT (3s–6s)
     setTimeout(() => {
-      if (data.intro_text) {
-        intro.textContent = data.intro_text || "";
+      if (data?.intro_text) {
+        intro.textContent = data.intro_text;
         intro.classList.add("show");
-      } else {
-        console.warn("No intro_text in data");
       }
     }, INTRO_START_MS);
 
@@ -106,51 +117,43 @@ async function init() {
     }, INTRO_END_MS);
 
     // 3) MAIN MESSAGE (from 6s)
-    if (!data.content_type || data.content_type === "text") {
-      setTimeout(() => {
-        mainText.textContent = data.content_text || "";
-        mainText.classList.add("show");
-      }, MAIN_START_MS);
-    } else if (data.content_type === "audio") {
-      const audio = new Audio(data.content_url);
-      setTimeout(() => {
-        audio.play().catch(() => {});
-      }, MAIN_START_MS);
-    } else if (data.content_type === "video") {
-      // If one day you want to override with user video:
-      setTimeout(() => {
-        if (data.content_url) {
-          scene.src = data.content_url;
-          scene.play().catch(() => {});
-        } else {
-          console.warn("content_type=video but no content_url");
-        }
-      }, MAIN_START_MS);
-    } else {
-      console.warn("Unknown content_type:", data.content_type);
-    }
-
-    // 4) OUTRO (after 14s of main video)
     setTimeout(() => {
-      // hide main text so it doesn’t overlap "yyovvo"
-      mainText.classList.remove("show");
+      if (data?.content_type === "text" || !data?.content_type) {
+        mainTxt.textContent = data?.content_text || "";
+        mainTxt.classList.add("show");
+      } else if (data?.content_type === "audio" && data?.content_url) {
+        const audio = new Audio(data.content_url);
+        audio.play().catch(() => {});
+      } else if (data?.content_type === "video" && data?.content_url) {
+        // If one day we support separate main video, swap source here
+        scene.src = data.content_url;
+        scene.play().catch(() => {});
+      }
+    }, MAIN_START_MS);
 
-      // switch to snow outro loop
-      scene.src = data.outro_video_url || "/videos/outro-snow.mp4";
+    // 4) OUTRO (switch to snow + logo + jingle)
+    setTimeout(() => {
+      // hide main text so it doesn’t overlap the logo
+      mainTxt.classList.remove("show");
+
+      // switch to outro snow loop
+      scene.src = "/videos/outro-snow.mp4";
       scene.loop = true;
+      scene.muted = false;    // snow can have sound if we ever want it
       scene.play().catch(() => {});
 
-      // show outro text
+      // show yyovvo outro overlay
       outro.classList.remove("hidden");
       outro.classList.add("show");
 
-      // try to play jingle (may need tap on some mobiles)
-      jingle.play().catch((err) => {
-        console.warn("Jingle autoplay blocked by browser:", err);
+      // play jingle once
+      jingle?.play().catch((err) => {
+        console.warn("Jingle autoplay blocked:", err);
       });
     }, OUTRO_START_MS);
-  } catch (e) {
-    console.error("yyovvo player init error:", e);
+
+  } catch (err) {
+    console.error("yyovvo player init error:", err);
   }
 }
 
