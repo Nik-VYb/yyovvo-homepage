@@ -28,7 +28,6 @@
         --accent-blue: #38bdf8;
         --accent-pink: #ec4899;
         --accent-emerald: #22c55e;
-        --accent-gold: #facc6b;
         --border-subtle: #1f2937;
         --card-bg: rgba(15, 23, 42, 0.92);
         --radius-xl: 24px;
@@ -203,27 +202,60 @@
         font-size: 11px;
         letter-spacing: 0.16em;
         text-transform: uppercase;
-        color: var(--accent-pink);
-        text-shadow: 0 0 12px rgba(236, 72, 153, 0.7);
-        animation: heroKickerPulse 3.2s ease-in-out infinite;
+        color: var(--text-soft);
       }
 
-      @keyframes heroKickerPulse {
+      /* NEW: social promo row under kicker */
+
+      .hero-social-promo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: -4px;
+        margin-bottom: 4px;
+      }
+
+      .pulse-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent-pink);
+        box-shadow:
+          0 0 10px rgba(236, 72, 153, 0.9),
+          0 0 18px rgba(236, 72, 153, 0.6);
+        animation: pulseDot 1.6s infinite ease-in-out;
+      }
+
+      @keyframes pulseDot {
         0% {
-          opacity: 0;
-          transform: translateY(2px);
+          transform: scale(0.9);
+          opacity: 0.7;
         }
-        10% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        60% {
+        50% {
+          transform: scale(1.4);
           opacity: 1;
         }
         100% {
-          opacity: 0;
-          transform: translateY(-2px);
+          transform: scale(0.9);
+          opacity: 0.7;
         }
+      }
+
+      .social-link {
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        color: var(--accent-emerald);
+        text-transform: lowercase;
+        opacity: 0.9;
+      }
+
+      .social-link strong {
+        font-weight: 600;
+      }
+
+      .social-link:hover {
+        opacity: 1;
+        text-decoration: underline;
       }
 
       .hero-title {
@@ -233,12 +265,12 @@
         letter-spacing: 0.04em;
       }
 
-      .hero-title span.gold {
-        background: linear-gradient(135deg, #facc6b, #f97316);
+      .hero-title-gold {
+        background: linear-gradient(135deg, #facc15, #fde68a, #fbbf24);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-        text-shadow: 0 0 18px rgba(248, 250, 252, 0.22);
+        text-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
       }
 
       .hero-sub {
@@ -443,9 +475,10 @@
         max-width: 420px;
       }
 
-      .section-sub.wall-tagline {
+      .section-sub-wall-tagline {
+        font-size: 12px;
+        margin-top: 6px;
         color: var(--accent-emerald);
-        font-weight: 500;
       }
 
       .pill-row {
@@ -707,7 +740,7 @@
               class="nav-cta"
               href="https://studio.yyovvo.com/CreateYyovvo"
               rel="noopener noreferrer"
-              >send a yyovvo</a
+              >send</a
             >
           </div>
         </nav>
@@ -717,13 +750,22 @@
         <!-- HERO -->
         <section class="hero">
           <div class="hero-left">
-            <div class="hero-kicker">your persona + ai = yyovvo (yyo voice)</div>
+            <div class="hero-kicker">christmas 2025 hits different</div>
+
+            <div class="hero-social-promo">
+              <span class="pulse-dot"></span>
+              <a
+                href="https://studio.yyovvo.com/CreateYyovvo"
+                class="social-link"
+              >
+                made for tiktok / insta — <strong>join the trend →</strong>
+              </a>
+            </div>
 
             <h1 class="hero-title">
               every yyovvo is
-              <span class="gold">an eternal moment on their wall.</span>
+              <span class="hero-title-gold">an eternal moment on their wall.</span>
             </h1>
-
             <p class="hero-sub">
               not a card. not a dm. a tiny cinematic scene they can replay
               whenever they miss you.
@@ -780,8 +822,8 @@
         <section class="section section-tight" id="what">
           <h2 class="section-title">what is yyovvo?</h2>
           <p class="section-sub">
-            an emphatic short cinematic trailer of your personality & message,
-            wrapped by ai in mood & skin, delivered as an eternal moment that
+            an emphatic short cinematic trailer of your personality &amp; message,
+            wrapped by ai in mood &amp; skin, delivered as an eternal moment that
             lives on their wall.
           </p>
 
@@ -856,7 +898,7 @@
             every yyovvo you send becomes a tile on their wall — a living
             timeline of how you’ve shown up for them.
           </p>
-          <p class="section-sub wall-tagline">
+          <p class="section-sub-wall-tagline">
             the new cinematic journal of special moments — forever re-lived,
             re-shared, re-loved.
           </p>
@@ -945,7 +987,7 @@
         <div class="footer-inner">
           <div>yyovvo · designed for emotion.</div>
           <div class="footer-links">
-            <a href="https://studio.yyovvo.com/CreateYyovvo">send a yyovvo</a>
+            <a href="https://studio.yyovvo.com/CreateYyovvo">send</a>
             <a href="https://yyovvo.com/wall">my wall</a>
             <a href="#">help</a>
             <a href="#">terms</a>
