@@ -1,823 +1,1176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,maximum-scale=1"
-  />
-  <title>The yyovvo Wall – where moments live forever.</title>
-  <meta
-    name="description"
-    content="The yyovvo Wall is where all the tiny scenes that made them feel something live forever."
-  />
-  <style>
-    :root {
-      --bg-void: #02030a;
-      --bg-deep: #050814;
-      --glass: rgba(15, 23, 42, 0.78);
-      --glass-soft: rgba(15, 23, 42, 0.6);
-      --glass-border: rgba(148, 163, 184, 0.42);
-      --accent-pink: #ff4bcb;
-      --accent-blue: #38bdf8;
-      --accent-gold: #facc6b;
-      --text-main: #f9fafb;
-      --text-soft: #9ca3af;
-      --radius-xl: 28px;
-      --radius-lg: 20px;
-      --radius-md: 14px;
-      --shadow-soft: 0 26px 90px rgba(15, 23, 42, 0.95);
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>yyovvo wall — the new cinematic journal of special moments</title>
+    <meta
+      name="description"
+      content="your yyovvo wall is a living, cinematic journal of every moment you’ve made someone feel something — sent and received."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="yyovvo wall — cinematic moments" />
+    <meta
+      property="og:description"
+      content="a living wall of yyovvos — moments you can replay whenever you miss them."
+    />
+    <meta property="og:url" content="https://yyovvo.com/wall" />
+    <meta property="og:image" content="/og-image.jpg" />
 
-    html,
-    body {
-      height: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #0b1220 0, #02010a 56%);
-      color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
-    }
-
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 18px 16px 60px;
-    }
-
-    /* HEADER */
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 10px;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0%, #facc6b, #fb923c 55%, #1f2937);
-      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9),
-        0 14px 30px rgba(0, 0, 0, 0.8);
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: 0.04em;
-    }
-
-    .nav-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .nav-title {
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      font-size: 13px;
-      text-transform: uppercase;
-    }
-
-    .nav-sub {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .nav-pill {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      color: var(--text-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .nav-pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
-    }
-
-    .nav-cta {
-      padding: 6px 16px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: radial-gradient(circle at 0% 0%, #38bdf8 0, #4f46e5 32%, #db2777);
-      color: white;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.6),
-        0 12px 40px rgba(15, 23, 42, 0.9);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .nav-cta::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(248, 250, 252, 0.5), transparent);
-      transform: translateX(-120%);
-      animation: cta-sheen 3.2s infinite;
-      opacity: 0.9;
-    }
-
-    .nav-cta span.icon {
-      font-size: 16px;
-    }
-
-    @keyframes cta-sheen {
-      0% {
-        transform: translateX(-120%);
+    <style>
+      :root {
+        --bg: #020617;
+        --bg-soft: #030712;
+        --text-main: #f9fafb;
+        --text-soft: #9ca3af;
+        --accent-blue: #38bdf8;
+        --accent-pink: #ec4899;
+        --accent-emerald: #22c55e;
+        --border-subtle: #1f2937;
+        --card-bg: rgba(15, 23, 42, 0.94);
+        --radius-xl: 24px;
       }
-      12% {
-        transform: translateX(120%);
+
+      * {
+        box-sizing: border-box;
       }
-      100% {
-        transform: translateX(120%);
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
+        color: var(--text-main);
+        -webkit-font-smoothing: antialiased;
       }
-    }
 
-    /* HERO SECTION */
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .hero {
-      margin-top: 12px;
-      border-radius: var(--radius-xl);
-      padding: 18px 16px 20px;
-      background: radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(148, 163, 184, 0.42);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-    }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-    .hero-snow {
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(circle at 8% 0%, rgba(248, 250, 252, 0.35) 0, transparent 40%),
-        radial-gradient(circle at 90% 0%, rgba(248, 250, 252, 0.28) 0, transparent 55%);
-      opacity: 0.45;
-      pointer-events: none;
-    }
+      .page-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .hero-inner {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 1;
-    }
+      /* HEADER (match homepage) */
 
-    .hero-kicker {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent-blue);
-    }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        backdrop-filter: blur(18px);
+        background: linear-gradient(
+          to bottom,
+          rgba(2, 6, 23, 0.95),
+          rgba(2, 6, 23, 0.7),
+          transparent
+        );
+        border-bottom: 1px solid rgba(15, 23, 42, 0.8);
+      }
 
-    .hero-title {
-      font-size: 24px;
-      font-weight: 600;
-    }
+      .nav {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
 
-    .hero-title span {
-      color: #fb923c;
-    }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-    .hero-sub {
-      font-size: 13px;
-      color: var(--text-soft);
-      max-width: 620px;
-      line-height: 1.5;
-    }
+      .nav-logo {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: lowercase;
+      }
 
-    .hero-sub strong {
-      color: var(--text-main);
-      font-weight: 500;
-    }
+      .nav-pill {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: radial-gradient(
+          circle at top left,
+          rgba(56, 189, 248, 0.25),
+          rgba(15, 23, 42, 0.9)
+        );
+        color: var(--text-soft);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
 
-    .hero-quote {
-      font-size: 12px;
-      color: var(--text-soft);
-      font-style: italic;
-      margin-top: 4px;
-    }
+      .nav-pill-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: radial-gradient(circle at center, #22c55e, #16a34a);
+        box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+      }
 
-    .hero-actions {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-    .hero-primary {
-      padding: 9px 20px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: radial-gradient(circle at 0% 0%, #38bdf8 0, #4f46e5 45%, #db2777);
-      color: white;
-      font-size: 14px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 0 30px rgba(59, 130, 246, 0.7),
-        0 18px 40px rgba(15, 23, 42, 0.95);
-      position: relative;
-      overflow: hidden;
-    }
+      .nav-link {
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        color: var(--text-soft);
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
 
-    .hero-primary::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(248, 250, 252, 0.5), transparent);
-      transform: translateX(-120%);
-      animation: cta-sheen 3s infinite;
-    }
+      .nav-link:hover {
+        border-color: rgba(148, 163, 184, 0.4);
+        color: var(--text-main);
+        background: radial-gradient(
+          circle at top,
+          rgba(15, 23, 42, 0.8),
+          rgba(15, 23, 42, 0.4)
+        );
+      }
 
-    .hero-secondary {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: rgba(15, 23, 42, 0.85);
-      color: var(--text-soft);
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
+      .nav-cta {
+        font-size: 13px;
+        padding: 7px 16px;
+        border-radius: 999px;
+        background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.08),
+          rgba(236, 72, 153, 0.42)
+        );
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        box-shadow:
+          0 0 18px rgba(236, 72, 153, 0.5),
+          0 0 24px rgba(56, 189, 248, 0.5);
+        color: #fdf2f8;
+        cursor: pointer;
+        text-transform: lowercase;
+      }
 
-    .hero-meta {
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--text-soft);
-    }
+      .nav-cta:hover {
+        filter: brightness(1.08);
+        box-shadow:
+          0 0 22px rgba(236, 72, 153, 0.7),
+          0 0 32px rgba(56, 189, 248, 0.7);
+      }
 
-    /* GRID SECTION */
+      /* MAIN LAYOUT */
 
-    .section {
-      margin-top: 32px;
-    }
+      main {
+        flex: 1;
+      }
 
-    .section-head {
-      margin-bottom: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+      .wall-shell {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 32px 16px 40px;
+      }
 
-    .section-kicker {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent-blue);
-    }
+      /* HERO SECTION */
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
+      .wall-header {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
 
-    .section-sub {
-      font-size: 13px;
-      color: var(--text-soft);
-      max-width: 620px;
-      line-height: 1.45;
-    }
+      .wall-kicker {
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-soft);
+      }
 
-    .wall-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
+      .wall-title {
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        text-transform: lowercase;
+        letter-spacing: 0.04em;
+      }
 
-    @media (max-width: 900px) {
+      .wall-title span.green {
+        color: #4ade80;
+      }
+
+      .wall-sub {
+        font-size: 13px;
+        color: var(--text-soft);
+        max-width: 480px;
+      }
+
+      .wall-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-top: 8px;
+      }
+
+      .wall-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        background: radial-gradient(
+          circle at left,
+          rgba(34, 197, 94, 0.24),
+          rgba(15, 23, 42, 0.98)
+        );
+        font-size: 11px;
+        color: #bbf7d0;
+      }
+
+      .wall-badge-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: radial-gradient(circle at center, #22c55e, #15803d);
+        box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+      }
+
+      .wall-visibility {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--text-soft);
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(55, 65, 81, 0.9);
+        background: radial-gradient(
+          circle at top left,
+          rgba(15, 23, 42, 0.98),
+          rgba(15, 23, 42, 0.86)
+        );
+      }
+
+      .wall-visibility select {
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        font-size: 11px;
+        outline: none;
+        text-transform: lowercase;
+      }
+
+      .wall-cta-strip {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .btn-main {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 9px 18px;
+        border-radius: 999px;
+        background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.25),
+          rgba(236, 72, 153, 0.8)
+        );
+        border: 1px solid rgba(248, 250, 252, 0.8);
+        color: #fdf2f8;
+        font-size: 13px;
+        cursor: pointer;
+        box-shadow:
+          0 0 26px rgba(236, 72, 153, 0.7),
+          0 0 40px rgba(56, 189, 248, 0.7);
+        text-transform: lowercase;
+      }
+
+      .btn-main:hover {
+        filter: brightness(1.06);
+        transform: translateY(-1px);
+      }
+
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.55);
+        background: radial-gradient(
+          circle at top,
+          rgba(15, 23, 42, 0.96),
+          rgba(15, 23, 42, 0.8)
+        );
+        color: var(--text-soft);
+        font-size: 12px;
+        cursor: pointer;
+        text-transform: lowercase;
+      }
+
+      .btn-ghost:hover {
+        border-color: rgba(209, 213, 219, 0.9);
+        color: var(--text-main);
+      }
+
+      /* TABS */
+
+      .wall-tabs {
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle at top,
+          rgba(15, 23, 42, 0.96),
+          rgba(15, 23, 42, 0.9)
+        );
+        border: 1px solid rgba(31, 41, 55, 0.9);
+        width: fit-content;
+      }
+
+      .wall-tab {
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--text-soft);
+        cursor: pointer;
+      }
+
+      .wall-tab.active {
+        background: radial-gradient(
+          circle at top,
+          rgba(236, 72, 153, 0.28),
+          rgba(15, 23, 42, 0.98)
+        );
+        color: #f9fafb;
+        box-shadow: 0 0 16px rgba(236, 72, 153, 0.7);
+      }
+
+      /* GRID */
+
+      .wall-grid-wrapper {
+        margin-top: 18px;
+      }
+
       .wall-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
       }
-    }
 
-    @media (max-width: 640px) {
-      .wall-grid {
-        grid-template-columns: minmax(0, 1fr);
+      @media (max-width: 900px) {
+        .wall-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
       }
-    }
 
-    .wall-card {
-      border-radius: var(--radius-lg);
-      padding: 12px 12px 14px;
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 130px;
-    }
-
-    .wall-card::before {
-      content: "";
-      position: absolute;
-      inset: -20%;
-      background: radial-gradient(circle at 0% 0%, rgba(248, 250, 252, 0.18), transparent 55%);
-      opacity: 0.85;
-      pointer-events: none;
-    }
-
-    .wall-card-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .wall-tag {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(226, 232, 240, 0.85);
-      margin-bottom: 6px;
-    }
-
-    .wall-main {
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-
-    .wall-body {
-      font-size: 11px;
-      color: var(--text-soft);
-      line-height: 1.5;
-    }
-
-    .wall-meta {
-      margin-top: 8px;
-      font-size: 10px;
-      color: rgba(148, 163, 184, 0.9);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .wall-pill {
-      padding: 3px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: rgba(15, 23, 42, 0.9);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      font-size: 9px;
-    }
-
-    /* FINAL CTA STRIP */
-
-    .bottom-cta {
-      margin-top: 32px;
-      border-radius: var(--radius-xl);
-      padding: 16px 16px 18px;
-      background: radial-gradient(circle at 0% 0%, rgba(220, 38, 120, 0.26), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(248, 250, 252, 0.1);
-      box-shadow: var(--shadow-soft);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .bottom-snow {
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(circle at 8% 0%, rgba(248, 250, 252, 0.35) 0, transparent 40%),
-        radial-gradient(circle at 90% 0%, rgba(248, 250, 252, 0.28) 0, transparent 55%);
-      opacity: 0.38;
-      pointer-events: none;
-    }
-
-    .bottom-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 520px;
-      margin: 0 auto;
-    }
-
-    .bottom-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .bottom-body {
-      font-size: 13px;
-      color: var(--text-soft);
-      margin-bottom: 12px;
-    }
-
-    .bottom-heartline {
-      font-size: 11px;
-      color: rgba(248, 250, 252, 0.9);
-      margin-bottom: 12px;
-    }
-
-    .bottom-heartline span {
-      color: var(--accent-pink);
-    }
-
-    .bottom-actions {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .bottom-primary {
-      padding: 8px 20px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: radial-gradient(circle at 0% 0%, #38bdf8 0, #4f46e5 45%, #db2777);
-      color: white;
-      font-size: 13px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.9),
-        0 18px 40px rgba(15, 23, 42, 0.95);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .bottom-primary::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(248, 250, 252, 0.5), transparent);
-      transform: translateX(-120%);
-      animation: cta-sheen 2.8s infinite;
-    }
-
-    .bottom-secondary {
-      padding: 7px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(248, 250, 252, 0.35);
-      background: rgba(15, 23, 42, 0.9);
-      color: rgba(248, 250, 252, 0.92);
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* FOOTER */
-
-    .footer {
-      margin-top: 28px;
-      padding-top: 18px;
-      padding-bottom: 10px;
-      border-top: 1px solid rgba(51, 65, 85, 0.9);
-      font-size: 11px;
-      color: var(--text-soft);
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .footer span.brand {
-      font-weight: 500;
-      color: rgba(248, 250, 252, 0.9);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 640px) {
-      .inner {
-        padding-inline: 14px;
+      @media (max-width: 640px) {
+        .wall-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
       }
-      .hero {
-        padding-inline: 14px;
+
+      .tile {
+        position: relative;
+        height: 120px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(51, 65, 85, 0.95);
+        background: radial-gradient(
+          circle at top,
+          rgba(56, 189, 248, 0.16),
+          rgba(15, 23, 42, 0.98)
+        );
+        cursor: pointer;
+        display: flex;
+        align-items: flex-end;
+        padding: 8px 9px;
+        transition:
+          transform 0.16s ease-out,
+          box-shadow 0.16s ease-out,
+          border-color 0.16s ease-out;
       }
-      .bottom-cta {
-        padding-inline: 14px;
+
+      .tile::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at top, rgba(236, 72, 153, 0.16), transparent 55%),
+          radial-gradient(circle at bottom, rgba(56, 189, 248, 0.2), transparent 60%);
+        opacity: 0;
+        transition: opacity 0.18s ease-out;
       }
-    }
-  </style>
-</head>
-<body>
-<div class="page">
-  <div class="inner">
-    <!-- NAV -->
-    <header class="nav">
-      <div class="nav-left">
-        <div class="logo-pill">yy</div>
-        <div class="nav-brand">
-          <div class="nav-title">YYOVVO</div>
-          <div class="nav-sub">The Wall · designed for emotion ♡</div>
+
+      .tile:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 22px 45px rgba(0, 0, 0, 0.95),
+          0 0 26px rgba(236, 72, 153, 0.5);
+        border-color: rgba(148, 163, 184, 0.95);
+      }
+
+      .tile:hover::before {
+        opacity: 1;
+      }
+
+      .tile-inner {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .tile-top-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: rgba(209, 213, 219, 0.85);
+      }
+
+      .tile-tagline {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tile-chip {
+        font-size: 9px;
+        padding: 3px 7px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        background: rgba(15, 23, 42, 0.86);
+        text-transform: lowercase;
+      }
+
+      .tile-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+      }
+
+      .tile-dot.sent {
+        background: radial-gradient(circle at center, #fb7185, #be123c);
+        box-shadow: 0 0 12px rgba(251, 113, 133, 0.95);
+      }
+
+      .tile-dot.received {
+        background: radial-gradient(circle at center, #4ade80, #15803d);
+        box-shadow: 0 0 12px rgba(74, 222, 128, 0.95);
+      }
+
+      .tile-label {
+        font-size: 12px;
+        text-transform: lowercase;
+      }
+
+      .tile-meta {
+        font-size: 10px;
+        color: var(--text-soft);
+      }
+
+      .tile-pulse {
+        animation: tilePulse 2.6s infinite ease-in-out;
+      }
+
+      @keyframes tilePulse {
+        0% {
+          transform: translateY(0);
+          box-shadow: 0 0 0 rgba(236, 72, 153, 0);
+        }
+        50% {
+          transform: translateY(-2px);
+          box-shadow: 0 0 22px rgba(236, 72, 153, 0.7);
+        }
+        100% {
+          transform: translateY(0);
+          box-shadow: 0 0 0 rgba(236, 72, 153, 0);
+        }
+      }
+
+      .panel {
+        display: none;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      /* EMPTY STATE STRIP (but still feels alive) */
+
+      .empty-strip {
+        margin-top: 20px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px dashed rgba(148, 163, 184, 0.6);
+        background: radial-gradient(
+          circle at left,
+          rgba(236, 72, 153, 0.18),
+          rgba(15, 23, 42, 0.96)
+        );
+        font-size: 11px;
+        color: #e5e7eb;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        justify-content: space-between;
+      }
+
+      .empty-strip span.soft {
+        color: var(--text-soft);
+      }
+
+      /* MODAL PREVIEW */
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at top, rgba(15, 23, 42, 0.94), #020617);
+        backdrop-filter: blur(22px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 60;
+      }
+
+      .modal-backdrop.show {
+        display: flex;
+      }
+
+      .modal-content {
+        position: relative;
+        width: min(340px, 90vw);
+        border-radius: 32px;
+        padding: 14px;
+        background: radial-gradient(circle at top, #020617, #000000);
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        box-shadow:
+          0 40px 100px rgba(0, 0, 0, 1),
+          0 0 40px rgba(56, 189, 248, 0.5);
+      }
+
+      .modal-phone-inner {
+        position: relative;
+        border-radius: 26px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      .modal-video {
+        width: 100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      .modal-caption {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--text-soft);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .modal-caption strong {
+        color: #e5e7eb;
+        font-weight: 500;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.75);
+        background: rgba(15, 23, 42, 0.86);
+        color: #e5e7eb;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      /* FOOTER */
+
+      footer {
+        border-top: 1px solid rgba(15, 23, 42, 0.9);
+        background: linear-gradient(to top, #020617, rgba(2, 6, 23, 0.92));
+      }
+
+      .footer-inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 14px 16px 18px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 11px;
+        color: var(--text-soft);
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .footer-links a {
+        opacity: 0.8;
+      }
+
+      .footer-links a:hover {
+        opacity: 1;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 768px) {
+        .wall-shell {
+          padding-inline: 14px;
+        }
+
+        .wall-header {
+          gap: 8px;
+        }
+
+        .wall-grid {
+          gap: 8px;
+        }
+
+        .tile {
+          height: 110px;
+        }
+
+        .wall-cta-strip {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .btn-main,
+        .btn-ghost {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page-shell">
+      <header>
+        <nav class="nav">
+          <div class="nav-left">
+            <div class="nav-logo">yyovvo</div>
+            <div class="nav-pill">
+              <span class="nav-pill-dot"></span>
+              <span>designed for emotion</span>
+            </div>
+          </div>
+          <div class="nav-right">
+            <a class="nav-link" href="https://yyovvo.com" rel="noopener noreferrer">
+              home
+            </a>
+            <a
+              class="nav-cta"
+              href="https://studio.yyovvo.com/CreateYyovvo"
+              rel="noopener noreferrer"
+            >
+              send a yyovvo
+            </a>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <div class="wall-shell">
+          <!-- HERO -->
+          <div class="wall-header">
+            <div class="wall-kicker">your yyovvo wall</div>
+            <h1 class="wall-title">
+              the new
+              <span class="green">cinematic journal</span>
+              of special moments.
+            </h1>
+            <p class="wall-sub">
+              every yyovvo you send or receive becomes a tile on this wall — a
+              living memory of christmas, new year, birthdays, late night calls,
+              apologies, hype, comfort and everything in between.
+            </p>
+
+            <div class="wall-meta-row">
+              <div class="wall-badge">
+                <span class="wall-badge-dot"></span>
+                the new cinematic journal of special moments — forever re-lived, re-shared, re-loved.
+              </div>
+              <div class="wall-visibility">
+                visibility:
+                <select aria-label="wall visibility">
+                  <option>only me</option>
+                  <option>followers</option>
+                  <option>public</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="wall-cta-strip">
+              <a
+                class="btn-main"
+                href="https://studio.yyovvo.com/CreateYyovvo"
+                rel="noopener noreferrer"
+              >
+                send a yyovvo →
+              </a>
+              <button class="btn-ghost" type="button">
+                share my wall (soon) →
+              </button>
+            </div>
+
+            <div class="wall-tabs" role="tablist">
+              <div
+                class="wall-tab active"
+                data-panel="sent"
+                role="tab"
+                aria-selected="true"
+              >
+                sent
+              </div>
+              <div
+                class="wall-tab"
+                data-panel="received"
+                role="tab"
+                aria-selected="false"
+              >
+                received
+              </div>
+            </div>
+          </div>
+
+          <!-- SENT PANEL -->
+          <div class="wall-grid-wrapper panel active" id="panel-sent">
+            <div class="wall-grid">
+              <!-- pre-populated seed 1 -->
+              <div
+                class="tile tile-pulse"
+                data-type="sent"
+                data-label="midnight christmas"
+                data-tagline="you’re the one i stayed up for"
+              >
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot sent"></span>
+                      sent · from you
+                    </span>
+                    <span class="tile-chip">share starter</span>
+                  </div>
+                  <div class="tile-label">midnight christmas</div>
+                  <div class="tile-meta">8s yyo-voice · built to go viral</div>
+                </div>
+              </div>
+
+              <!-- pre-populated seed 2 -->
+              <div
+                class="tile tile-pulse"
+                data-type="sent"
+                data-label="made them cry (in a good way)"
+                data-tagline="the one they replay when they miss you"
+              >
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot sent"></span>
+                      sent · from you
+                    </span>
+                    <span class="tile-chip">yyovvo classic</span>
+                  </div>
+                  <div class="tile-label">made them cry (in a good way)</div>
+                  <div class="tile-meta">10s cinematic trailer of you</div>
+                </div>
+              </div>
+
+              <!-- pre-populated seed 3 -->
+              <div
+                class="tile"
+                data-type="sent"
+                data-label="new year 00:00"
+                data-tagline="“you were my last thought of 2025, and my first of 2026.”"
+              >
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot sent"></span>
+                      sent · from you
+                    </span>
+                    <span class="tile-chip">midnight drop</span>
+                  </div>
+                  <div class="tile-label">new year 00:00</div>
+                  <div class="tile-meta">yyovvo scheduled to land at midnight</div>
+                </div>
+              </div>
+
+              <!-- filler vibes (look alive, will be real later) -->
+              <div class="tile" data-type="sent" data-label="that christmas" data-tagline="“remember when we didn’t sleep?”">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot sent"></span>
+                      sent · from you
+                    </span>
+                    <span class="tile-chip">memory</span>
+                  </div>
+                  <div class="tile-label">that christmas</div>
+                  <div class="tile-meta">6s laugh · 4s “i love you”</div>
+                </div>
+              </div>
+
+              <div class="tile" data-type="sent" data-label="voice note hug" data-tagline="the one that feels like a hug">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot sent"></span>
+                      sent · from you
+                    </span>
+                    <span class="tile-chip">comfort</span>
+                  </div>
+                  <div class="tile-label">voice note hug</div>
+                  <div class="tile-meta">8s yyo-voice · soft</div>
+                </div>
+              </div>
+
+              <div class="tile" data-type="sent" data-label="apology, but cinematic" data-tagline="sorry, but in 9 seconds of cinema">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot sent"></span>
+                      sent · from you
+                    </span>
+                    <span class="tile-chip">real</span>
+                  </div>
+                  <div class="tile-label">apology, but cinematic</div>
+                  <div class="tile-meta">one-take video · no filters</div>
+                </div>
+              </div>
+
+              <div class="tile" data-type="sent" data-label="“thinking of you”" data-tagline="no context, just warmth">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot sent"></span>
+                      sent · from you
+                    </span>
+                    <span class="tile-chip">subtle flex</span>
+                  </div>
+                  <div class="tile-label">“thinking of you”</div>
+                  <div class="tile-meta">5s look · 3s whisper</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="empty-strip">
+              <span>
+                your next send becomes the next tile on this wall.
+                <span class="soft">every yyovvo auto-saves here the moment you hit send.</span>
+              </span>
+              <a
+                class="btn-main"
+                href="https://studio.yyovvo.com/CreateYyovvo"
+                rel="noopener noreferrer"
+                style="padding:6px 14px;font-size:11px;"
+              >
+                send a yyovvo →
+              </a>
+            </div>
+          </div>
+
+          <!-- RECEIVED PANEL -->
+          <div class="wall-grid-wrapper panel" id="panel-received">
+            <div class="wall-grid">
+              <!-- GIFT FROM YYOVVO -->
+              <div
+                class="tile tile-pulse"
+                data-type="received"
+                data-label="a gift from yyovvo"
+                data-tagline="“this is how your wall will feel when people start sending you yyovvos.”"
+              >
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot received"></span>
+                      received · from yyovvo
+                    </span>
+                    <span class="tile-chip">pinned</span>
+                  </div>
+                  <div class="tile-label">a gift from yyovvo</div>
+                  <div class="tile-meta">demo scene · hit play and imagine it’s from them</div>
+                </div>
+              </div>
+
+              <!-- virality seed for sharing wall -->
+              <div
+                class="tile"
+                data-type="received"
+                data-label="show this to someone"
+                data-tagline="your wall is about to become their favourite place"
+              >
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot received"></span>
+                      received · from future you
+                    </span>
+                    <span class="tile-chip">share this</span>
+                  </div>
+                  <div class="tile-label">show this to someone</div>
+                  <div class="tile-meta">designed to live on tiktok / insta stories</div>
+                </div>
+              </div>
+
+              <!-- another future moment -->
+              <div
+                class="tile"
+                data-type="received"
+                data-label="their midnight yyovvo"
+                data-tagline="one day this tile will be from the person you can’t stop thinking about"
+              >
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot received"></span>
+                      received · from someone special
+                    </span>
+                    <span class="tile-chip">future moment</span>
+                  </div>
+                  <div class="tile-label">their midnight yyovvo</div>
+                  <div class="tile-meta">10s clip · 100% goosebumps</div>
+                </div>
+              </div>
+
+              <!-- filler vibes -->
+              <div class="tile" data-type="received" data-label="“you saved my christmas”" data-tagline="from someone who needed that message more than you knew">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot received"></span>
+                      received
+                    </span>
+                    <span class="tile-chip">gratitude</span>
+                  </div>
+                  <div class="tile-label">“you saved my christmas”</div>
+                  <div class="tile-meta">11s voice · pure relief</div>
+                </div>
+              </div>
+
+              <div class="tile" data-type="received" data-label="laughing fit" data-tagline="the one you play when you’re low">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot received"></span>
+                      received
+                    </span>
+                    <span class="tile-chip">chaos</span>
+                  </div>
+                  <div class="tile-label">laughing fit</div>
+                  <div class="tile-meta">7s chaos · 3s “stoppp”</div>
+                </div>
+              </div>
+
+              <div class="tile" data-type="received" data-label="“call me when you see this”" data-tagline="sent at 02:14 · you missed it · it’s still here">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot received"></span>
+                      received
+                    </span>
+                    <span class="tile-chip">late night</span>
+                  </div>
+                  <div class="tile-label">“call me when you see this”</div>
+                  <div class="tile-meta">shadowy face · soft yyo-voice</div>
+                </div>
+              </div>
+
+              <div class="tile" data-type="received" data-label="“this is your year”" data-tagline="new year pep talk from someone who believes in you">
+                <div class="tile-inner">
+                  <div class="tile-top-row">
+                    <span>
+                      <span class="tile-dot received"></span>
+                      received
+                    </span>
+                    <span class="tile-chip">hype</span>
+                  </div>
+                  <div class="tile-label">“this is your year”</div>
+                  <div class="tile-meta">9s hype · 1s wink</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="empty-strip">
+              <span>
+                your real received yyovvos will start landing here the moment someone sends one to you.
+                <span class="soft">send the first yyovvo and gently tell them “reply with one back.”</span>
+              </span>
+              <a
+                class="btn-main"
+                href="https://studio.yyovvo.com/CreateYyovvo"
+                rel="noopener noreferrer"
+                style="padding:6px 14px;font-size:11px;"
+              >
+                start the chain →
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- MODAL PREVIEW -->
+      <div class="modal-backdrop" id="yyv-modal">
+        <div class="modal-content">
+          <button class="modal-close" type="button" id="modal-close">×</button>
+          <div class="modal-phone-inner">
+            <video
+              class="modal-video"
+              id="modal-video"
+              src="/videos/yyovvo-hero.mp4"
+              autoplay
+              muted
+              loop
+              playsinline
+            ></video>
+          </div>
+          <div class="modal-caption">
+            <div>
+              <strong id="modal-label">a gift from yyovvo</strong><br />
+              <span id="modal-tagline">this is how your wall will feel when it’s full.</span>
+            </div>
+            <a
+              href="https://studio.yyovvo.com/CreateYyovvo"
+              rel="noopener noreferrer"
+              style="font-size:11px;color:#38bdf8;text-decoration:none;"
+            >
+              send one like this →
+            </a>
+          </div>
         </div>
       </div>
-      <div class="nav-right">
-        <div class="nav-pill">
-          <span class="nav-pill-dot"></span>
-          <span>Private gallery of feelings</span>
+
+      <footer>
+        <div class="footer-inner">
+          <div>yyovvo · designed for emotion.</div>
+          <div class="footer-links">
+            <a href="https://yyovvo.com">home</a>
+            <a href="https://studio.yyovvo.com/CreateYyovvo">send a yyovvo</a>
+            <a href="#">help</a>
+            <a href="#">terms</a>
+            <a href="#">privacy</a>
+          </div>
         </div>
-        <a href="https://studio.yyovvo.com" class="nav-cta">
-          <span class="icon">✶</span>
-          <span>Send a yyovvo</span>
-        </a>
-      </div>
-    </header>
+      </footer>
+    </div>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-snow"></div>
-      <div class="hero-inner">
-        <div class="hero-kicker">The yyovvo Wall</div>
-        <h1 class="hero-title">
-          Every <span>yyovvo</span> becomes a place on their wall.
-        </h1>
-        <p class="hero-sub">
-          This isn’t a feed. It isn’t a chat. It’s a quiet wall where only the tiny scenes
-          that made them feel something live. Each yyovvo takes its place here, glowing softly
-          for the nights they need it most.
-        </p>
-        <p class="hero-quote">
-          “In 1925 they sent cards. In 2025, they replay yyovvos.”
-        </p>
-        <div class="hero-actions">
-          <a href="https://studio.yyovvo.com" class="hero-primary">
-            <span>Send a yyovvo</span>
-            <span>↗</span>
-          </a>
-          <a href="https://yyovvo.com" class="hero-secondary">
-            <span>Back to homepage</span>
-          </a>
-        </div>
-        <div class="hero-meta">
-          Right now you’re looking at what their Christmas could feel like when you stop sending notifications
-          and start sending scenes.
-        </div>
-      </div>
-    </section>
+    <script>
+      // tabs
+      (function () {
+        const tabs = document.querySelectorAll(".wall-tab");
+        const panelSent = document.getElementById("panel-sent");
+        const panelReceived = document.getElementById("panel-received");
+        if (!tabs.length || !panelSent || !panelReceived) return;
 
-    <!-- WALL GRID -->
-    <section class="section">
-      <div class="section-head">
-        <div class="section-kicker">Scenes on the wall</div>
-        <h2 class="section-title">A gallery that only fills with feelings.</h2>
-        <p class="section-sub">
-          Here’s how a yyovvo wall might look when a few people who really care decided not to send just “Merry Christmas x”.
-        </p>
-      </div>
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const isSent = tab.dataset.panel === "sent";
 
-      <div class="wall-grid">
-        <!-- LOVED -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Loved</div>
-            <div class="wall-main">“I did this just for you.”</div>
-            <div class="wall-body">
-              Dark snow, soft piano, their name at the bottom of the screen.
-              No emojis. No noise. Just the one line they replay on the days they need it.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Replay · 27 times</span>
-            <span class="wall-pill">Saved</span>
-          </div>
-        </article>
+            tabs.forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
 
-        <!-- MIDNIGHT -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Midnight</div>
-            <div class="wall-main">Scheduled for 00:01.</div>
-            <div class="wall-body">
-              Everyone else texts “Merry Christmas” at the same time.
-              Your yyovvo appears alone in the dark, exactly as the day flips.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Drop · 00:01</span>
-            <span class="wall-pill">On their wall</span>
-          </div>
-        </article>
+            if (isSent) {
+              panelSent.classList.add("active");
+              panelReceived.classList.remove("active");
+            } else {
+              panelReceived.classList.add("active");
+              panelSent.classList.remove("active");
+            }
+          });
+        });
+      })();
 
-        <!-- AGAIN -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Again</div>
-            <div class="wall-main">“Play it one more time.”</div>
-            <div class="wall-body">
-              They don’t scroll past it. They sit with it.
-              They replay your yyovvo instead of re-reading old chats.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Most replayed</span>
-            <span class="wall-pill">Loop</span>
-          </div>
-        </article>
+      // modal preview (using hero video as demo yyovvo)
+      (function () {
+        const modal = document.getElementById("yyv-modal");
+        const closeBtn = document.getElementById("modal-close");
+        const modalLabel = document.getElementById("modal-label");
+        const modalTagline = document.getElementById("modal-tagline");
 
-        <!-- APOLOGY -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">The apology</div>
-            <div class="wall-main">“I didn’t know how to say this.”</div>
-            <div class="wall-body">
-              A yyovvo for the thing that’s too big for a text.
-              One scene, one line, one silent “I’m sorry” they can come back to when they’re ready.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Watched · 9 times</span>
-            <span class="wall-pill">Heavy</span>
-          </div>
-        </article>
+        if (!modal || !closeBtn || !modalLabel || !modalTagline) return;
 
-        <!-- INSIDE JOKE -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Inside joke</div>
-            <div class="wall-main">“Only you will get this.”</div>
-            <div class="wall-body">
-              Stupid, specific, perfect. They hear your laugh in their head every time.
-              These are the ones they show their favourite people.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Shared to 3 people</span>
-            <span class="wall-pill">Secret</span>
-          </div>
-        </article>
+        function openModal(label, tagline) {
+          modalLabel.textContent = label || "a gift from yyovvo";
+          modalTagline.textContent =
+            tagline ||
+            "imagine this scene is from the person you can’t stop thinking about.";
+          modal.classList.add("show");
+        }
 
-        <!-- FAR AWAY -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Far away</div>
-            <div class="wall-main">“I wish I was there.”</div>
-            <div class="wall-body">
-              Different city, different time zone, same snow on the screen.
-              yyovvo turns distance into something they can feel instead of just read.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Timezone offset · +3</span>
-            <span class="wall-pill">Long-distance</span>
-          </div>
-        </article>
+        function closeModal() {
+          modal.classList.remove("show");
+        }
 
-        <!-- FAMILY -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Family</div>
-            <div class="wall-main">“I don’t say this enough.”</div>
-            <div class="wall-body">
-              For the parent, the sibling, the person who never asks for anything
-              but deserves the most intentional Christmas message of the year.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Saved to favourites</span>
-            <span class="wall-pill">Home</span>
-          </div>
-        </article>
+        document.querySelectorAll(".tile").forEach((tile) => {
+          tile.addEventListener("click", () => {
+            const label = tile.getAttribute("data-label");
+            const tagline = tile.getAttribute("data-tagline");
+            openModal(label, tagline);
+          });
+        });
 
-        <!-- LAST MINUTE -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Last minute</div>
-            <div class="wall-main">“I almost forgot… then I saw this.”</div>
-            <div class="wall-body">
-              You were about to send “Merry Christmas!!” and log off.
-              Instead, you made a yyovvo in two minutes that they’ll remember for years.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>Created in 2 min</span>
-            <span class="wall-pill">Worth it</span>
-          </div>
-        </article>
-
-        <!-- SOMEONE’S FIRST -->
-        <article class="wall-card">
-          <div class="wall-card-inner">
-            <div class="wall-tag">Someone’s first</div>
-            <div class="wall-main">“No one has ever done this for me.”</div>
-            <div class="wall-body">
-              The message they screenshot. The one they keep.
-              The one that quietly rewires what Christmas feels like.
-            </div>
-          </div>
-          <div class="wall-meta">
-            <span>New favourite notification</span>
-            <span class="wall-pill">First yyovvo</span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- BOTTOM CTA -->
-    <section class="bottom-cta">
-      <div class="bottom-snow"></div>
-      <div class="bottom-inner">
-        <h2 class="bottom-title">Someone’s wall is empty right now.</h2>
-        <p class="bottom-body">
-          You could leave it that way. Or you could be the first person to put something
-          on it that actually matters. One yyovvo. One scene. One line they replay when
-          Christmas goes quiet.
-        </p>
-        <p class="bottom-heartline">
-          This isn’t content. <span>It’s a feeling with your name on it.</span>
-        </p>
-        <div class="bottom-actions">
-          <a href="https://studio.yyovvo.com" class="bottom-primary">
-            <span>Send a yyovvo</span>
-            <span>↗</span>
-          </a>
-          <a href="https://yyovvo.com" class="bottom-secondary">
-            <span>Back to homepage</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div>
-        <span class="brand">yyovvo</span> · the wall where their moments live forever.
-      </div>
-      <div class="footer-links">
-        <span>© 2025 YYOVVO Inc. USD transactions only.</span>
-        <a href="https://studio.yyovvo.com" target="_blank" rel="noopener">Open studio</a>
-      </div>
-    </footer>
-  </div>
-</div>
-</body>
+        closeBtn.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal();
+        });
+      })();
+    </script>
+  </body>
 </html>
