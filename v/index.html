@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>yyovvo – cinematic moment</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>yyovvo</title>
 
-    <!-- Base player styles (mobile outro tuning etc.) -->
+    <!-- optional external css (safe to leave) -->
     <link rel="stylesheet" href="/player/player.css" />
 
     <style>
@@ -16,12 +16,12 @@
         height: 100vh;
         overflow: hidden;
         background: #000;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont,
-          "SF Pro Text", "Segoe UI", sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
         color: #f9fafb;
       }
 
-      /* BACKGROUND VIDEO (mood + skin) */
+      /* BACKGROUND mood+skin VIDEO */
       #scene {
         position: absolute;
         inset: 0;
@@ -32,27 +32,32 @@
         transition: opacity 400ms ease;
       }
 
-      /* SELFIE VIDEO (overlaid inside the “window”) */
+      /* SELFIE VIDEO IN PERSONALITY FRAME */
       #user-video {
         position: absolute;
-        top: 16%;
+        top: 17%;
         left: 50%;
-        transform: translateX(-50%);
-        width: 64%;
+        transform: translateX(-50%) translateY(6px);
+        width: 58%;
         height: auto;
-        border-radius: 24px;
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+        border-radius: 26px;
+        border: 1px solid rgba(248, 250, 252, 0.18);
+        box-shadow:
+          0 0 26px rgba(236, 72, 153, 0.45),
+          0 0 40px rgba(56, 189, 248, 0.35),
+          0 24px 60px rgba(0, 0, 0, 0.9);
         object-fit: cover;
         opacity: 0;
         z-index: 2;
-        transition: opacity 300ms ease;
+        transition: opacity 260ms ease, transform 260ms ease;
       }
 
       #user-video.show {
         opacity: 1;
+        transform: translateX(-50%) translateY(0);
       }
 
-      /* INTRO / MAIN TEXT OVERLAYS */
+      /* INTRO / MAIN TEXT OVERLAYS (TEXT YYOVVO) */
       .overlay-text {
         position: absolute;
         inset: 0;
@@ -87,7 +92,7 @@
         color: #f9fafb;
         text-shadow: 0 0 22px rgba(0, 0, 0, 0.95);
         opacity: 0;
-        z-index: 4;
+        z-index: 3;
         transition: opacity 400ms ease;
       }
 
@@ -135,7 +140,7 @@
         padding: 24px 20px 32px;
         opacity: 0;
         pointer-events: none;
-        z-index: 5;
+        z-index: 4;
         transition: opacity 500ms ease;
       }
 
@@ -317,16 +322,40 @@
           max-width: 420px;
         }
       }
+
+      /* MOBILE TWEAKS */
+      @media (max-width: 640px) {
+        .overlay-outro {
+          padding: 0 1.5rem;
+        }
+        .overlay-outro .outro-title {
+          font-size: 24px;
+          letter-spacing: 0.16em;
+          line-height: 1.2;
+        }
+        .overlay-outro .outro-sub {
+          font-size: 12px;
+          margin-top: 6px;
+        }
+        .overlay-outro .heart {
+          font-size: 13px;
+        }
+
+        #user-video {
+          width: 68%;
+          top: 18%;
+        }
+      }
     </style>
   </head>
 
   <body>
     <div id="yyovvo-container">
-      <!-- BACKGROUND CINEMATIC (mood + skin combined) -->
+      <!-- BACKGROUND mood+skin COMBINED -->
       <video id="scene" playsinline autoplay muted></video>
 
-      <!-- SELFIE VIDEO OVERLAY -->
-      <video id="user-video" playsinline></video>
+      <!-- SELFIE VIDEO (inside frame) -->
+      <video id="user-video" playsinline muted></video>
 
       <!-- INTRO TEXT OVERLAY -->
       <div id="overlay-intro" class="overlay-text"></div>
@@ -349,12 +378,11 @@
       <div id="end-screen" class="end-screen">
         <div class="end-pulse"></div>
         <div class="end-text-block">
-          <div class="end-line1">This moment was made for you.</div>
+          <div class="end-line1">this moment was made for you.</div>
           <div class="end-line2">by someone who cares about you.</div>
         </div>
 
         <div class="end-buttons">
-          <!-- 1) Reply -->
           <a
             href="https://studio.yyovvo.com/CreateYyovvo"
             target="_blank"
@@ -364,12 +392,10 @@
             Reply with your own yyovvo
           </a>
 
-          <!-- 2) Share -->
           <button type="button" id="share-btn" class="end-btn ghost">
             Share this moment on TikTok / Instagram
           </button>
 
-          <!-- 3) Upgrade -->
           <a
             href="https://studio.yyovvo.com/upgrade"
             target="_blank"
@@ -389,10 +415,11 @@
       </div>
     </div>
 
-    <!-- INLINE PLAYER: CINEMA + BASE44 + END SCREEN -->
     <script>
       (async function () {
-        console.log("YYOVVO INLINE PLAYER v5 (Video in frame)");
+        console.log(
+          "YYOVVO INLINE PLAYER v6 (video in frame + dynamic timing)"
+        );
 
         const scene = document.getElementById("scene");
         const userVideo = document.getElementById("user-video");
@@ -403,31 +430,31 @@
         const endScreen = document.getElementById("end-screen");
         const shareBtn = document.getElementById("share-btn");
 
-        // TIMELINE (ms)
         const INTRO_START_MS = 3000;
         const INTRO_END_MS = 6000;
         const MAIN_START_MS = 6000;
-        const OUTRO_START_MS = 14000;
-        const END_SCREEN_START_MS = 18000;
 
-        // 1) BACKGROUND mood+skin VIDEO
-        const moodSkinUrl = "/videos/moodskin01.mp4";
-        scene.src = moodSkinUrl;
-        scene.loop = false;
-        scene.muted = true;
-        scene.playsInline = true;
+        let mainDurationMs = 8000;
 
-        scene.play().catch((err) => {
-          console.warn("Autoplay failed, waiting for user interaction.", err);
-        });
-
-        // DEFAULT TEXT + CONTENT
         let introText = "This moment was made for you.";
         let mainText = "Someone out there really cares about you.";
         let contentType = "text";
         let contentUrl = "";
 
-        // 2) LOAD REAL DATA FROM BASE44
+        // 1) start background moodskin
+        const moodSkinUrl = "/videos/moodskin01.mp4";
+        scene.src = moodSkinUrl;
+        scene.loop = false;
+        scene.muted = true;
+        scene.playsInline = true;
+        scene.play().catch((err) => {
+          console.warn(
+            "Autoplay failed for moodskin, waiting for user gesture.",
+            err
+          );
+        });
+
+        // 2) load data from Base44
         try {
           const params = new URLSearchParams(window.location.search);
           const id = params.get("id");
@@ -447,11 +474,7 @@
               console.log("Raw yyovvo response:", raw);
 
               let data = raw;
-              if (
-                raw &&
-                raw.data &&
-                (raw.data.fields || raw.data.record)
-              ) {
+              if (raw && raw.data && (raw.data.fields || raw.data.record)) {
                 data = raw.data.fields || raw.data.record;
               } else if (raw && raw.data) {
                 data = raw.data;
@@ -473,72 +496,80 @@
                 contentType = (data.content_type || "text").toLowerCase();
                 contentUrl = data.content_url || "";
 
-                console.log(
-                  "PARSED:",
-                  "contentType=",
+                if (data.content_duration) {
+                  let d = Number(data.content_duration);
+                  if (!Number.isNaN(d) && d > 0) {
+                    if (d < 1000) d = d * 1000;
+                    mainDurationMs = d;
+                  }
+                }
+
+                console.log("PARSED →", {
+                  introText,
+                  mainText,
                   contentType,
-                  "contentUrl=",
-                  contentUrl
-                );
+                  contentUrl,
+                  mainDurationMs,
+                });
               }
             } else {
-              console.warn(
-                "yyovvoGet failed:",
-                await res.text().catch(() => "")
-              );
+              const txt = await res.text().catch(() => "");
+              console.warn("yyovvoGet not ok:", txt);
             }
           } else {
-            console.warn("No ?id= in URL, using default emotional text.");
+            console.warn("No ?id= in URL, using defaults.");
           }
         } catch (err) {
-          console.warn("Error loading yyovvo:", err);
+          console.warn("Error loading yyovvo from Base44:", err);
         }
 
-        console.log("FINAL introText:", introText);
-        console.log("FINAL mainText:", mainText);
-        console.log("FINAL contentType:", contentType);
-        console.log("FINAL contentUrl:", contentUrl);
+        const OUTRO_START_MS = MAIN_START_MS + mainDurationMs;
+        const END_SCREEN_START_MS = OUTRO_START_MS + 4000;
 
-        // 3) INTRO 3–6s
+        console.log("FINAL TIMELINE:", {
+          INTRO_START_MS,
+          INTRO_END_MS,
+          MAIN_START_MS,
+          mainDurationMs,
+          OUTRO_START_MS,
+          END_SCREEN_START_MS,
+        });
+
+        // 3) intro 3–6s
         setTimeout(() => {
-          console.log("SHOW INTRO");
           introEl.textContent = introText;
           introEl.classList.add("show");
         }, INTRO_START_MS);
 
         setTimeout(() => {
-          console.log("HIDE INTRO");
           introEl.classList.remove("show");
         }, INTRO_END_MS);
 
-        // 4) MAIN (TEXT or VIDEO) from 6s
+        // 4) main 6s– (text or video)
         setTimeout(() => {
-          console.log("SHOW MAIN - contentType:", contentType);
+          console.log("SHOW MAIN – contentType:", contentType);
 
           if (contentType === "video" && contentUrl) {
             console.log("PLAY USER VIDEO IN FRAME:", contentUrl);
             userVideo.src = contentUrl;
-            userVideo.muted = false;
+            userVideo.muted = true; // iOS autoplay-safe
             userVideo.loop = false;
             userVideo.playsInline = true;
             userVideo.classList.add("show");
             userVideo
               .play()
               .catch((err) =>
-                console.warn("User video autoplay failed:", err)
+                console.warn("User video autoplay failed (needs tap).", err)
               );
           } else {
-            console.log("SHOW MAIN TEXT:", mainText);
             mainEl.textContent = mainText;
             mainEl.classList.add("show");
           }
         }, MAIN_START_MS);
 
-        // 5) OUTRO 14–18s
+        // 5) outro after main
         setTimeout(() => {
           console.log("SHOW OUTRO + JINGLE");
-
-          // hide any main overlays / video
           mainEl.classList.remove("show");
           userVideo.classList.remove("show");
           try {
@@ -546,7 +577,6 @@
           } catch (e) {}
 
           outroEl.classList.add("show");
-
           try {
             jingle.currentTime = 0;
             jingle.play().catch((err) => {
@@ -555,10 +585,12 @@
           } catch (e) {}
         }, OUTRO_START_MS);
 
-        // 6) FINAL END SCREEN
+        // 6) final end screen
         setTimeout(() => {
           console.log("SHOW END SCREEN");
-          scene.pause();
+          try {
+            scene.pause();
+          } catch (e) {}
           scene.style.opacity = "0";
           introEl.classList.remove("show");
           mainEl.classList.remove("show");
@@ -567,7 +599,7 @@
           endScreen.classList.add("show");
         }, END_SCREEN_START_MS);
 
-        // 7) SHARE BUTTON
+        // 7) share button
         if (shareBtn) {
           shareBtn.addEventListener("click", async () => {
             const shareUrl = window.location.href;
@@ -582,10 +614,10 @@
                   url: shareUrl,
                 });
               } catch (err) {
-                console.warn("Native share cancelled/failed:", err);
+                console.warn("Native share cancelled or failed:", err);
               }
             } else {
-              alert("Share this link:\n\n" + shareUrl);
+              alert("Share this moment with this link:\n\n" + shareUrl);
             }
           });
         }
