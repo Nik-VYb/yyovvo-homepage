@@ -68,18 +68,16 @@
         width: 85%;
         max-width: 380px;
         aspect-ratio: 9/16;
-        border-radius: 44px; /* SQUIRCLE */
+        border-radius: 44px;
         overflow: hidden;
         z-index: 2;
         opacity: 0;
         transition: opacity 600ms ease;
         
-        /* Premium frosted glass frame */
         background: rgba(15, 23, 42, 0.3);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         
-        /* Dynamic glow border - uses CSS variables for personality */
         --frame-glow-1: rgba(236, 72, 153, 0.4);
         --frame-glow-2: rgba(56, 189, 248, 0.3);
         --frame-border: rgba(255, 255, 255, 0.15);
@@ -103,7 +101,6 @@
         50% { transform: translate(-50%, -50%) scale(1.008); }
       }
 
-      /* Dynamic Christmas light border */
       #user-video-frame::before {
         content: "";
         position: absolute;
@@ -130,7 +127,6 @@
         100% { background-position: 0% 50%; opacity: 0.5; }
       }
 
-      /* Vignette overlay on video */
       #user-video-frame::after {
         content: "";
         position: absolute;
@@ -149,7 +145,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 42px; /* Match squircle */
+        border-radius: 42px;
         display: block;
       }
 
@@ -208,7 +204,7 @@
         --frame-glow-2: rgba(22, 163, 74, 0.3);
       }
 
-      /* LENS GLOW OVERLAY - ENHANCED FESTIVE */
+      /* LENS GLOW OVERLAY */
       #lens-overlay {
         position: absolute;
         inset: 0;
@@ -224,7 +220,6 @@
         opacity: 0.85;
       }
 
-      /* Faux film grain */
       #lens-overlay::after {
         content: "";
         position: absolute;
@@ -258,7 +253,7 @@
         opacity: 1;
       }
 
-      /* OUTRO (yyovvo + tagline) */
+      /* OUTRO */
       .overlay-outro {
         position: absolute;
         inset: 0;
@@ -302,24 +297,34 @@
         50% { transform: scale(1.16); opacity: 1; }
       }
 
-      /* TAP TO UNMUTE */
+      /* TAP TO UNMUTE - BOLD RED */
       #tap-to-unmute {
         position: fixed;
         bottom: 24px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(220, 38, 38, 0.95);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.4);
         border-radius: 999px;
-        padding: 12px 24px;
-        font-size: 14px;
+        padding: 14px 28px;
+        font-size: 16px;
+        font-weight: 700;
         color: #fff;
         cursor: pointer;
         z-index: 100;
         opacity: 0;
         transition: opacity 300ms ease;
+        box-shadow: 
+          0 0 30px rgba(220, 38, 38, 0.7),
+          0 0 60px rgba(220, 38, 38, 0.4);
+        animation: unmutePulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes unmutePulse {
+        0%, 100% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.05); }
       }
 
       #tap-to-unmute.show {
@@ -517,10 +522,10 @@
 
   <body>
     <div id="yyovvo-container">
-      <!-- BACKGROUND VIDEO (mood skin / outro snow) -->
+      <!-- BACKGROUND VIDEO -->
       <video id="bg-scene" playsinline autoplay muted loop></video>
 
-      <!-- USER VIDEO IN PREMIUM SQUIRCLE FRAME -->
+      <!-- USER VIDEO FRAME -->
       <div id="user-video-frame">
         <video id="user-video" playsinline></video>
       </div>
@@ -534,10 +539,10 @@
       <!-- INTRO TEXT OVERLAY -->
       <div id="overlay-intro" class="overlay-text"></div>
 
-      <!-- MAIN MESSAGE TEXT OVERLAY (for text-mode yyovvos) -->
+      <!-- MAIN MESSAGE TEXT OVERLAY -->
       <div id="overlay-main-text" class="overlay-text"></div>
 
-      <!-- OUTRO OVERLAY (yyovvo + tagline) -->
+      <!-- OUTRO OVERLAY -->
       <div id="overlay-outro" class="overlay-outro">
         <div class="outro-title">yyovvo</div>
         <div class="outro-sub">
@@ -545,16 +550,16 @@
         </div>
       </div>
 
-      <!-- TAP TO UNMUTE -->
-      <button id="tap-to-unmute">🔊 Tap to unmute</button>
+      <!-- TAP TO UNMUTE - BOLD RED -->
+      <button id="tap-to-unmute">🔊 TAP TO UNMUTE</button>
 
-      <!-- SUBTLE BELLS LOOP (ADDED) -->
+      <!-- SUBTLE BELLS LOOP -->
       <audio id="subtle-bells" src="/audio/subtle-bells-loop.mp3" loop></audio>
 
       <!-- OUTRO JINGLE -->
       <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
 
-      <!-- FINAL POST-YYOVVO END SCREEN -->
+      <!-- FINAL END SCREEN -->
       <div id="end-screen" class="end-screen">
         <div class="end-pulse"></div>
         <div class="end-text-block">
@@ -564,7 +569,7 @@
 
         <div class="end-buttons">
           <a
-            href__="https://studio.yyovvo.com/CreateYyovvo"
+            href__="https://yyovvo.com/CreateYyovvo"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn primary"
@@ -577,7 +582,7 @@
           </button>
 
           <a
-            href__="https://studio.yyovvo.com/upgrade"
+            href__="https://yyovvo.com/Pro"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn outline"
@@ -595,7 +600,7 @@
 
     <script>
       (async function () {
-        console.log("yyovvo cinematic player v3 — squircle frame + personality tones + snow dust");
+        console.log("yyovvo cinematic player v3.1 — red unmute + bells + fixed CTAs");
 
         const bgScene = document.getElementById("bg-scene");
         const userVideoFrame = document.getElementById("user-video-frame");
@@ -678,12 +683,12 @@
         document.addEventListener("click", enableAudio, { once: true });
         document.addEventListener("touchstart", enableAudio, { once: true });
 
-        // CHANGE 1: Show unmute button immediately on page load
+        // Show unmute button immediately on page load
         setTimeout(() => {
           tapToUnmute.classList.add("show");
         }, 500);
 
-        // CHANGE 2: Try to autoplay subtle bells at low volume (may be blocked until interaction)
+        // Try to autoplay subtle bells at low volume
         try {
           subtleBells.volume = 0.12;
           subtleBells.play().catch(() => {
@@ -763,7 +768,822 @@
           bgScene.loop = true;
           bgScene.play().catch(() => {});
 
-          // Hide snow dust during outro (let the outro-snow video do the snow effect)
+          // Hide snow dust during outro
+          snowDust.style.opacity = "0";
+
+          // Show outro overlay
+          outroEl.classList.add("show");
+
+          // Play jingle
+          try {
+            jingle.currentTime = 0;
+            jingle.play().catch(() => {});
+          } catch (e) {}
+
+          // After outro duration, show end screen
+          setTimeout(() => {
+            console.log("END SCREEN");
+            bgScene.pause();
+            bgScene.style.opacity = "0.3";
+            outroEl.classList.remove("show");
+            endScreen.classList.add("show");
+          }, OUTRO_DURATION_MS);
+        }
+
+        // 7) Share button
+        if (shareBtn) {
+          shareBtn.addEventListener("click", async () => {
+            const shareUrl = window.location.href;
+            const shareText = "Someone made this yyovvo moment just for me. 💌";
+
+            if (navigator.share) {
+              try {
+                await navigator.share({
+                  title: "yyovvo — designed for emotion",
+                  text: shareText,
+                  url: shareUrl,
+                });
+              } catch (err) {}
+            } else {
+              navigator.clipboard.writeText(shareUrl);
+              alert("Link copied!");
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>yyovvo — designed for emotion</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <style>
+      /* ROOT */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+        overflow: hidden;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+        color: #f9fafb;
+      }
+
+      #yyovvo-container {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        overflow: hidden;
+      }
+
+      /* SNOW DUST PARTICLES */
+      #snow-dust {
+        position: absolute;
+        inset: 0;
+        z-index: 6;
+        pointer-events: none;
+        opacity: 0.7;
+        background-image:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FFFFFF' opacity='0.8'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='1.2' fill='%23FFFDD0' opacity='0.5'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='0.8' fill='%23E0F7FF' opacity='0.6'/%3E%3C/svg%3E");
+        background-size: 80px 80px, 120px 120px, 60px 60px;
+        animation: snowFall 25s linear infinite;
+        mix-blend-mode: screen;
+      }
+
+      @keyframes snowFall {
+        0% { background-position: 0px 0px, 50px 0px, 25px 0px; }
+        100% { background-position: 100px 800px, -50px 600px, 75px 700px; }
+      }
+
+      /* BACKGROUND VIDEO LAYER (mood skin) */
+      #bg-scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: #000;
+        transition: opacity 400ms ease;
+        filter: brightness(0.7) contrast(1.05) saturate(1.1);
+        z-index: 1;
+      }
+
+      /* USER VIDEO FRAME - PREMIUM SQUIRCLE STYLING */
+      #user-video-frame {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        max-width: 380px;
+        aspect-ratio: 9/16;
+        border-radius: 44px;
+        overflow: hidden;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 600ms ease;
+        
+        background: rgba(15, 23, 42, 0.3);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        
+        --frame-glow-1: rgba(236, 72, 153, 0.4);
+        --frame-glow-2: rgba(56, 189, 248, 0.3);
+        --frame-border: rgba(255, 255, 255, 0.15);
+        
+        border: 2px solid var(--frame-border);
+        box-shadow: 
+          0 0 0 1px var(--frame-glow-1),
+          0 0 40px var(--frame-glow-1),
+          0 0 80px var(--frame-glow-2),
+          0 25px 50px rgba(0, 0, 0, 0.5),
+          inset 0 0 30px rgba(255, 255, 255, 0.05);
+      }
+
+      #user-video-frame.show {
+        opacity: 1;
+        animation: frameBreathing 4s ease-in-out infinite;
+      }
+
+      @keyframes frameBreathing {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.008); }
+      }
+
+      #user-video-frame::before {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        border-radius: 47px;
+        background: linear-gradient(
+          135deg,
+          var(--frame-color-1, rgba(250, 204, 107, 0.6)),
+          var(--frame-color-2, rgba(236, 72, 153, 0.6)),
+          var(--frame-color-3, rgba(56, 189, 248, 0.6)),
+          var(--frame-color-4, rgba(34, 197, 94, 0.5))
+        );
+        background-size: 300% 300%;
+        z-index: -1;
+        opacity: 0.7;
+        animation: christmasLightGlow 6s ease-in-out infinite;
+      }
+
+      @keyframes christmasLightGlow {
+        0% { background-position: 0% 50%; opacity: 0.5; }
+        25% { background-position: 50% 100%; opacity: 0.8; }
+        50% { background-position: 100% 50%; opacity: 0.6; }
+        75% { background-position: 50% 0%; opacity: 0.9; }
+        100% { background-position: 0% 50%; opacity: 0.5; }
+      }
+
+      #user-video-frame::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 42px;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 50%,
+          rgba(0, 0, 0, 0.35) 100%
+        );
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      #user-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 42px;
+        display: block;
+      }
+
+      /* PERSONALITY FRAME TONES */
+      #user-video-frame.tone-classic {
+        --frame-color-1: rgba(250, 204, 107, 0.7);
+        --frame-color-2: rgba(249, 115, 22, 0.6);
+        --frame-color-3: rgba(250, 204, 107, 0.5);
+        --frame-color-4: rgba(234, 179, 8, 0.6);
+        --frame-glow-1: rgba(250, 204, 107, 0.5);
+        --frame-glow-2: rgba(249, 115, 22, 0.3);
+      }
+
+      #user-video-frame.tone-funny {
+        --frame-color-1: rgba(168, 85, 247, 0.7);
+        --frame-color-2: rgba(236, 72, 153, 0.7);
+        --frame-color-3: rgba(139, 92, 246, 0.6);
+        --frame-color-4: rgba(168, 85, 247, 0.5);
+        --frame-glow-1: rgba(168, 85, 247, 0.5);
+        --frame-glow-2: rgba(236, 72, 153, 0.4);
+      }
+
+      #user-video-frame.tone-shadow {
+        --frame-color-1: rgba(251, 113, 133, 0.7);
+        --frame-color-2: rgba(236, 72, 153, 0.6);
+        --frame-color-3: rgba(244, 114, 182, 0.5);
+        --frame-color-4: rgba(251, 113, 133, 0.6);
+        --frame-glow-1: rgba(251, 113, 133, 0.5);
+        --frame-glow-2: rgba(236, 72, 153, 0.3);
+      }
+
+      #user-video-frame.tone-modern {
+        --frame-color-1: rgba(56, 189, 248, 0.7);
+        --frame-color-2: rgba(14, 165, 233, 0.6);
+        --frame-color-3: rgba(125, 211, 252, 0.5);
+        --frame-color-4: rgba(56, 189, 248, 0.6);
+        --frame-glow-1: rgba(56, 189, 248, 0.5);
+        --frame-glow-2: rgba(14, 165, 233, 0.3);
+      }
+
+      #user-video-frame.tone-intense {
+        --frame-color-1: rgba(249, 115, 22, 0.7);
+        --frame-color-2: rgba(234, 88, 12, 0.7);
+        --frame-color-3: rgba(251, 146, 60, 0.5);
+        --frame-color-4: rgba(249, 115, 22, 0.6);
+        --frame-glow-1: rgba(249, 115, 22, 0.5);
+        --frame-glow-2: rgba(234, 88, 12, 0.4);
+      }
+
+      #user-video-frame.tone-rebel {
+        --frame-color-1: rgba(34, 197, 94, 0.7);
+        --frame-color-2: rgba(22, 163, 74, 0.6);
+        --frame-color-3: rgba(74, 222, 128, 0.5);
+        --frame-color-4: rgba(34, 197, 94, 0.6);
+        --frame-glow-1: rgba(34, 197, 94, 0.5);
+        --frame-glow-2: rgba(22, 163, 74, 0.3);
+      }
+
+      /* LENS GLOW OVERLAY */
+      #lens-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 3;
+        background:
+          radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.35), transparent 55%),
+          radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.38), transparent 55%),
+          radial-gradient(circle at 50% 100%, rgba(250, 204, 107, 0.28), transparent 60%),
+          radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.2), transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.75), transparent 80%);
+        mix-blend-mode: screen;
+        opacity: 0.85;
+      }
+
+      #lens-overlay::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.12;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+        mix-blend-mode: soft-light;
+      }
+
+      /* TEXT OVERLAYS */
+      .overlay-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        text-align: center;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #f9fafb;
+        text-shadow:
+          0 0 18px rgba(0, 0, 0, 0.9),
+          0 0 30px rgba(0, 0, 0, 0.9);
+        opacity: 0;
+        z-index: 7;
+        transition: opacity 320ms ease;
+      }
+
+      .overlay-text.show {
+        opacity: 1;
+      }
+
+      /* OUTRO */
+      .overlay-outro {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-align: center;
+        color: #f9fafb;
+        text-shadow:
+          0 0 18px rgba(0, 0, 0, 0.95),
+          0 0 30px rgba(0, 0, 0, 0.95);
+        opacity: 0;
+        z-index: 8;
+        transition: opacity 400ms ease;
+      }
+
+      .overlay-outro.show {
+        opacity: 1;
+      }
+
+      .outro-title {
+        font-size: 2.2rem;
+        letter-spacing: 0.18em;
+        text-transform: lowercase;
+      }
+
+      .outro-sub {
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .heart {
+        display: inline-block;
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.16); opacity: 1; }
+      }
+
+      /* TAP TO UNMUTE - BOLD RED */
+      #tap-to-unmute {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(220, 38, 38, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 999px;
+        padding: 14px 28px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0;
+        transition: opacity 300ms ease;
+        box-shadow: 
+          0 0 30px rgba(220, 38, 38, 0.7),
+          0 0 60px rgba(220, 38, 38, 0.4);
+        animation: unmutePulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes unmutePulse {
+        0%, 100% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.05); }
+      }
+
+      #tap-to-unmute.show {
+        opacity: 1;
+      }
+
+      #tap-to-unmute.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* FINAL END SCREEN */
+      .end-screen {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, #020617, #000);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 26px 22px 34px;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 10;
+        transition: opacity 500ms ease;
+      }
+
+      .end-screen.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .end-pulse {
+        width: 170px;
+        height: 170px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle at center,
+          rgba(236, 72, 153, 0.45),
+          transparent 70%
+        );
+        opacity: 0.75;
+        filter: blur(14px);
+        animation: endPulseGlow 2.4s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes endPulseGlow {
+        0%, 100% { transform: scale(0.9); opacity: 0.7; }
+        50% { transform: scale(1.08); opacity: 0.95; }
+      }
+
+      .end-text-block {
+        position: relative;
+        margin-top: -44px;
+        text-align: center;
+        max-width: 330px;
+      }
+
+      .end-line1 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .end-line2 {
+        font-size: 0.95rem;
+        opacity: 0.86;
+      }
+
+      .end-buttons {
+        margin-top: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 360px;
+      }
+
+      .end-btn {
+        border-radius: 999px;
+        border: 1px solid rgba(156, 163, 175, 0.55);
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-align: center;
+        text-decoration: none;
+        color: #f9fafb;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+      }
+
+      .end-btn.primary {
+        background: radial-gradient(
+          circle at top left,
+          rgba(236, 72, 153, 0.95),
+          rgba(59, 130, 246, 0.95)
+        );
+        border-color: transparent;
+        box-shadow: 0 0 32px rgba(236, 72, 153, 0.5);
+      }
+
+      .end-btn.ghost {
+        background: rgba(15, 23, 42, 0.92);
+      }
+
+      .end-btn.outline {
+        background: transparent;
+        border-color: rgba(148, 163, 184, 0.8);
+        opacity: 0.9;
+      }
+
+      .end-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.9);
+      }
+
+      .end-btn.primary:hover {
+        box-shadow: 0 0 40px rgba(236, 72, 153, 0.8);
+      }
+
+      .end-footer {
+        margin-top: 22px;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0;
+        animation: footerIn 800ms ease forwards 900ms;
+      }
+
+      .end-heart {
+        font-size: 0.9rem;
+      }
+
+      @keyframes footerIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (min-width: 768px) {
+        #user-video-frame {
+          max-width: 420px;
+        }
+        .end-text-block {
+          max-width: 420px;
+        }
+        .end-line1 {
+          font-size: 1.25rem;
+        }
+        .end-line2 {
+          font-size: 1rem;
+        }
+        .end-buttons {
+          max-width: 420px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        #user-video-frame {
+          width: 90%;
+          max-width: 320px;
+          border-radius: 36px;
+        }
+        #user-video-frame::before {
+          border-radius: 39px;
+        }
+        #user-video-frame::after {
+          border-radius: 34px;
+        }
+        #user-video {
+          border-radius: 34px;
+        }
+        .overlay-outro {
+          padding: 0 1.5rem;
+        }
+        .overlay-outro .outro-title {
+          font-size: 24px;
+          letter-spacing: 0.16em;
+        }
+        .overlay-outro .outro-sub {
+          font-size: 12px;
+          margin-top: 6px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="yyovvo-container">
+      <!-- BACKGROUND VIDEO -->
+      <video id="bg-scene" playsinline autoplay muted loop></video>
+
+      <!-- USER VIDEO FRAME -->
+      <div id="user-video-frame">
+        <video id="user-video" playsinline></video>
+      </div>
+
+      <!-- LENS GLOW OVERLAY -->
+      <div id="lens-overlay"></div>
+
+      <!-- SNOW DUST PARTICLES -->
+      <div id="snow-dust"></div>
+
+      <!-- INTRO TEXT OVERLAY -->
+      <div id="overlay-intro" class="overlay-text"></div>
+
+      <!-- MAIN MESSAGE TEXT OVERLAY -->
+      <div id="overlay-main-text" class="overlay-text"></div>
+
+      <!-- OUTRO OVERLAY -->
+      <div id="overlay-outro" class="overlay-outro">
+        <div class="outro-title">yyovvo</div>
+        <div class="outro-sub">
+          designed for emotion <span class="heart">♡</span>
+        </div>
+      </div>
+
+      <!-- TAP TO UNMUTE - BOLD RED -->
+      <button id="tap-to-unmute">🔊 TAP TO UNMUTE</button>
+
+      <!-- SUBTLE BELLS LOOP -->
+      <audio id="subtle-bells" src="/audio/subtle-bells-loop.mp3" loop></audio>
+
+      <!-- OUTRO JINGLE -->
+      <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
+
+      <!-- FINAL END SCREEN -->
+      <div id="end-screen" class="end-screen">
+        <div class="end-pulse"></div>
+        <div class="end-text-block">
+          <div class="end-line1">this moment was made for you.</div>
+          <div class="end-line2">by someone who really cares about you.</div>
+        </div>
+
+        <div class="end-buttons">
+          <a
+            href__="https://yyovvo.com/CreateYyovvo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="end-btn primary"
+          >
+            reply with your own yyovvo
+          </a>
+
+          <button type="button" id="share-btn" class="end-btn ghost">
+            share this moment on tiktok / instagram
+          </button>
+
+          <a
+            href__="https://yyovvo.com/Pro"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="end-btn outline"
+          >
+            unlock all yyovvo features
+          </a>
+        </div>
+
+        <div class="end-footer">
+          <span class="end-heart">❤️</span>
+          <span id="yyovvo-counter">2,777,777 yyovvos sent this season</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (async function () {
+        console.log("yyovvo cinematic player v3.1 — red unmute + bells + fixed CTAs");
+
+        const bgScene = document.getElementById("bg-scene");
+        const userVideoFrame = document.getElementById("user-video-frame");
+        const userVideo = document.getElementById("user-video");
+        const introEl = document.getElementById("overlay-intro");
+        const mainEl = document.getElementById("overlay-main-text");
+        const outroEl = document.getElementById("overlay-outro");
+        const jingle = document.getElementById("yyo-jingle");
+        const subtleBells = document.getElementById("subtle-bells");
+        const endScreen = document.getElementById("end-screen");
+        const shareBtn = document.getElementById("share-btn");
+        const tapToUnmute = document.getElementById("tap-to-unmute");
+        const snowDust = document.getElementById("snow-dust");
+
+        // TIMELINE
+        const INTRO_START_MS = 2500;
+        const INTRO_END_MS = 5500;
+        const MAIN_START_MS = 6000;
+        const OUTRO_DURATION_MS = 4000;
+
+        // State
+        let contentType = "text";
+        let contentUrl = "";
+        let introText = "this moment was made for you.";
+        let mainText = "someone out there really cares about you.";
+        let personalityTone = "";
+        let hasUserInteracted = false;
+
+        // 1) Start mood skin background
+        bgScene.src = "/videos/moodskin01.mp4";
+        bgScene.loop = true;
+        bgScene.muted = true;
+        bgScene.play().catch(() => {});
+
+        // 2) Load data from Base44
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const id = params.get("id");
+
+          if (id) {
+            const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(id)}`;
+            const res = await fetch(url);
+
+            if (res.ok) {
+              const data = await res.json();
+              console.log("yyovvo data:", data);
+
+              introText = data.intro_text || introText;
+              mainText = data.content_text || mainText;
+              contentType = (data.content_type || "text").toLowerCase();
+              contentUrl = data.content_url || "";
+              personalityTone = data.personality_tone || "";
+
+              console.log("contentType:", contentType, "contentUrl:", contentUrl, "personalityTone:", personalityTone);
+            }
+          }
+        } catch (err) {
+          console.warn("Error loading yyovvo:", err);
+        }
+
+        // 3) Handle unmute on tap
+        function enableAudio() {
+          if (hasUserInteracted) return;
+          hasUserInteracted = true;
+          tapToUnmute.classList.remove("show");
+          tapToUnmute.classList.add("hidden");
+          
+          if (contentType === "video" && userVideo.src) {
+            userVideo.muted = false;
+          }
+
+          // Start subtle bells on interaction
+          try {
+            subtleBells.volume = 0.12;
+            subtleBells.play().catch(() => {});
+          } catch (e) {}
+        }
+
+        tapToUnmute.addEventListener("click", enableAudio);
+        document.addEventListener("click", enableAudio, { once: true });
+        document.addEventListener("touchstart", enableAudio, { once: true });
+
+        // Show unmute button immediately on page load
+        setTimeout(() => {
+          tapToUnmute.classList.add("show");
+        }, 500);
+
+        // Try to autoplay subtle bells at low volume
+        try {
+          subtleBells.volume = 0.12;
+          subtleBells.play().catch(() => {
+            console.log("Bells autoplay blocked, will play on interaction");
+          });
+        } catch (e) {}
+
+        // 4) Show intro text
+        setTimeout(() => {
+          introEl.textContent = introText;
+          introEl.classList.add("show");
+        }, INTRO_START_MS);
+
+        setTimeout(() => {
+          introEl.classList.remove("show");
+        }, INTRO_END_MS);
+
+        // 5) Main content start
+        setTimeout(() => {
+          if (contentType === "video" && contentUrl) {
+            console.log("Playing user video:", contentUrl);
+            
+            // Apply personality tone class for dynamic frame styling
+            if (personalityTone) {
+              const toneClass = "tone-" + personalityTone.toLowerCase().replace(/[^a-z0-9]/g, '');
+              userVideoFrame.classList.add(toneClass);
+              console.log("Applied frame tone:", toneClass);
+            }
+            
+            // Show the premium squircle frame
+            userVideoFrame.classList.add("show");
+            
+            // Load and play video
+            userVideo.src = contentUrl;
+            userVideo.muted = !hasUserInteracted;
+            userVideo.playsInline = true;
+            
+            userVideo.play().then(() => {
+              // Unmute button already shown from page start
+            }).catch(err => {
+              console.warn("Video autoplay failed:", err);
+            });
+
+            // Wait for video to END before showing outro
+            userVideo.addEventListener("ended", () => {
+              console.log("User video ended, triggering outro");
+              triggerOutro();
+            }, { once: true });
+
+          } else {
+            // TEXT MODE
+            mainEl.textContent = mainText;
+            mainEl.classList.add("show");
+
+            // For text, use a fixed duration
+            setTimeout(() => {
+              mainEl.classList.remove("show");
+              triggerOutro();
+            }, 6000);
+          }
+        }, MAIN_START_MS);
+
+        // 6) Outro function
+        function triggerOutro() {
+          console.log("OUTRO START");
+
+          // Hide video frame
+          userVideoFrame.classList.remove("show");
+
+          // Pause subtle bells during outro
+          try {
+            subtleBells.pause();
+          } catch (e) {}
+
+          // Switch background to outro snow
+          bgScene.src = "/videos/outro-snow.mp4";
+          bgScene.loop = true;
+          bgScene.play().catch(() => {});
+
+          // Hide snow dust during outro
           snowDust.style.opacity = "0";
 
           // Show outro overlay
