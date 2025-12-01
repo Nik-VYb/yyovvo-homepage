@@ -320,12 +320,15 @@
         z-index: 100;
         opacity: 0;
         transition: opacity 300ms ease;
-        display: none;
       }
 
       #tap-to-unmute.show {
-        display: block;
         opacity: 1;
+      }
+
+      #tap-to-unmute.hidden {
+        opacity: 0;
+        pointer-events: none;
       }
 
       /* FINAL END SCREEN */
@@ -545,6 +548,9 @@
       <!-- TAP TO UNMUTE -->
       <button id="tap-to-unmute">🔊 Tap to unmute</button>
 
+      <!-- SUBTLE BELLS LOOP (ADDED) -->
+      <audio id="subtle-bells" src="/audio/subtle-bells-loop.mp3" loop></audio>
+
       <!-- OUTRO JINGLE -->
       <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
 
@@ -598,6 +604,7 @@
         const mainEl = document.getElementById("overlay-main-text");
         const outroEl = document.getElementById("overlay-outro");
         const jingle = document.getElementById("yyo-jingle");
+        const subtleBells = document.getElementById("subtle-bells");
         const endScreen = document.getElementById("end-screen");
         const shareBtn = document.getElementById("share-btn");
         const tapToUnmute = document.getElementById("tap-to-unmute");
@@ -654,15 +661,35 @@
           if (hasUserInteracted) return;
           hasUserInteracted = true;
           tapToUnmute.classList.remove("show");
+          tapToUnmute.classList.add("hidden");
           
           if (contentType === "video" && userVideo.src) {
             userVideo.muted = false;
           }
+
+          // Start subtle bells on interaction
+          try {
+            subtleBells.volume = 0.12;
+            subtleBells.play().catch(() => {});
+          } catch (e) {}
         }
 
         tapToUnmute.addEventListener("click", enableAudio);
         document.addEventListener("click", enableAudio, { once: true });
         document.addEventListener("touchstart", enableAudio, { once: true });
+
+        // CHANGE 1: Show unmute button immediately on page load
+        setTimeout(() => {
+          tapToUnmute.classList.add("show");
+        }, 500);
+
+        // CHANGE 2: Try to autoplay subtle bells at low volume (may be blocked until interaction)
+        try {
+          subtleBells.volume = 0.12;
+          subtleBells.play().catch(() => {
+            console.log("Bells autoplay blocked, will play on interaction");
+          });
+        } catch (e) {}
 
         // 4) Show intro text
         setTimeout(() => {
@@ -695,12 +722,9 @@
             userVideo.playsInline = true;
             
             userVideo.play().then(() => {
-              if (!hasUserInteracted) {
-                tapToUnmute.classList.add("show");
-              }
+              // Unmute button already shown from page start
             }).catch(err => {
               console.warn("Video autoplay failed:", err);
-              tapToUnmute.classList.add("show");
             });
 
             // Wait for video to END before showing outro
@@ -728,6 +752,11 @@
 
           // Hide video frame
           userVideoFrame.classList.remove("show");
+
+          // Pause subtle bells during outro
+          try {
+            subtleBells.pause();
+          } catch (e) {}
 
           // Switch background to outro snow
           bgScene.src = "/videos/outro-snow.mp4";
