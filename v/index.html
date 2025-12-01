@@ -1,17 +1,6 @@
-/**
- * YYOVVO CINEMATIC PLAYER v4
- * 
- * Copy this entire HTML code and deploy to Cloudflare at /v/index.html
- * 
- * Features:
- * - Subtle personality particles (3 random variations per tone)
- * - Bold red "TAP TO UNMUTE" button
- * - Playful Pacifico font tagline in electric pink
- * - Subtle background bells at 12% volume
- * - Premium squircle video frame with Christmas lights
- */
+import React from 'react';
 
-export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
+const HTML_CODE = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -43,14 +32,19 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
         overflow: hidden;
       }
 
-      /* PARTICLE EFFECTS - SUBTLE */
+      /* PARTICLE EFFECTS - SUBTLE - OVER VIDEO */
       #particles {
         position: absolute;
         inset: 0;
-        z-index: 6;
+        z-index: 4;
         pointer-events: none;
-        opacity: 0.35;
+        opacity: 0;
         mix-blend-mode: screen;
+        transition: opacity 1200ms ease;
+      }
+
+      #particles.show {
+        opacity: 0.35;
       }
 
       /* CLASSIC (GOLD) - Golden Twinkles */
@@ -323,7 +317,7 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
         overflow: hidden;
         z-index: 2;
         opacity: 0;
-        transition: opacity 600ms ease;
+        transition: opacity 800ms ease;
         
         /* Premium frosted glass frame */
         background: rgba(15, 23, 42, 0.3);
@@ -459,12 +453,12 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
         --frame-glow-2: rgba(22, 163, 74, 0.3);
       }
 
-      /* LENS GLOW OVERLAY - ENHANCED FESTIVE */
+      /* LENS GLOW OVERLAY - ENHANCED FESTIVE - NOW OVER VIDEO */
       #lens-overlay {
         position: absolute;
         inset: 0;
         pointer-events: none;
-        z-index: 3;
+        z-index: 5;
         background:
           radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.35), transparent 55%),
           radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.38), transparent 55%),
@@ -502,7 +496,7 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
           0 0 30px rgba(0, 0, 0, 0.9);
         opacity: 0;
         z-index: 7;
-        transition: opacity 320ms ease;
+        transition: opacity 600ms ease;
       }
 
       .overlay-text.show {
@@ -525,7 +519,7 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
           0 0 30px rgba(0, 0, 0, 0.95);
         opacity: 0;
         z-index: 8;
-        transition: opacity 400ms ease;
+        transition: opacity 800ms ease;
       }
 
       .overlay-outro.show {
@@ -576,12 +570,12 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
         cursor: pointer;
         z-index: 100;
         opacity: 0;
-        transition: opacity 300ms ease, transform 150ms ease;
-        display: none;
+        transition: opacity 600ms ease, transform 150ms ease;
         box-shadow: 
           0 0 30px rgba(220, 38, 38, 0.7),
           0 0 60px rgba(220, 38, 38, 0.4);
         animation: unmutePulse 1.5s ease-in-out infinite;
+        pointer-events: none;
       }
 
       @keyframes unmutePulse {
@@ -594,8 +588,13 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
       }
 
       #tap-to-unmute.show {
-        display: block;
         opacity: 1;
+        pointer-events: auto;
+      }
+
+      #tap-to-unmute.hidden {
+        opacity: 0;
+        pointer-events: none;
       }
 
       /* FINAL END SCREEN */
@@ -611,7 +610,7 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
         opacity: 0;
         pointer-events: none;
         z-index: 10;
-        transition: opacity 500ms ease;
+        transition: opacity 800ms ease;
       }
 
       .end-screen.show {
@@ -932,14 +931,20 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
           console.warn("Error loading yyovvo:", err);
         }
 
-        // Apply personality particles (random variation)
+        // Apply personality particles (random variation) with fade in
         applyParticles(personalityTone);
+        setTimeout(function() {
+          particles.classList.add("show");
+        }, 800);
 
         // 3) Handle unmute on tap
         function enableAudio() {
           if (hasUserInteracted) return;
           hasUserInteracted = true;
+          
+          // Fade out unmute button
           tapToUnmute.classList.remove("show");
+          tapToUnmute.classList.add("hidden");
           
           if (contentType === "video" && userVideo.src) {
             userVideo.muted = false;
@@ -955,6 +960,11 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
         tapToUnmute.addEventListener("click", enableAudio);
         document.addEventListener("click", enableAudio, { once: true });
         document.addEventListener("touchstart", enableAudio, { once: true });
+
+        // Show unmute button immediately on page load (fade in)
+        setTimeout(function() {
+          tapToUnmute.classList.add("show");
+        }, 500);
 
         // Try to autoplay bells at very low volume (may be blocked)
         try {
@@ -995,12 +1005,9 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
             userVideo.playsInline = true;
             
             userVideo.play().then(function() {
-              if (!hasUserInteracted) {
-                tapToUnmute.classList.add("show");
-              }
+              // Unmute button already shown from page start
             }).catch(function(err) {
               console.warn("Video autoplay failed:", err);
-              tapToUnmute.classList.add("show");
             });
 
             // Wait for video to END before showing outro
@@ -1040,8 +1047,7 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
           bgScene.play().catch(function() {});
 
           // Fade out particles during outro
-          particles.style.opacity = "0";
-          particles.style.transition = "opacity 500ms ease";
+          particles.classList.remove("show");
 
           // Show outro overlay
           outroEl.classList.add("show");
@@ -1083,28 +1089,69 @@ export const CINEMATIC_PLAYER_HTML = `<!DOCTYPE html>
           });
         }
       })();
-    </script>
+    <\/script>
   </body>
 </html>`;
 
-export default function CinematicPlayerHTML() {
+export default function PlayerCode() {
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(HTML_CODE);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div style={{ padding: 20, background: '#1e293b', color: '#f9fafb', minHeight: '100vh' }}>
-      <h1 style={{ marginBottom: 16 }}>Cinematic Player HTML Code</h1>
-      <p style={{ marginBottom: 16, color: '#9ca3af' }}>
-        Copy this code and deploy to Cloudflare at <code>/v/index.html</code>
-      </p>
-      <pre style={{ 
-        background: '#020617', 
-        padding: 16, 
-        borderRadius: 8, 
-        overflow: 'auto',
-        maxHeight: '70vh',
-        fontSize: 12,
-        lineHeight: 1.4
-      }}>
-        {CINEMATIC_PLAYER_HTML}
-      </pre>
+    <div style={{ 
+      padding: 24, 
+      background: '#0f172a', 
+      color: '#f9fafb', 
+      minHeight: '100vh',
+      fontFamily: 'system-ui, sans-serif'
+    }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <h1 style={{ marginBottom: 8, fontSize: 24 }}>Cinematic Player v4 - HTML Code</h1>
+        <p style={{ marginBottom: 20, color: '#9ca3af', fontSize: 14 }}>
+          Copy this code and deploy to Cloudflare at <code style={{ background: '#1e293b', padding: '2px 6px', borderRadius: 4 }}>/v/index.html</code>
+        </p>
+        
+        <button
+          onClick={handleCopy}
+          style={{
+            background: copied ? '#22c55e' : '#ec4899',
+            color: 'white',
+            border: 'none',
+            padding: '12px 24px',
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+            marginBottom: 16
+          }}
+        >
+          {copied ? '✓ Copied!' : 'Copy Full HTML Code'}
+        </button>
+
+        <div style={{ 
+          background: '#020617', 
+          padding: 16, 
+          borderRadius: 8, 
+          overflow: 'auto',
+          maxHeight: '70vh',
+          border: '1px solid #1e293b'
+        }}>
+          <pre style={{ 
+            margin: 0,
+            fontSize: 11,
+            lineHeight: 1.4,
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-all'
+          }}>
+            {HTML_CODE}
+          </pre>
+        </div>
+      </div>
     </div>
   );
 }
