@@ -1,16 +1,9 @@
-import React from 'react';
-
-const HTML_CODE = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>yyovvo — designed for emotion</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    
-    <!-- Playful font for tagline -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
       /* ROOT */
@@ -32,263 +25,25 @@ const HTML_CODE = `<!DOCTYPE html>
         overflow: hidden;
       }
 
-      /* PARTICLE EFFECTS - SUBTLE - OVER VIDEO */
-      #particles {
+      /* SNOW DUST PARTICLES */
+      #snow-dust {
         position: absolute;
         inset: 0;
-        z-index: 4;
+        z-index: 6;
         pointer-events: none;
-        opacity: 0;
+        opacity: 0.7;
+        background-image:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FFFFFF' opacity='0.8'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='1.2' fill='%23FFFDD0' opacity='0.5'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='0.8' fill='%23E0F7FF' opacity='0.6'/%3E%3C/svg%3E");
+        background-size: 80px 80px, 120px 120px, 60px 60px;
+        animation: snowFall 25s linear infinite;
         mix-blend-mode: screen;
-        transition: opacity 1200ms ease;
       }
 
-      #particles.show {
-        opacity: 0.35;
-      }
-
-      /* CLASSIC (GOLD) - Golden Twinkles */
-      #particles.classic-1 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1.5' fill='%23FFD700' opacity='0.7'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Ccircle cx='5' cy='5' r='1' fill='%23FFC107' opacity='0.5'/%3E%3C/svg%3E");
-        background-size: 100px 100px, 150px 150px;
-        animation: twinkleFloat 20s linear infinite;
-      }
-      /* CLASSIC - Warm Shimmer */
-      #particles.classic-2 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpolygon points='4,0 5,3 8,4 5,5 4,8 3,5 0,4 3,3' fill='%23FACC6B' opacity='0.6'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='1' fill='%23F9A825' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 120px 120px, 80px 80px;
-        animation: shimmerDrift 25s linear infinite;
-      }
-      /* CLASSIC - Candlelight Flickers */
-      #particles.classic-3 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='8' viewBox='0 0 5 8'%3E%3Cellipse cx='2.5' cy='4' rx='1.5' ry='2.5' fill='%23FFE082' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FFD54F' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 90px 90px, 130px 130px;
-        animation: flickerFloat 22s linear infinite;
-      }
-
-      /* FUNNY (NEON) - Colorful Confetti */
-      #particles.funny-1 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Crect x='2' y='2' width='2' height='2' fill='%23FF00FF' opacity='0.6' transform='rotate(45 3 3)'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Crect x='3' y='3' width='2' height='2' fill='%2300FFFF' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Ccircle cx='5' cy='5' r='1.5' fill='%23FFFF00' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 80px 80px, 100px 100px, 120px 120px;
-        animation: confettiFall 18s linear infinite;
-      }
-      /* FUNNY - Sparkle Bursts */
-      #particles.funny-2 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpolygon points='5,0 6,4 10,5 6,6 5,10 4,6 0,5 4,4' fill='%23A855F7' opacity='0.6'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpolygon points='4,0 5,3 8,4 5,5 4,8 3,5 0,4 3,3' fill='%23EC4899' opacity='0.5'/%3E%3C/svg%3E");
-        background-size: 100px 100px, 140px 140px;
-        animation: sparkleBurst 20s linear infinite;
-      }
-      /* FUNNY - Bouncy Stars */
-      #particles.funny-3 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpolygon points='6,0 7.5,4.5 12,6 7.5,7.5 6,12 4.5,7.5 0,6 4.5,4.5' fill='%238B5CF6' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='2' fill='%23D946EF' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 110px 110px, 90px 90px;
-        animation: bouncyFloat 16s linear infinite;
-      }
-
-      /* SHADOW (PINK) - Rose Petals */
-      #particles.shadow-1 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cellipse cx='5' cy='5' rx='3' ry='2' fill='%23FB7185' opacity='0.5' transform='rotate(30 5 5)'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cellipse cx='4' cy='4' rx='2' ry='1.5' fill='%23FDA4AF' opacity='0.4' transform='rotate(-20 4 4)'/%3E%3C/svg%3E");
-        background-size: 130px 130px, 100px 100px;
-        animation: petalDrift 28s linear infinite;
-      }
-      /* SHADOW - Pink Stardust */
-      #particles.shadow-2 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23F472B6' opacity='0.6'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Ccircle cx='5' cy='5' r='0.8' fill='%23EC4899' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 70px 70px, 110px 110px;
-        animation: stardustFloat 24s linear infinite;
-      }
-      /* SHADOW - Soft Hearts */
-      #particles.shadow-3 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 10 C3 7 1 5 1 3.5 C1 2 2.5 1 4 1.5 C5 2 6 3 6 3 C6 3 7 2 8 1.5 C9.5 1 11 2 11 3.5 C11 5 9 7 6 10Z' fill='%23FB7185' opacity='0.4'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FBCFE8' opacity='0.3'/%3E%3C/svg%3E");
-        background-size: 150px 150px, 90px 90px;
-        animation: heartsFloat 26s linear infinite;
-      }
-
-      /* MODERN (FROST) - Subtle Snowflakes */
-      #particles.modern-1 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1.2' fill='%23FFFFFF' opacity='0.6'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='1' fill='%23E0F7FF' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 100px 100px, 140px 140px;
-        animation: snowFall 25s linear infinite;
-      }
-      /* MODERN - Ice Crystals */
-      #particles.modern-2 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpolygon points='5,0 6,4 10,5 6,6 5,10 4,6 0,5 4,4' fill='%2338BDF8' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%2387CEEB' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 120px 120px, 90px 90px;
-        animation: crystalDrift 22s linear infinite;
-      }
-      /* MODERN - Cool Mist */
-      #particles.modern-3 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cellipse cx='7' cy='4' rx='5' ry='2' fill='%23BAE6FD' opacity='0.3'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23E0F2FE' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 160px 160px, 80px 80px;
-        animation: mistFloat 30s linear infinite;
-      }
-
-      /* INTENSE (EMBER) - Floating Embers */
-      #particles.intense-1 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1.5' fill='%23F97316' opacity='0.6'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FB923C' opacity='0.5'/%3E%3C/svg%3E");
-        background-size: 90px 90px, 120px 120px;
-        animation: emberRise 20s linear infinite;
-      }
-      /* INTENSE - Warm Sparks */
-      #particles.intense-2 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='8' viewBox='0 0 4 8'%3E%3Cellipse cx='2' cy='4' rx='1' ry='3' fill='%23FBBF24' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23F59E0B' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 100px 100px, 80px 80px;
-        animation: sparkRise 18s linear infinite;
-      }
-      /* INTENSE - Flame Wisps */
-      #particles.intense-3 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='12' viewBox='0 0 8 12'%3E%3Cpath d='M4 12 C2 10 1 8 1 6 C1 3 4 0 4 0 C4 0 7 3 7 6 C7 8 6 10 4 12Z' fill='%23EA580C' opacity='0.4'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23FDBA74' opacity='0.3'/%3E%3C/svg%3E");
-        background-size: 140px 140px, 100px 100px;
-        animation: wispFloat 24s linear infinite;
-      }
-
-      /* REBEL (ELECTRIC) - Electric Particles */
-      #particles.rebel-1 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1.5' fill='%2322C55E' opacity='0.6'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Ccircle cx='5' cy='5' r='1' fill='%234ADE80' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 80px 80px, 110px 110px;
-        animation: electricPulse 16s linear infinite;
-      }
-      /* REBEL - Matrix Drops */
-      #particles.rebel-2 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='12' viewBox='0 0 4 12'%3E%3Crect x='1' y='0' width='2' height='8' fill='%2316A34A' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%2386EFAC' opacity='0.3'/%3E%3C/svg%3E");
-        background-size: 60px 60px, 100px 100px;
-        animation: matrixDrop 14s linear infinite;
-      }
-      /* REBEL - Neon Streaks */
-      #particles.rebel-3 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='16' viewBox='0 0 3 16'%3E%3Crect x='1' y='0' width='1' height='12' fill='%2334D399' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpolygon points='4,0 5,3 8,4 5,5 4,8 3,5 0,4 3,3' fill='%2310B981' opacity='0.4'/%3E%3C/svg%3E");
-        background-size: 70px 70px, 130px 130px;
-        animation: neonStreak 18s linear infinite;
-      }
-
-      /* DEFAULT - Subtle Snow */
-      #particles.default-1, #particles.default-2, #particles.default-3 {
-        background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FFFFFF' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='0.8' fill='%23E0F7FF' opacity='0.3'/%3E%3C/svg%3E");
-        background-size: 100px 100px, 140px 140px;
-        animation: snowFall 25s linear infinite;
-      }
-
-      /* PARTICLE ANIMATIONS */
-      @keyframes twinkleFloat {
-        0% { background-position: 0px 0px, 50px 0px; opacity: 0.3; }
-        50% { opacity: 0.45; }
-        100% { background-position: 50px 600px, 0px 500px; opacity: 0.3; }
-      }
-      @keyframes shimmerDrift {
-        0% { background-position: 0px 0px, 30px 0px; }
-        100% { background-position: 80px 700px, -40px 600px; }
-      }
-      @keyframes flickerFloat {
-        0% { background-position: 0px 0px, 20px 0px; opacity: 0.25; }
-        25% { opacity: 0.4; }
-        50% { opacity: 0.3; }
-        75% { opacity: 0.45; }
-        100% { background-position: 60px 650px, -30px 550px; opacity: 0.25; }
-      }
-      @keyframes confettiFall {
-        0% { background-position: 0px 0px, 40px 0px, 20px 0px; }
-        100% { background-position: 100px 700px, -60px 600px, 80px 800px; }
-      }
-      @keyframes sparkleBurst {
-        0% { background-position: 0px 0px, 50px 0px; opacity: 0.3; }
-        50% { opacity: 0.5; }
-        100% { background-position: 70px 600px, -40px 700px; opacity: 0.3; }
-      }
-      @keyframes bouncyFloat {
-        0% { background-position: 0px 0px, 30px 0px; }
-        100% { background-position: 90px 650px, -50px 550px; }
-      }
-      @keyframes petalDrift {
-        0% { background-position: 0px 0px, 60px 0px; transform: rotate(0deg); }
-        100% { background-position: 120px 800px, -40px 700px; }
-      }
-      @keyframes stardustFloat {
-        0% { background-position: 0px 0px, 40px 0px; }
-        100% { background-position: 60px 600px, -30px 500px; }
-      }
-      @keyframes heartsFloat {
-        0% { background-position: 0px 0px, 50px 0px; }
-        100% { background-position: 80px 750px, -60px 600px; }
-      }
       @keyframes snowFall {
-        0% { background-position: 0px 0px, 50px 0px; }
-        100% { background-position: 100px 800px, -50px 600px; }
-      }
-      @keyframes crystalDrift {
-        0% { background-position: 0px 0px, 30px 0px; opacity: 0.3; }
-        50% { opacity: 0.45; }
-        100% { background-position: 70px 700px, -40px 600px; opacity: 0.3; }
-      }
-      @keyframes mistFloat {
-        0% { background-position: 0px 0px, 40px 0px; }
-        100% { background-position: 100px 500px, -60px 400px; }
-      }
-      @keyframes emberRise {
-        0% { background-position: 0px 800px, 50px 700px; }
-        100% { background-position: 80px 0px, -40px -100px; }
-      }
-      @keyframes sparkRise {
-        0% { background-position: 0px 700px, 30px 600px; }
-        100% { background-position: 60px 0px, -30px -100px; }
-      }
-      @keyframes wispFloat {
-        0% { background-position: 0px 600px, 40px 500px; opacity: 0.25; }
-        50% { opacity: 0.4; }
-        100% { background-position: 90px 0px, -50px -100px; opacity: 0.25; }
-      }
-      @keyframes electricPulse {
-        0% { background-position: 0px 0px, 40px 0px; opacity: 0.3; }
-        25% { opacity: 0.5; }
-        50% { opacity: 0.35; }
-        75% { opacity: 0.5; }
-        100% { background-position: 60px 600px, -30px 500px; opacity: 0.3; }
-      }
-      @keyframes matrixDrop {
-        0% { background-position: 0px 0px, 30px 0px; }
-        100% { background-position: 40px 900px, -20px 800px; }
-      }
-      @keyframes neonStreak {
-        0% { background-position: 0px 0px, 50px 0px; }
-        100% { background-position: 50px 850px, -40px 700px; }
+        0% { background-position: 0px 0px, 50px 0px, 25px 0px; }
+        100% { background-position: 100px 800px, -50px 600px, 75px 700px; }
       }
 
       /* BACKGROUND VIDEO LAYER (mood skin) */
@@ -313,11 +68,11 @@ const HTML_CODE = `<!DOCTYPE html>
         width: 85%;
         max-width: 380px;
         aspect-ratio: 9/16;
-        border-radius: 44px;
+        border-radius: 44px; /* SQUIRCLE */
         overflow: hidden;
         z-index: 2;
         opacity: 0;
-        transition: opacity 800ms ease;
+        transition: opacity 600ms ease;
         
         /* Premium frosted glass frame */
         background: rgba(15, 23, 42, 0.3);
@@ -394,7 +149,7 @@ const HTML_CODE = `<!DOCTYPE html>
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 42px;
+        border-radius: 42px; /* Match squircle */
         display: block;
       }
 
@@ -453,12 +208,12 @@ const HTML_CODE = `<!DOCTYPE html>
         --frame-glow-2: rgba(22, 163, 74, 0.3);
       }
 
-      /* LENS GLOW OVERLAY - ENHANCED FESTIVE - NOW OVER VIDEO */
+      /* LENS GLOW OVERLAY - ENHANCED FESTIVE */
       #lens-overlay {
         position: absolute;
         inset: 0;
         pointer-events: none;
-        z-index: 5;
+        z-index: 3;
         background:
           radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.35), transparent 55%),
           radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.38), transparent 55%),
@@ -496,7 +251,7 @@ const HTML_CODE = `<!DOCTYPE html>
           0 0 30px rgba(0, 0, 0, 0.9);
         opacity: 0;
         z-index: 7;
-        transition: opacity 600ms ease;
+        transition: opacity 320ms ease;
       }
 
       .overlay-text.show {
@@ -519,7 +274,7 @@ const HTML_CODE = `<!DOCTYPE html>
           0 0 30px rgba(0, 0, 0, 0.95);
         opacity: 0;
         z-index: 8;
-        transition: opacity 800ms ease;
+        transition: opacity 400ms ease;
       }
 
       .overlay-outro.show {
@@ -533,17 +288,12 @@ const HTML_CODE = `<!DOCTYPE html>
       }
 
       .outro-sub {
-        font-family: 'Pacifico', cursive;
-        font-size: 1.1rem;
-        color: #F472B6;
-        text-shadow:
-          0 0 20px rgba(244, 114, 182, 0.8),
-          0 0 40px rgba(236, 72, 153, 0.6);
+        font-size: 0.95rem;
+        opacity: 0.9;
       }
 
       .heart {
         display: inline-block;
-        color: #EC4899;
         animation: pulse 1.2s ease-in-out infinite;
       }
 
@@ -552,49 +302,30 @@ const HTML_CODE = `<!DOCTYPE html>
         50% { transform: scale(1.16); opacity: 1; }
       }
 
-      /* TAP TO UNMUTE - BOLD RED */
+      /* TAP TO UNMUTE */
       #tap-to-unmute {
         position: fixed;
         bottom: 24px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(220, 38, 38, 0.95);
+        background: rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 999px;
-        padding: 14px 28px;
-        font-size: 16px;
-        font-weight: 700;
+        padding: 12px 24px;
+        font-size: 14px;
         color: #fff;
         cursor: pointer;
         z-index: 100;
         opacity: 0;
-        transition: opacity 600ms ease, transform 150ms ease;
-        box-shadow: 
-          0 0 30px rgba(220, 38, 38, 0.7),
-          0 0 60px rgba(220, 38, 38, 0.4);
-        animation: unmutePulse 1.5s ease-in-out infinite;
-        pointer-events: none;
-      }
-
-      @keyframes unmutePulse {
-        0%, 100% { transform: translateX(-50%) scale(1); }
-        50% { transform: translateX(-50%) scale(1.05); }
-      }
-
-      #tap-to-unmute:hover {
-        transform: translateX(-50%) scale(1.08);
+        transition: opacity 300ms ease;
+        display: none;
       }
 
       #tap-to-unmute.show {
+        display: block;
         opacity: 1;
-        pointer-events: auto;
-      }
-
-      #tap-to-unmute.hidden {
-        opacity: 0;
-        pointer-events: none;
       }
 
       /* FINAL END SCREEN */
@@ -610,7 +341,7 @@ const HTML_CODE = `<!DOCTYPE html>
         opacity: 0;
         pointer-events: none;
         z-index: 10;
-        transition: opacity 800ms ease;
+        transition: opacity 500ms ease;
       }
 
       .end-screen.show {
@@ -774,7 +505,7 @@ const HTML_CODE = `<!DOCTYPE html>
           letter-spacing: 0.16em;
         }
         .overlay-outro .outro-sub {
-          font-size: 14px;
+          font-size: 12px;
           margin-top: 6px;
         }
       }
@@ -794,8 +525,8 @@ const HTML_CODE = `<!DOCTYPE html>
       <!-- LENS GLOW OVERLAY -->
       <div id="lens-overlay"></div>
 
-      <!-- PERSONALITY PARTICLES -->
-      <div id="particles"></div>
+      <!-- SNOW DUST PARTICLES -->
+      <div id="snow-dust"></div>
 
       <!-- INTRO TEXT OVERLAY -->
       <div id="overlay-intro" class="overlay-text"></div>
@@ -811,11 +542,8 @@ const HTML_CODE = `<!DOCTYPE html>
         </div>
       </div>
 
-      <!-- TAP TO UNMUTE - BOLD RED -->
-      <button id="tap-to-unmute">🔊 TAP TO UNMUTE</button>
-
-      <!-- BACKGROUND SUBTLE BELLS -->
-      <audio id="subtle-bells" src="/audio/subtle-bells-loop.mp3" loop></audio>
+      <!-- TAP TO UNMUTE -->
+      <button id="tap-to-unmute">🔊 Tap to unmute</button>
 
       <!-- OUTRO JINGLE -->
       <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
@@ -830,7 +558,7 @@ const HTML_CODE = `<!DOCTYPE html>
 
         <div class="end-buttons">
           <a
-            href="https://studio.yyovvo.com/CreateYyovvo"
+            href__="https://studio.yyovvo.com/CreateYyovvo"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn primary"
@@ -843,7 +571,7 @@ const HTML_CODE = `<!DOCTYPE html>
           </button>
 
           <a
-            href="https://studio.yyovvo.com/upgrade"
+            href__="https://studio.yyovvo.com/upgrade"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn outline"
@@ -861,7 +589,7 @@ const HTML_CODE = `<!DOCTYPE html>
 
     <script>
       (async function () {
-        console.log("yyovvo cinematic player v4 — personality particles + bells + bold unmute");
+        console.log("yyovvo cinematic player v3 — squircle frame + personality tones + snow dust");
 
         const bgScene = document.getElementById("bg-scene");
         const userVideoFrame = document.getElementById("user-video-frame");
@@ -870,11 +598,10 @@ const HTML_CODE = `<!DOCTYPE html>
         const mainEl = document.getElementById("overlay-main-text");
         const outroEl = document.getElementById("overlay-outro");
         const jingle = document.getElementById("yyo-jingle");
-        const subtleBells = document.getElementById("subtle-bells");
         const endScreen = document.getElementById("end-screen");
         const shareBtn = document.getElementById("share-btn");
         const tapToUnmute = document.getElementById("tap-to-unmute");
-        const particles = document.getElementById("particles");
+        const snowDust = document.getElementById("snow-dust");
 
         // TIMELINE
         const INTRO_START_MS = 2500;
@@ -890,20 +617,11 @@ const HTML_CODE = `<!DOCTYPE html>
         let personalityTone = "";
         let hasUserInteracted = false;
 
-        // Particle variations per personality (randomly pick 1 of 3)
-        function applyParticles(tone) {
-          const variation = Math.floor(Math.random() * 3) + 1;
-          const toneKey = tone ? tone.toLowerCase().replace(/[^a-z]/g, '') : 'default';
-          const particleClass = toneKey + "-" + variation;
-          particles.className = particleClass;
-          console.log("Applied particles:", particleClass);
-        }
-
         // 1) Start mood skin background
         bgScene.src = "/videos/moodskin01.mp4";
         bgScene.loop = true;
         bgScene.muted = true;
-        bgScene.play().catch(function() {});
+        bgScene.play().catch(() => {});
 
         // 2) Load data from Base44
         try {
@@ -911,7 +629,7 @@ const HTML_CODE = `<!DOCTYPE html>
           const id = params.get("id");
 
           if (id) {
-            const url = "https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=" + encodeURIComponent(id);
+            const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(id)}`;
             const res = await fetch(url);
 
             if (res.ok) {
@@ -931,61 +649,33 @@ const HTML_CODE = `<!DOCTYPE html>
           console.warn("Error loading yyovvo:", err);
         }
 
-        // Apply personality particles (random variation) with fade in
-        applyParticles(personalityTone);
-        setTimeout(function() {
-          particles.classList.add("show");
-        }, 800);
-
         // 3) Handle unmute on tap
         function enableAudio() {
           if (hasUserInteracted) return;
           hasUserInteracted = true;
-          
-          // Fade out unmute button
           tapToUnmute.classList.remove("show");
-          tapToUnmute.classList.add("hidden");
           
           if (contentType === "video" && userVideo.src) {
             userVideo.muted = false;
           }
-
-          // Start subtle bells at low volume
-          try {
-            subtleBells.volume = 0.12;
-            subtleBells.play().catch(function() {});
-          } catch (e) {}
         }
 
         tapToUnmute.addEventListener("click", enableAudio);
         document.addEventListener("click", enableAudio, { once: true });
         document.addEventListener("touchstart", enableAudio, { once: true });
 
-        // Show unmute button immediately on page load (fade in)
-        setTimeout(function() {
-          tapToUnmute.classList.add("show");
-        }, 500);
-
-        // Try to autoplay bells at very low volume (may be blocked)
-        try {
-          subtleBells.volume = 0.12;
-          subtleBells.play().catch(function() {
-            console.log("Bells autoplay blocked, will play on interaction");
-          });
-        } catch (e) {}
-
         // 4) Show intro text
-        setTimeout(function() {
+        setTimeout(() => {
           introEl.textContent = introText;
           introEl.classList.add("show");
         }, INTRO_START_MS);
 
-        setTimeout(function() {
+        setTimeout(() => {
           introEl.classList.remove("show");
         }, INTRO_END_MS);
 
         // 5) Main content start
-        setTimeout(function() {
+        setTimeout(() => {
           if (contentType === "video" && contentUrl) {
             console.log("Playing user video:", contentUrl);
             
@@ -1004,14 +694,17 @@ const HTML_CODE = `<!DOCTYPE html>
             userVideo.muted = !hasUserInteracted;
             userVideo.playsInline = true;
             
-            userVideo.play().then(function() {
-              // Unmute button already shown from page start
-            }).catch(function(err) {
+            userVideo.play().then(() => {
+              if (!hasUserInteracted) {
+                tapToUnmute.classList.add("show");
+              }
+            }).catch(err => {
               console.warn("Video autoplay failed:", err);
+              tapToUnmute.classList.add("show");
             });
 
             // Wait for video to END before showing outro
-            userVideo.addEventListener("ended", function() {
+            userVideo.addEventListener("ended", () => {
               console.log("User video ended, triggering outro");
               triggerOutro();
             }, { once: true });
@@ -1022,7 +715,7 @@ const HTML_CODE = `<!DOCTYPE html>
             mainEl.classList.add("show");
 
             // For text, use a fixed duration
-            setTimeout(function() {
+            setTimeout(() => {
               mainEl.classList.remove("show");
               triggerOutro();
             }, 6000);
@@ -1036,18 +729,13 @@ const HTML_CODE = `<!DOCTYPE html>
           // Hide video frame
           userVideoFrame.classList.remove("show");
 
-          // Fade out bells
-          try {
-            subtleBells.pause();
-          } catch (e) {}
-
           // Switch background to outro snow
           bgScene.src = "/videos/outro-snow.mp4";
           bgScene.loop = true;
-          bgScene.play().catch(function() {});
+          bgScene.play().catch(() => {});
 
-          // Fade out particles during outro
-          particles.classList.remove("show");
+          // Hide snow dust during outro (let the outro-snow video do the snow effect)
+          snowDust.style.opacity = "0";
 
           // Show outro overlay
           outroEl.classList.add("show");
@@ -1055,11 +743,11 @@ const HTML_CODE = `<!DOCTYPE html>
           // Play jingle
           try {
             jingle.currentTime = 0;
-            jingle.play().catch(function() {});
+            jingle.play().catch(() => {});
           } catch (e) {}
 
           // After outro duration, show end screen
-          setTimeout(function() {
+          setTimeout(() => {
             console.log("END SCREEN");
             bgScene.pause();
             bgScene.style.opacity = "0.3";
@@ -1070,7 +758,7 @@ const HTML_CODE = `<!DOCTYPE html>
 
         // 7) Share button
         if (shareBtn) {
-          shareBtn.addEventListener("click", async function() {
+          shareBtn.addEventListener("click", async () => {
             const shareUrl = window.location.href;
             const shareText = "Someone made this yyovvo moment just for me. 💌";
 
@@ -1089,69 +777,6 @@ const HTML_CODE = `<!DOCTYPE html>
           });
         }
       })();
-    <\/script>
+    </script>
   </body>
-</html>`;
-
-export default function PlayerCode() {
-  const [copied, setCopied] = React.useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(HTML_CODE);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div style={{ 
-      padding: 24, 
-      background: '#0f172a', 
-      color: '#f9fafb', 
-      minHeight: '100vh',
-      fontFamily: 'system-ui, sans-serif'
-    }}>
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
-        <h1 style={{ marginBottom: 8, fontSize: 24 }}>Cinematic Player v4 - HTML Code</h1>
-        <p style={{ marginBottom: 20, color: '#9ca3af', fontSize: 14 }}>
-          Copy this code and deploy to Cloudflare at <code style={{ background: '#1e293b', padding: '2px 6px', borderRadius: 4 }}>/v/index.html</code>
-        </p>
-        
-        <button
-          onClick={handleCopy}
-          style={{
-            background: copied ? '#22c55e' : '#ec4899',
-            color: 'white',
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: 8,
-            fontSize: 14,
-            fontWeight: 600,
-            cursor: 'pointer',
-            marginBottom: 16
-          }}
-        >
-          {copied ? '✓ Copied!' : 'Copy Full HTML Code'}
-        </button>
-
-        <div style={{ 
-          background: '#020617', 
-          padding: 16, 
-          borderRadius: 8, 
-          overflow: 'auto',
-          maxHeight: '70vh',
-          border: '1px solid #1e293b'
-        }}>
-          <pre style={{ 
-            margin: 0,
-            fontSize: 11,
-            lineHeight: 1.4,
-            whiteSpace: 'pre-wrap',
-            wordBreak: 'break-all'
-          }}>
-            {HTML_CODE}
-          </pre>
-        </div>
-      </div>
-    </div>
-  );
-}
+</html>
