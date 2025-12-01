@@ -25,8 +25,8 @@
         overflow: hidden;
       }
 
-      /* MAIN VIDEO LAYER */
-      #scene {
+      /* BACKGROUND VIDEO LAYER (mood skin) */
+      #bg-scene {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -34,8 +34,86 @@
         object-fit: cover;
         background: #000;
         transition: opacity 400ms ease;
-        filter: brightness(1.05) contrast(1.08) saturate(1.08);
+        filter: brightness(0.7) contrast(1.05) saturate(1.1);
         z-index: 1;
+      }
+
+      /* USER VIDEO FRAME - PREMIUM STYLING */
+      #user-video-frame {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        max-width: 380px;
+        aspect-ratio: 9/16;
+        border-radius: 24px;
+        overflow: hidden;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 600ms ease, transform 400ms ease;
+        
+        /* Premium frosted glass frame */
+        background: rgba(15, 23, 42, 0.3);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        
+        /* Glowing border */
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 
+          0 0 0 1px rgba(236, 72, 153, 0.3),
+          0 0 40px rgba(236, 72, 153, 0.4),
+          0 0 80px rgba(56, 189, 248, 0.2),
+          0 25px 50px rgba(0, 0, 0, 0.5),
+          inset 0 0 30px rgba(255, 255, 255, 0.05);
+      }
+
+      #user-video-frame.show {
+        opacity: 1;
+      }
+
+      #user-video-frame::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 26px;
+        background: linear-gradient(
+          135deg,
+          rgba(236, 72, 153, 0.5),
+          rgba(56, 189, 248, 0.5),
+          rgba(34, 197, 94, 0.3)
+        );
+        z-index: -1;
+        opacity: 0.6;
+        animation: borderGlow 3s ease-in-out infinite;
+      }
+
+      @keyframes borderGlow {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.8; }
+      }
+
+      /* Vignette overlay on video */
+      #user-video-frame::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 22px;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 50%,
+          rgba(0, 0, 0, 0.4) 100%
+        );
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      #user-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 22px;
+        display: block;
       }
 
       /* LENS GLOW OVERLAY (STYLE A) */
@@ -43,7 +121,7 @@
         position: absolute;
         inset: 0;
         pointer-events: none;
-        z-index: 2;
+        z-index: 3;
         background:
           radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.28), transparent 55%),
           radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.3), transparent 55%),
@@ -79,7 +157,7 @@
           0 0 18px rgba(0, 0, 0, 0.9),
           0 0 30px rgba(0, 0, 0, 0.9);
         opacity: 0;
-        z-index: 3;
+        z-index: 4;
         transition: opacity 320ms ease;
       }
 
@@ -102,7 +180,7 @@
           0 0 18px rgba(0, 0, 0, 0.95),
           0 0 30px rgba(0, 0, 0, 0.95);
         opacity: 0;
-        z-index: 4;
+        z-index: 5;
         transition: opacity 400ms ease;
       }
 
@@ -127,15 +205,34 @@
       }
 
       @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.8;
-        }
-        50% {
-          transform: scale(1.16);
-          opacity: 1;
-        }
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.16); opacity: 1; }
+      }
+
+      /* TAP TO UNMUTE */
+      #tap-to-unmute {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 999px;
+        padding: 12px 24px;
+        font-size: 14px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0;
+        transition: opacity 300ms ease;
+        display: none;
+      }
+
+      #tap-to-unmute.show {
+        display: block;
+        opacity: 1;
       }
 
       /* FINAL END SCREEN */
@@ -150,7 +247,7 @@
         padding: 26px 22px 34px;
         opacity: 0;
         pointer-events: none;
-        z-index: 5;
+        z-index: 10;
         transition: opacity 500ms ease;
       }
 
@@ -175,15 +272,8 @@
       }
 
       @keyframes endPulseGlow {
-        0%,
-        100% {
-          transform: scale(0.9);
-          opacity: 0.7;
-        }
-        50% {
-          transform: scale(1.08);
-          opacity: 0.95;
-        }
+        0%, 100% { transform: scale(0.9); opacity: 0.7; }
+        50% { transform: scale(1.08); opacity: 0.95; }
       }
 
       .end-text-block {
@@ -230,12 +320,7 @@
         justify-content: center;
         gap: 6px;
         cursor: pointer;
-        transition:
-          transform 150ms ease,
-          box-shadow 150ms ease,
-          background 150ms ease,
-          border-color 150ms ease,
-          opacity 150ms ease;
+        transition: transform 150ms ease, box-shadow 150ms ease;
       }
 
       .end-btn.primary {
@@ -267,11 +352,6 @@
         box-shadow: 0 0 40px rgba(236, 72, 153, 0.8);
       }
 
-      .end-btn span.label-sub {
-        font-size: 0.8rem;
-        opacity: 0.9;
-      }
-
       .end-footer {
         margin-top: 22px;
         font-size: 0.8rem;
@@ -286,39 +366,15 @@
         font-size: 0.9rem;
       }
 
-      .end-counter {
-        opacity: 0.85;
-        animation: counterRoll 900ms ease-out forwards;
-        transform: translateY(8px);
-      }
-
       @keyframes footerIn {
-        from {
-          opacity: 0;
-          transform: translateY(6px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes counterRoll {
-        0% {
-          transform: translateY(8px);
-          opacity: 0;
-        }
-        60% {
-          transform: translateY(-2px);
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(0);
-          opacity: 1;
-        }
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       @media (min-width: 768px) {
+        #user-video-frame {
+          max-width: 420px;
+        }
         .end-text-block {
           max-width: 420px;
         }
@@ -333,22 +389,21 @@
         }
       }
 
-      /* MOBILE OUTRO TUNING */
       @media (max-width: 640px) {
+        #user-video-frame {
+          width: 90%;
+          max-width: 320px;
+        }
         .overlay-outro {
           padding: 0 1.5rem;
         }
         .overlay-outro .outro-title {
           font-size: 24px;
           letter-spacing: 0.16em;
-          line-height: 1.2;
         }
         .overlay-outro .outro-sub {
           font-size: 12px;
           margin-top: 6px;
-        }
-        .overlay-outro .heart {
-          font-size: 13px;
         }
       }
     </style>
@@ -356,10 +411,15 @@
 
   <body>
     <div id="yyovvo-container">
-      <!-- MAIN CINEMATIC VIDEO (mood intro → user video → outro) -->
-      <video id="scene" playsinline autoplay muted></video>
+      <!-- BACKGROUND VIDEO (mood skin / outro snow) -->
+      <video id="bg-scene" playsinline autoplay muted loop></video>
 
-      <!-- LENS GLOW OVERLAY (A: lens / light leaks) -->
+      <!-- USER VIDEO IN PREMIUM FRAME -->
+      <div id="user-video-frame">
+        <video id="user-video" playsinline></video>
+      </div>
+
+      <!-- LENS GLOW OVERLAY -->
       <div id="lens-overlay"></div>
 
       <!-- INTRO TEXT OVERLAY -->
@@ -376,6 +436,9 @@
         </div>
       </div>
 
+      <!-- TAP TO UNMUTE -->
+      <button id="tap-to-unmute">🔊 Tap to unmute</button>
+
       <!-- OUTRO JINGLE -->
       <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
 
@@ -388,9 +451,8 @@
         </div>
 
         <div class="end-buttons">
-          <!-- 1) Reply -->
           <a
-            href="https://studio.yyovvo.com/CreateYyovvo"
+            href__="https://studio.yyovvo.com/CreateYyovvo"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn primary"
@@ -398,14 +460,12 @@
             reply with your own yyovvo
           </a>
 
-          <!-- 2) Share -->
           <button type="button" id="share-btn" class="end-btn ghost">
             share this moment on tiktok / instagram
           </button>
 
-          <!-- 3) Upgrade -->
           <a
-            href="https://studio.yyovvo.com/upgrade"
+            href__="https://studio.yyovvo.com/upgrade"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn outline"
@@ -416,209 +476,147 @@
 
         <div class="end-footer">
           <span class="end-heart">❤️</span>
-          <span class="end-counter" id="yyovvo-counter">
-            2,777,777 yyovvos sent this season
-          </span>
+          <span id="yyovvo-counter">2,777,777 yyovvos sent this season</span>
         </div>
       </div>
     </div>
 
-    <!-- INLINE PLAYER: CINEMA + BASE44 + END SCREEN -->
     <script>
       (async function () {
-        console.log("yyovvo cinematic player — lens overlay / video-aware");
+        console.log("yyovvo cinematic player v2 — premium frame + video-ended trigger");
 
-        const scene = document.getElementById("scene");
+        const bgScene = document.getElementById("bg-scene");
+        const userVideoFrame = document.getElementById("user-video-frame");
+        const userVideo = document.getElementById("user-video");
         const introEl = document.getElementById("overlay-intro");
         const mainEl = document.getElementById("overlay-main-text");
         const outroEl = document.getElementById("overlay-outro");
         const jingle = document.getElementById("yyo-jingle");
         const endScreen = document.getElementById("end-screen");
         const shareBtn = document.getElementById("share-btn");
+        const tapToUnmute = document.getElementById("tap-to-unmute");
 
-        // TIMELINE CONSTANTS (we’ll extend dynamically based on video length)
-        const INTRO_START_MS = 3000;
-        const INTRO_END_MS = 6000;
+        // TIMELINE
+        const INTRO_START_MS = 2500;
+        const INTRO_END_MS = 5500;
         const MAIN_START_MS = 6000;
-        const OUTRO_TAIL_MS = 4000; // length of outro snow before end screen
+        const OUTRO_DURATION_MS = 4000;
 
-        // 1) DEFAULT moodskin INTRO
-        const moodSkinUrl = "/videos/moodskin01.mp4";
-        scene.src = moodSkinUrl;
-        scene.loop = false;
-        scene.muted = true; // keep muted for autoplay
-        scene.playsInline = true;
-
-        scene
-          .play()
-          .catch((err) => {
-            console.warn("Autoplay failed, waiting for user gesture.", err);
-          });
-
-        // 2) DEFAULT TEXT FALLBACKS
-        let introText = "this moment was made for you.";
-        let mainText = "someone out there really cares about you.";
+        // State
         let contentType = "text";
         let contentUrl = "";
-        let contentDurationMs = 8000; // default 8 seconds
+        let introText = "this moment was made for you.";
+        let mainText = "someone out there really cares about you.";
+        let hasUserInteracted = false;
 
-        // 3) LOAD REAL DATA FROM BASE44
+        // 1) Start mood skin background
+        bgScene.src = "/videos/moodskin01.mp4";
+        bgScene.loop = true;
+        bgScene.muted = true;
+        bgScene.play().catch(() => {});
+
+        // 2) Load data from Base44
         try {
           const params = new URLSearchParams(window.location.search);
           const id = params.get("id");
-          console.log("yyovvo id from URL:", id);
 
           if (id) {
-            const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(
-              id
-            )}`;
-
-            console.log("Fetching yyovvo from:", url);
+            const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(id)}`;
             const res = await fetch(url);
-            console.log("Response status:", res.status);
 
             if (res.ok) {
-              const raw = await res.json().catch(() => null);
-              console.log("Raw yyovvo response:", raw);
+              const data = await res.json();
+              console.log("yyovvo data:", data);
 
-              let data = raw;
-              if (raw && raw.data && (raw.data.fields || raw.data.record)) {
-                data = raw.data.fields || raw.data.record;
-              } else if (raw && raw.data) {
-                data = raw.data;
-              } else if (raw && raw.record) {
-                data = raw.record;
-              } else if (raw && raw.fields) {
-                data = raw.fields;
-              }
+              introText = data.intro_text || introText;
+              mainText = data.content_text || mainText;
+              contentType = (data.content_type || "text").toLowerCase();
+              contentUrl = data.content_url || "";
 
-              console.log("Unwrapped yyovvo data:", data);
-
-              if (data) {
-                introText = data.intro_text || data.intro || introText;
-                mainText =
-                  data.content_text ||
-                  data.content ||
-                  data.message ||
-                  mainText;
-
-                contentType = (data.content_type || "text").toLowerCase();
-                contentUrl = data.content_url || "";
-
-                const rawDur = Number(data.content_duration) || 8;
-                // If > 60 assume ms, else treat as seconds
-                contentDurationMs =
-                  rawDur > 60 ? rawDur : rawDur * 1000;
-
-                console.log(
-                  "PARSED:",
-                  "\n  introText=",
-                  introText,
-                  "\n  mainText=",
-                  mainText,
-                  "\n  contentType=",
-                  contentType,
-                  "\n  contentUrl=",
-                  contentUrl,
-                  "\n  contentDurationMs=",
-                  contentDurationMs
-                );
-              }
-            } else {
-              console.warn(
-                "yyovvoGet failed:",
-                await res.text().catch(() => "")
-              );
+              console.log("contentType:", contentType, "contentUrl:", contentUrl);
             }
-          } else {
-            console.warn("No ?id in URL, using default emotional copy.");
           }
         } catch (err) {
-          console.warn("Error loading yyovvo from Base44:", err);
+          console.warn("Error loading yyovvo:", err);
         }
 
-        // 4) INTRO 3–6s
+        // 3) Handle unmute on tap
+        function enableAudio() {
+          if (hasUserInteracted) return;
+          hasUserInteracted = true;
+          tapToUnmute.classList.remove("show");
+          
+          if (contentType === "video" && userVideo.src) {
+            userVideo.muted = false;
+          }
+        }
+
+        tapToUnmute.addEventListener("click", enableAudio);
+        document.addEventListener("click", enableAudio, { once: true });
+        document.addEventListener("touchstart", enableAudio, { once: true });
+
+        // 4) Show intro text
         setTimeout(() => {
-          console.log("SHOW INTRO");
           introEl.textContent = introText;
           introEl.classList.add("show");
         }, INTRO_START_MS);
 
         setTimeout(() => {
-          console.log("HIDE INTRO");
           introEl.classList.remove("show");
         }, INTRO_END_MS);
 
-        // 5) MAIN SEQUENCE (TEXT OR VIDEO)
-        const MAIN_END_MS = MAIN_START_MS + contentDurationMs;
-        const OUTRO_START_MS = MAIN_END_MS;
-        const END_SCREEN_START_MS = OUTRO_START_MS + OUTRO_TAIL_MS;
-
-        console.log(
-          "TIMELINE:",
-          "\n  MAIN_START_MS=",
-          MAIN_START_MS,
-          "\n  MAIN_END_MS=",
-          MAIN_END_MS,
-          "\n  OUTRO_START_MS=",
-          OUTRO_START_MS,
-          "\n  END_SCREEN_START_MS=",
-          END_SCREEN_START_MS
-        );
-
-        // MAIN START
+        // 5) Main content start
         setTimeout(() => {
-          console.log("MAIN START — contentType:", contentType);
-
           if (contentType === "video" && contentUrl) {
-            console.log("Switching to user video:", contentUrl);
-            scene.src = contentUrl;
-            scene.loop = false;
-            // Still muted at the moment; we unmute shortly after for audio
-            scene.muted = true;
-            scene.playsInline = true;
-            scene
-              .play()
-              .then(() => {
-                // Attempt to unmute ~300ms later (after intro fully gone)
-                setTimeout(() => {
-                  console.log("Attempting to unmute user video audio.");
-                  scene.muted = false;
-                }, 300);
-              })
-              .catch((err) => {
-                console.warn(
-                  "User video autoplay may need tap on some devices:",
-                  err
-                );
-              });
+            console.log("Playing user video:", contentUrl);
+            
+            // Show the premium frame
+            userVideoFrame.classList.add("show");
+            
+            // Load and play video
+            userVideo.src = contentUrl;
+            userVideo.muted = !hasUserInteracted; // Mute only if no interaction yet
+            userVideo.playsInline = true;
+            
+            userVideo.play().then(() => {
+              if (!hasUserInteracted) {
+                tapToUnmute.classList.add("show");
+              }
+            }).catch(err => {
+              console.warn("Video autoplay failed:", err);
+              tapToUnmute.classList.add("show");
+            });
+
+            // Wait for video to END before showing outro
+            userVideo.addEventListener("ended", () => {
+              console.log("User video ended, triggering outro");
+              triggerOutro();
+            }, { once: true });
+
           } else {
             // TEXT MODE
-            console.log("Showing main text:", mainText);
             mainEl.textContent = mainText;
             mainEl.classList.add("show");
+
+            // For text, use a fixed duration
+            setTimeout(() => {
+              mainEl.classList.remove("show");
+              triggerOutro();
+            }, 6000);
           }
         }, MAIN_START_MS);
 
-        // MAIN END (hide text if we were in text mode)
-        setTimeout(() => {
-          console.log("MAIN END");
-          mainEl.classList.remove("show");
-        }, MAIN_END_MS);
+        // 6) Outro function
+        function triggerOutro() {
+          console.log("OUTRO START");
 
-        // 6) OUTRO: switch back to snow + logo + jingle
-        setTimeout(() => {
-          console.log("SHOW OUTRO + jingle");
+          // Hide video frame
+          userVideoFrame.classList.remove("show");
 
-          // Switch to outro snow video
-          scene.src = "/videos/outro-snow.mp4";
-          scene.loop = true;
-          scene.muted = false; // let the ambience + jingle sit on top
-          scene
-            .play()
-            .catch((err) =>
-              console.warn("Outro video play issue (safe to ignore):", err)
-            );
+          // Switch background to outro snow
+          bgScene.src = "/videos/outro-snow.mp4";
+          bgScene.loop = true;
+          bgScene.play().catch(() => {});
 
           // Show outro overlay
           outroEl.classList.add("show");
@@ -626,36 +624,24 @@
           // Play jingle
           try {
             jingle.currentTime = 0;
-            jingle
-              .play()
-              .catch((err) =>
-                console.warn("Jingle autoplay failed (may need tap):", err)
-              );
-          } catch (e) {
-            console.warn("Jingle error:", e);
-          }
-        }, OUTRO_START_MS);
-
-        // 7) FINAL END SCREEN
-        setTimeout(() => {
-          console.log("SHOW END SCREEN");
-          try {
-            scene.pause();
+            jingle.play().catch(() => {});
           } catch (e) {}
 
-          scene.style.opacity = "0";
-          introEl.classList.remove("show");
-          mainEl.classList.remove("show");
-          outroEl.classList.remove("show");
-          endScreen.classList.add("show");
-        }, END_SCREEN_START_MS);
+          // After outro duration, show end screen
+          setTimeout(() => {
+            console.log("END SCREEN");
+            bgScene.pause();
+            bgScene.style.opacity = "0.3";
+            outroEl.classList.remove("show");
+            endScreen.classList.add("show");
+          }, OUTRO_DURATION_MS);
+        }
 
-        // 8) SHARE BUTTON
+        // 7) Share button
         if (shareBtn) {
           shareBtn.addEventListener("click", async () => {
             const shareUrl = window.location.href;
-            const shareText =
-              "Someone made this yyovvo moment just for me. 💌";
+            const shareText = "Someone made this yyovvo moment just for me. 💌";
 
             if (navigator.share) {
               try {
@@ -664,13 +650,10 @@
                   text: shareText,
                   url: shareUrl,
                 });
-              } catch (err) {
-                console.warn("Native share cancelled/failed:", err);
-              }
+              } catch (err) {}
             } else {
-              alert(
-                "Share this moment by sending this link:\n\n" + shareUrl
-              );
+              navigator.clipboard.writeText(shareUrl);
+              alert("Link copied!");
             }
           });
         }
