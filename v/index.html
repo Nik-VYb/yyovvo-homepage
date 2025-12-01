@@ -25,6 +25,27 @@
         overflow: hidden;
       }
 
+      /* SNOW DUST PARTICLES */
+      #snow-dust {
+        position: absolute;
+        inset: 0;
+        z-index: 6;
+        pointer-events: none;
+        opacity: 0.7;
+        background-image:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FFFFFF' opacity='0.8'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='1.2' fill='%23FFFDD0' opacity='0.5'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='0.8' fill='%23E0F7FF' opacity='0.6'/%3E%3C/svg%3E");
+        background-size: 80px 80px, 120px 120px, 60px 60px;
+        animation: snowFall 25s linear infinite;
+        mix-blend-mode: screen;
+      }
+
+      @keyframes snowFall {
+        0% { background-position: 0px 0px, 50px 0px, 25px 0px; }
+        100% { background-position: 100px 800px, -50px 600px, 75px 700px; }
+      }
+
       /* BACKGROUND VIDEO LAYER (mood skin) */
       #bg-scene {
         position: absolute;
@@ -38,7 +59,7 @@
         z-index: 1;
       }
 
-      /* USER VIDEO FRAME - PREMIUM STYLING */
+      /* USER VIDEO FRAME - PREMIUM SQUIRCLE STYLING */
       #user-video-frame {
         position: absolute;
         top: 50%;
@@ -47,50 +68,66 @@
         width: 85%;
         max-width: 380px;
         aspect-ratio: 9/16;
-        border-radius: 24px;
+        border-radius: 44px; /* SQUIRCLE */
         overflow: hidden;
         z-index: 2;
         opacity: 0;
-        transition: opacity 600ms ease, transform 400ms ease;
+        transition: opacity 600ms ease;
         
         /* Premium frosted glass frame */
         background: rgba(15, 23, 42, 0.3);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         
-        /* Glowing border */
-        border: 2px solid rgba(255, 255, 255, 0.15);
+        /* Dynamic glow border - uses CSS variables for personality */
+        --frame-glow-1: rgba(236, 72, 153, 0.4);
+        --frame-glow-2: rgba(56, 189, 248, 0.3);
+        --frame-border: rgba(255, 255, 255, 0.15);
+        
+        border: 2px solid var(--frame-border);
         box-shadow: 
-          0 0 0 1px rgba(236, 72, 153, 0.3),
-          0 0 40px rgba(236, 72, 153, 0.4),
-          0 0 80px rgba(56, 189, 248, 0.2),
+          0 0 0 1px var(--frame-glow-1),
+          0 0 40px var(--frame-glow-1),
+          0 0 80px var(--frame-glow-2),
           0 25px 50px rgba(0, 0, 0, 0.5),
           inset 0 0 30px rgba(255, 255, 255, 0.05);
       }
 
       #user-video-frame.show {
         opacity: 1;
+        animation: frameBreathing 4s ease-in-out infinite;
       }
 
+      @keyframes frameBreathing {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.008); }
+      }
+
+      /* Dynamic Christmas light border */
       #user-video-frame::before {
         content: "";
         position: absolute;
-        inset: -2px;
-        border-radius: 26px;
+        inset: -3px;
+        border-radius: 47px;
         background: linear-gradient(
           135deg,
-          rgba(236, 72, 153, 0.5),
-          rgba(56, 189, 248, 0.5),
-          rgba(34, 197, 94, 0.3)
+          var(--frame-color-1, rgba(250, 204, 107, 0.6)),
+          var(--frame-color-2, rgba(236, 72, 153, 0.6)),
+          var(--frame-color-3, rgba(56, 189, 248, 0.6)),
+          var(--frame-color-4, rgba(34, 197, 94, 0.5))
         );
+        background-size: 300% 300%;
         z-index: -1;
-        opacity: 0.6;
-        animation: borderGlow 3s ease-in-out infinite;
+        opacity: 0.7;
+        animation: christmasLightGlow 6s ease-in-out infinite;
       }
 
-      @keyframes borderGlow {
-        0%, 100% { opacity: 0.4; }
-        50% { opacity: 0.8; }
+      @keyframes christmasLightGlow {
+        0% { background-position: 0% 50%; opacity: 0.5; }
+        25% { background-position: 50% 100%; opacity: 0.8; }
+        50% { background-position: 100% 50%; opacity: 0.6; }
+        75% { background-position: 50% 0%; opacity: 0.9; }
+        100% { background-position: 0% 50%; opacity: 0.5; }
       }
 
       /* Vignette overlay on video */
@@ -98,11 +135,11 @@
         content: "";
         position: absolute;
         inset: 0;
-        border-radius: 22px;
+        border-radius: 42px;
         background: radial-gradient(
           ellipse at center,
           transparent 50%,
-          rgba(0, 0, 0, 0.4) 100%
+          rgba(0, 0, 0, 0.35) 100%
         );
         pointer-events: none;
         z-index: 2;
@@ -112,23 +149,79 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 22px;
+        border-radius: 42px; /* Match squircle */
         display: block;
       }
 
-      /* LENS GLOW OVERLAY (STYLE A) */
+      /* PERSONALITY FRAME TONES */
+      #user-video-frame.tone-classic {
+        --frame-color-1: rgba(250, 204, 107, 0.7);
+        --frame-color-2: rgba(249, 115, 22, 0.6);
+        --frame-color-3: rgba(250, 204, 107, 0.5);
+        --frame-color-4: rgba(234, 179, 8, 0.6);
+        --frame-glow-1: rgba(250, 204, 107, 0.5);
+        --frame-glow-2: rgba(249, 115, 22, 0.3);
+      }
+
+      #user-video-frame.tone-funny {
+        --frame-color-1: rgba(168, 85, 247, 0.7);
+        --frame-color-2: rgba(236, 72, 153, 0.7);
+        --frame-color-3: rgba(139, 92, 246, 0.6);
+        --frame-color-4: rgba(168, 85, 247, 0.5);
+        --frame-glow-1: rgba(168, 85, 247, 0.5);
+        --frame-glow-2: rgba(236, 72, 153, 0.4);
+      }
+
+      #user-video-frame.tone-shadow {
+        --frame-color-1: rgba(251, 113, 133, 0.7);
+        --frame-color-2: rgba(236, 72, 153, 0.6);
+        --frame-color-3: rgba(244, 114, 182, 0.5);
+        --frame-color-4: rgba(251, 113, 133, 0.6);
+        --frame-glow-1: rgba(251, 113, 133, 0.5);
+        --frame-glow-2: rgba(236, 72, 153, 0.3);
+      }
+
+      #user-video-frame.tone-modern {
+        --frame-color-1: rgba(56, 189, 248, 0.7);
+        --frame-color-2: rgba(14, 165, 233, 0.6);
+        --frame-color-3: rgba(125, 211, 252, 0.5);
+        --frame-color-4: rgba(56, 189, 248, 0.6);
+        --frame-glow-1: rgba(56, 189, 248, 0.5);
+        --frame-glow-2: rgba(14, 165, 233, 0.3);
+      }
+
+      #user-video-frame.tone-intense {
+        --frame-color-1: rgba(249, 115, 22, 0.7);
+        --frame-color-2: rgba(234, 88, 12, 0.7);
+        --frame-color-3: rgba(251, 146, 60, 0.5);
+        --frame-color-4: rgba(249, 115, 22, 0.6);
+        --frame-glow-1: rgba(249, 115, 22, 0.5);
+        --frame-glow-2: rgba(234, 88, 12, 0.4);
+      }
+
+      #user-video-frame.tone-rebel {
+        --frame-color-1: rgba(34, 197, 94, 0.7);
+        --frame-color-2: rgba(22, 163, 74, 0.6);
+        --frame-color-3: rgba(74, 222, 128, 0.5);
+        --frame-color-4: rgba(34, 197, 94, 0.6);
+        --frame-glow-1: rgba(34, 197, 94, 0.5);
+        --frame-glow-2: rgba(22, 163, 74, 0.3);
+      }
+
+      /* LENS GLOW OVERLAY - ENHANCED FESTIVE */
       #lens-overlay {
         position: absolute;
         inset: 0;
         pointer-events: none;
         z-index: 3;
         background:
-          radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.28), transparent 55%),
-          radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.3), transparent 55%),
-          radial-gradient(circle at 50% 100%, rgba(34, 197, 94, 0.18), transparent 60%),
-          radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.8), transparent 80%);
+          radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.35), transparent 55%),
+          radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.38), transparent 55%),
+          radial-gradient(circle at 50% 100%, rgba(250, 204, 107, 0.28), transparent 60%),
+          radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.2), transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.75), transparent 80%);
         mix-blend-mode: screen;
-        opacity: 0.9;
+        opacity: 0.85;
       }
 
       /* Faux film grain */
@@ -136,7 +229,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        opacity: 0.14;
+        opacity: 0.12;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
         mix-blend-mode: soft-light;
       }
@@ -157,7 +250,7 @@
           0 0 18px rgba(0, 0, 0, 0.9),
           0 0 30px rgba(0, 0, 0, 0.9);
         opacity: 0;
-        z-index: 4;
+        z-index: 7;
         transition: opacity 320ms ease;
       }
 
@@ -180,7 +273,7 @@
           0 0 18px rgba(0, 0, 0, 0.95),
           0 0 30px rgba(0, 0, 0, 0.95);
         opacity: 0;
-        z-index: 5;
+        z-index: 8;
         transition: opacity 400ms ease;
       }
 
@@ -393,6 +486,16 @@
         #user-video-frame {
           width: 90%;
           max-width: 320px;
+          border-radius: 36px;
+        }
+        #user-video-frame::before {
+          border-radius: 39px;
+        }
+        #user-video-frame::after {
+          border-radius: 34px;
+        }
+        #user-video {
+          border-radius: 34px;
         }
         .overlay-outro {
           padding: 0 1.5rem;
@@ -414,13 +517,16 @@
       <!-- BACKGROUND VIDEO (mood skin / outro snow) -->
       <video id="bg-scene" playsinline autoplay muted loop></video>
 
-      <!-- USER VIDEO IN PREMIUM FRAME -->
+      <!-- USER VIDEO IN PREMIUM SQUIRCLE FRAME -->
       <div id="user-video-frame">
         <video id="user-video" playsinline></video>
       </div>
 
       <!-- LENS GLOW OVERLAY -->
       <div id="lens-overlay"></div>
+
+      <!-- SNOW DUST PARTICLES -->
+      <div id="snow-dust"></div>
 
       <!-- INTRO TEXT OVERLAY -->
       <div id="overlay-intro" class="overlay-text"></div>
@@ -483,7 +589,7 @@
 
     <script>
       (async function () {
-        console.log("yyovvo cinematic player v2 — premium frame + video-ended trigger");
+        console.log("yyovvo cinematic player v3 — squircle frame + personality tones + snow dust");
 
         const bgScene = document.getElementById("bg-scene");
         const userVideoFrame = document.getElementById("user-video-frame");
@@ -495,6 +601,7 @@
         const endScreen = document.getElementById("end-screen");
         const shareBtn = document.getElementById("share-btn");
         const tapToUnmute = document.getElementById("tap-to-unmute");
+        const snowDust = document.getElementById("snow-dust");
 
         // TIMELINE
         const INTRO_START_MS = 2500;
@@ -507,6 +614,7 @@
         let contentUrl = "";
         let introText = "this moment was made for you.";
         let mainText = "someone out there really cares about you.";
+        let personalityTone = "";
         let hasUserInteracted = false;
 
         // 1) Start mood skin background
@@ -532,8 +640,9 @@
               mainText = data.content_text || mainText;
               contentType = (data.content_type || "text").toLowerCase();
               contentUrl = data.content_url || "";
+              personalityTone = data.personality_tone || "";
 
-              console.log("contentType:", contentType, "contentUrl:", contentUrl);
+              console.log("contentType:", contentType, "contentUrl:", contentUrl, "personalityTone:", personalityTone);
             }
           }
         } catch (err) {
@@ -570,12 +679,19 @@
           if (contentType === "video" && contentUrl) {
             console.log("Playing user video:", contentUrl);
             
-            // Show the premium frame
+            // Apply personality tone class for dynamic frame styling
+            if (personalityTone) {
+              const toneClass = "tone-" + personalityTone.toLowerCase().replace(/[^a-z0-9]/g, '');
+              userVideoFrame.classList.add(toneClass);
+              console.log("Applied frame tone:", toneClass);
+            }
+            
+            // Show the premium squircle frame
             userVideoFrame.classList.add("show");
             
             // Load and play video
             userVideo.src = contentUrl;
-            userVideo.muted = !hasUserInteracted; // Mute only if no interaction yet
+            userVideo.muted = !hasUserInteracted;
             userVideo.playsInline = true;
             
             userVideo.play().then(() => {
@@ -617,6 +733,9 @@
           bgScene.src = "/videos/outro-snow.mp4";
           bgScene.loop = true;
           bgScene.play().catch(() => {});
+
+          // Hide snow dust during outro (let the outro-snow video do the snow effect)
+          snowDust.style.opacity = "0";
 
           // Show outro overlay
           outroEl.classList.add("show");
