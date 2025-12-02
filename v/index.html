@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -44,6 +44,25 @@
       @keyframes snowFall {
         0% { background-position: 0px 0px, 50px 0px, 25px 0px; }
         100% { background-position: 100px 800px, -50px 600px, 75px 700px; }
+      }
+
+      /* EFFECT VARIATIONS (reuse same snow layer, tweak vibe) */
+      body[data-effect="snow"] #snow-dust {
+        opacity: 0.7;
+        animation-duration: 25s;
+        filter: none;
+      }
+
+      body[data-effect="twinkles"] #snow-dust {
+        opacity: 0.45;
+        animation-duration: 32s;
+        filter: blur(0.5px);
+      }
+
+      body[data-effect="sparkles"] #snow-dust {
+        opacity: 0.9;
+        animation-duration: 18s;
+        filter: blur(1px) brightness(1.1);
       }
 
       /* BACKGROUND VIDEO LAYER (mood skin) */
@@ -305,27 +324,49 @@
       /* TAP TO UNMUTE */
       #tap-to-unmute {
         position: fixed;
-        bottom: 24px;
+        bottom: 26px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: radial-gradient(
+          circle at top left,
+          rgba(236, 72, 153, 0.95),
+          rgba(59, 130, 246, 0.95)
+        );
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(248, 250, 252, 0.8);
         border-radius: 999px;
-        padding: 12px 24px;
-        font-size: 14px;
-        color: #fff;
+        padding: 13px 26px;
+        font-size: 15px;
+        color: #fdf2f8;
         cursor: pointer;
         z-index: 100;
         opacity: 0;
-        transition: opacity 300ms ease;
+        transition: opacity 300ms ease, transform 150ms ease, box-shadow 150ms ease;
         display: none;
+        box-shadow:
+          0 0 22px rgba(236, 72, 153, 0.8),
+          0 18px 40px rgba(15, 23, 42, 0.9);
+        text-transform: lowercase;
+        letter-spacing: 0.04em;
+        animation: unmutePulse 2s ease-in-out infinite;
       }
 
       #tap-to-unmute.show {
         display: block;
         opacity: 1;
+      }
+
+      #tap-to-unmute:active {
+        transform: translateX(-50%) scale(0.98);
+        box-shadow:
+          0 0 18px rgba(236, 72, 153, 0.7),
+          0 10px 30px rgba(15, 23, 42, 0.9);
+      }
+
+      @keyframes unmutePulse {
+        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+        50% { transform: translateX(-50%) scale(1.04); opacity: 1; }
       }
 
       /* FINAL END SCREEN */
@@ -543,7 +584,10 @@
       </div>
 
       <!-- TAP TO UNMUTE -->
-      <button id="tap-to-unmute">🔊 Tap to unmute</button>
+      <button id="tap-to-unmute">🔊 tap to feel this moment</button>
+
+      <!-- INTRO BELLS LOOP -->
+      <audio id="yyo-bells" src="/audio/subtle-bells-loop.mp3" loop></audio>
 
       <!-- OUTRO JINGLE -->
       <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
@@ -557,8 +601,9 @@
         </div>
 
         <div class="end-buttons">
+          <!-- CTA 1: Reply with your own yyovvo (Create) -->
           <a
-            href__="https://studio.yyovvo.com/CreateYyovvo"
+            href="https://studio.yyovvo.com/CreateYyovvo"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn primary"
@@ -566,17 +611,19 @@
             reply with your own yyovvo
           </a>
 
+          <!-- CTA 2: Native share – handled in JS -->
           <button type="button" id="share-btn" class="end-btn ghost">
             share this moment on tiktok / instagram
           </button>
 
+          <!-- CTA 3: Open My Wall (no dead /upgrade route) -->
           <a
-            href__="https://studio.yyovvo.com/upgrade"
+            href="https://yyovvo.com/wall"
             target="_blank"
             rel="noopener noreferrer"
             class="end-btn outline"
           >
-            unlock all yyovvo features
+            open my wall
           </a>
         </div>
 
@@ -589,7 +636,7 @@
 
     <script>
       (async function () {
-        console.log("yyovvo cinematic player v3 — squircle frame + personality tones + snow dust");
+        console.log("yyovvo cinematic player v3.1 — squircle frame + personality tones + snow dust + bells");
 
         const bgScene = document.getElementById("bg-scene");
         const userVideoFrame = document.getElementById("user-video-frame");
@@ -598,6 +645,7 @@
         const mainEl = document.getElementById("overlay-main-text");
         const outroEl = document.getElementById("overlay-outro");
         const jingle = document.getElementById("yyo-jingle");
+        const bells = document.getElementById("yyo-bells");
         const endScreen = document.getElementById("end-screen");
         const shareBtn = document.getElementById("share-btn");
         const tapToUnmute = document.getElementById("tap-to-unmute");
@@ -616,6 +664,15 @@
         let mainText = "someone out there really cares about you.";
         let personalityTone = "";
         let hasUserInteracted = false;
+
+        // Random effect mode for this yyovvo (snow / twinkles / sparkles)
+        try {
+          const effectModes = ["snow", "twinkles", "sparkles"];
+          const idx = Math.floor(Math.random() * effectModes.length);
+          document.body.dataset.effect = effectModes[idx];
+        } catch (e) {
+          console.warn("Could not set effect mode", e);
+        }
 
         // 1) Start mood skin background
         bgScene.src = "/videos/moodskin01.mp4";
@@ -649,18 +706,44 @@
           console.warn("Error loading yyovvo:", err);
         }
 
+        // Show unmute CTA early so they can "prime" sound from the start
+        setTimeout(() => {
+          tapToUnmute.classList.add("show");
+        }, 900);
+
         // 3) Handle unmute on tap
         function enableAudio() {
           if (hasUserInteracted) return;
           hasUserInteracted = true;
+
+          // Hide CTA permanently once pressed
           tapToUnmute.classList.remove("show");
-          
+
+          // Start bells loop quietly
+          try {
+            bells.volume = 0.12;
+            bells.currentTime = 0;
+            bells.play().catch(() => {});
+          } catch (e) {
+            console.warn("Bells play failed:", e);
+          }
+
+          // If video already playing by the time they tap, restart so they don't miss first second
           if (contentType === "video" && userVideo.src) {
-            userVideo.muted = false;
+            try {
+              userVideo.muted = false;
+              if (userVideo.currentTime > 0.2) {
+                userVideo.currentTime = 0;
+              }
+              userVideo.play().catch(() => {});
+            } catch (e) {
+              console.warn("Error unmuting / restarting video:", e);
+            }
           }
         }
 
         tapToUnmute.addEventListener("click", enableAudio);
+        // Also count first tap anywhere as "interaction" to allow audio later
         document.addEventListener("click", enableAudio, { once: true });
         document.addEventListener("touchstart", enableAudio, { once: true });
 
@@ -681,7 +764,7 @@
             
             // Apply personality tone class for dynamic frame styling
             if (personalityTone) {
-              const toneClass = "tone-" + personalityTone.toLowerCase().replace(/[^a-z0-9]/g, '');
+              const toneClass = "tone-" + personalityTone.toLowerCase().replace(/[^a-z0-9]/g, "");
               userVideoFrame.classList.add(toneClass);
               console.log("Applied frame tone:", toneClass);
             }
@@ -696,6 +779,7 @@
             
             userVideo.play().then(() => {
               if (!hasUserInteracted) {
+                // If we somehow got autoplay but no explicit tap yet, keep CTA visible
                 tapToUnmute.classList.add("show");
               }
             }).catch(err => {
@@ -722,6 +806,29 @@
           }
         }, MAIN_START_MS);
 
+        // Helper: fade out bells smoothly
+        function fadeOutBells() {
+          try {
+            if (bells.paused) return;
+          } catch {
+            return;
+          }
+          let vol = bells.volume || 0.12;
+          const step = 0.02;
+          const interval = setInterval(() => {
+            vol -= step;
+            if (vol <= 0) {
+              bells.volume = 0;
+              try {
+                bells.pause();
+              } catch {}
+              clearInterval(interval);
+            } else {
+              bells.volume = vol;
+            }
+          }, 80);
+        }
+
         // 6) Outro function
         function triggerOutro() {
           console.log("OUTRO START");
@@ -740,11 +847,14 @@
           // Show outro overlay
           outroEl.classList.add("show");
 
-          // Play jingle
+          // Fade out bells and play jingle
+          fadeOutBells();
           try {
             jingle.currentTime = 0;
             jingle.play().catch(() => {});
-          } catch (e) {}
+          } catch (e) {
+            console.warn("Jingle play failed:", e);
+          }
 
           // After outro duration, show end screen
           setTimeout(() => {
@@ -769,10 +879,16 @@
                   text: shareText,
                   url: shareUrl,
                 });
-              } catch (err) {}
+              } catch (err) {
+                // user cancelled or share failed; no need to alert
+              }
             } else {
-              navigator.clipboard.writeText(shareUrl);
-              alert("Link copied!");
+              try {
+                await navigator.clipboard.writeText(shareUrl);
+                alert("Link copied!");
+              } catch (e) {
+                alert("Link: " + shareUrl);
+              }
             }
           });
         }
