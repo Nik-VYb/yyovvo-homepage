@@ -1,1039 +1,781 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head><meta name="p:domain_verify" content="b71a740b02af7c0bfaa38edad7c33475"/>
+  <head>
     <meta charset="UTF-8" />
-    <title>yyovvo — moments you can feel.</title>
-    <meta
-      name="description"
-      content="send a cinematic moment that lives forever on their wall. your voice, your feeling — instantly delivered."
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Open Graph / Share -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="yyovvo — moments you can feel." />
-    <meta
-      property="og:description"
-      content="send a cinematic moment that lives forever on their wall. your voice, your feeling — instantly delivered."
-    />
-    <meta property="og:url" content="https://yyovvo.com" />
-    <meta property="og:image" content="/og-image.jpg" />
+    <title>yyovvo — designed for emotion</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
     <style>
-      :root {
-        --bg: #020617;
-        --bg-soft: #030712;
-        --text-main: #f9fafb;
-        --text-soft: #9ca3af;
-        --accent-blue: #38bdf8;
-        --accent-pink: #ec4899;
-        --accent-emerald: #22c55e;
-        --border-subtle: #1f2937;
-        --card-bg: rgba(15, 23, 42, 0.92);
-        --radius-xl: 24px;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
+      /* ROOT */
       html,
       body {
         margin: 0;
         padding: 0;
+        background: #000;
+        overflow: hidden;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
           "Segoe UI", sans-serif;
-        background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
-        color: var(--text-main);
-        -webkit-font-smoothing: antialiased;
+        color: #f9fafb;
       }
 
-      body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .page-shell {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      /* HEADER */
-
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 40;
-        backdrop-filter: blur(18px);
-        background: linear-gradient(
-          to bottom,
-          rgba(2, 6, 23, 0.95),
-          rgba(2, 6, 23, 0.7),
-          transparent
-        );
-        border-bottom: 1px solid rgba(15, 23, 42, 0.8);
-      }
-
-      .nav {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 12px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
-
-      .nav-left {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .nav-logo {
-        font-size: 18px;
-        font-weight: 600;
-        letter-spacing: 0.14em;
-        text-transform: lowercase;
-      }
-
-      .nav-pill {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        padding: 4px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.35);
-        background: radial-gradient(
-          circle at top left,
-          rgba(56, 189, 248, 0.25),
-          rgba(15, 23, 42, 0.9)
-        );
-        color: var(--text-soft);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .nav-pill-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 999px;
-        background: radial-gradient(circle at center, #22c55e, #16a34a);
-        box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
-      }
-
-      .nav-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .nav-link {
-        font-size: 13px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        color: var(--text-soft);
-        border: 1px solid transparent;
-        cursor: pointer;
-      }
-
-      .nav-link:hover {
-        border-color: rgba(148, 163, 184, 0.4);
-        color: var(--text-main);
-        background: radial-gradient(
-          circle at top,
-          rgba(15, 23, 42, 0.8),
-          rgba(15, 23, 42, 0.4)
-        );
-      }
-
-      .nav-cta {
-        font-size: 13px;
-        padding: 7px 16px;
-        border-radius: 999px;
-        background: linear-gradient(
-          135deg,
-          rgba(56, 189, 248, 0.08),
-          rgba(236, 72, 153, 0.42)
-        );
-        border: 1px solid rgba(148, 163, 184, 0.7);
-        box-shadow:
-          0 0 18px rgba(236, 72, 153, 0.5),
-          0 0 24px rgba(56, 189, 248, 0.5);
-        color: #fdf2f8;
-        cursor: pointer;
-        text-transform: lowercase;
-      }
-
-      .nav-cta:hover {
-        filter: brightness(1.08);
-        box-shadow:
-          0 0 22px rgba(236, 72, 153, 0.7),
-          0 0 32px rgba(56, 189, 248, 0.7);
-      }
-
-      /* HERO */
-
-      .hero {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 52px 16px 40px;
-        display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-        align-items: center;
-        gap: 48px;
-      }
-
-      .hero-left {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-
-      .hero-kicker {
-        font-size: 11px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--text-soft);
-      }
-
-      /* NEW: social promo row under kicker */
-
-      .hero-social-promo {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: -4px;
-        margin-bottom: 4px;
-      }
-
-      .pulse-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: var(--accent-pink);
-        box-shadow:
-          0 0 10px rgba(236, 72, 153, 0.9),
-          0 0 18px rgba(236, 72, 153, 0.6);
-        animation: pulseDot 1.6s infinite ease-in-out;
-      }
-
-      @keyframes pulseDot {
-        0% {
-          transform: scale(0.9);
-          opacity: 0.7;
-        }
-        50% {
-          transform: scale(1.4);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(0.9);
-          opacity: 0.7;
-        }
-      }
-
-      .social-link {
-        font-size: 12px;
-        letter-spacing: 0.04em;
-        color: var(--accent-emerald);
-        text-transform: lowercase;
-        opacity: 0.9;
-      }
-
-      .social-link strong {
-        font-weight: 600;
-      }
-
-      .social-link:hover {
-        opacity: 1;
-        text-decoration: underline;
-      }
-
-      .hero-title {
-        font-size: clamp(30px, 4vw, 40px);
-        line-height: 1.2;
-        text-transform: lowercase;
-        letter-spacing: 0.04em;
-      }
-
-      .hero-title-gold {
-        background: linear-gradient(135deg, #facc15, #fde68a, #fbbf24);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
-      }
-
-      .hero-sub {
-        font-size: 14px;
-        color: var(--text-soft);
-        max-width: 360px;
-      }
-
-      .hero-counter {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.6);
-        background: radial-gradient(
-          circle at left,
-          rgba(56, 189, 248, 0.2),
-          rgba(15, 23, 42, 0.95)
-        );
-        font-size: 11px;
-        color: var(--text-soft);
-        margin-top: 4px;
-      }
-
-      .hero-counter-number {
-        font-variant-numeric: tabular-nums;
-        color: #e5e7eb;
-        font-weight: 600;
-      }
-
-      .hero-ctas {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 14px;
-      }
-
-      .btn-main {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 10px 20px;
-        border-radius: 999px;
-        background: linear-gradient(
-          135deg,
-          rgba(56, 189, 248, 0.25),
-          rgba(236, 72, 153, 0.8)
-        );
-        border: 1px solid rgba(248, 250, 252, 0.8);
-        color: #fdf2f8;
-        font-size: 14px;
-        cursor: pointer;
-        box-shadow:
-          0 0 26px rgba(236, 72, 153, 0.7),
-          0 0 40px rgba(56, 189, 248, 0.7);
-        text-transform: lowercase;
-      }
-
-      .btn-main:hover {
-        filter: brightness(1.06);
-        transform: translateY(-1px);
-      }
-
-      .btn-ghost {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        padding: 9px 16px;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.55);
-        background: radial-gradient(
-          circle at top,
-          rgba(15, 23, 42, 0.92),
-          rgba(15, 23, 42, 0.7)
-        );
-        color: var(--text-soft);
-        font-size: 13px;
-        cursor: pointer;
-        text-transform: lowercase;
-      }
-
-      .btn-ghost:hover {
-        border-color: rgba(209, 213, 219, 0.9);
-        color: var(--text-main);
-      }
-
-      .hero-note {
-        font-size: 11px;
-        color: var(--text-soft);
-        margin-top: 4px;
-      }
-
-      .hero-right {
-        display: flex;
-        justify-content: center;
-      }
-
-      .phone-shell {
-        position: relative;
-        width: min(280px, 80vw);
-        aspect-ratio: 9 / 19;
-        border-radius: 32px;
-        padding: 10px;
-        background: radial-gradient(circle at top, #111827, #020617);
-        box-shadow:
-          0 40px 80px rgba(0, 0, 0, 0.9),
-          0 0 80px rgba(59, 130, 246, 0.35);
-        border: 1px solid rgba(148, 163, 184, 0.5);
+      #yyovvo-container {
+        position: fixed;
+        inset: 0;
+        background: #000;
         overflow: hidden;
       }
 
-      .phone-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        border-radius: 24px;
-        overflow: hidden;
-        background: radial-gradient(circle at top, #020617, #000);
+      /* SNOW DUST PARTICLES */
+      #snow-dust {
+        position: absolute;
+        inset: 0;
+        z-index: 6;
+        pointer-events: none;
+        opacity: 0.7;
+        background-image:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FFFFFF' opacity='0.8'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='1.2' fill='%23FFFDD0' opacity='0.5'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='0.8' fill='%23E0F7FF' opacity='0.6'/%3E%3C/svg%3E");
+        background-size: 80px 80px, 120px 120px, 60px 60px;
+        animation: snowFall 25s linear infinite;
+        mix-blend-mode: screen;
       }
 
-      .phone-video {
+      @keyframes snowFall {
+        0% { background-position: 0px 0px, 50px 0px, 25px 0px; }
+        100% { background-position: 100px 800px, -50px 600px, 75px 700px; }
+      }
+
+      /* BACKGROUND VIDEO LAYER (mood skin) */
+      #bg-scene {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: saturate(1.1) contrast(1.1);
+        background: #000;
+        transition: opacity 400ms ease;
+        filter: brightness(0.7) contrast(1.05) saturate(1.1);
+        z-index: 1;
       }
 
-      .phone-glow-overlay {
+      /* USER VIDEO FRAME - PREMIUM SQUIRCLE STYLING */
+      #user-video-frame {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        max-width: 380px;
+        aspect-ratio: 9/16;
+        border-radius: 44px; /* SQUIRCLE */
+        overflow: hidden;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 600ms ease;
+        
+        /* Premium frosted glass frame */
+        background: rgba(15, 23, 42, 0.3);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        
+        /* Dynamic glow border - uses CSS variables for personality */
+        --frame-glow-1: rgba(236, 72, 153, 0.4);
+        --frame-glow-2: rgba(56, 189, 248, 0.3);
+        --frame-border: rgba(255, 255, 255, 0.15);
+        
+        border: 2px solid var(--frame-border);
+        box-shadow: 
+          0 0 0 1px var(--frame-glow-1),
+          0 0 40px var(--frame-glow-1),
+          0 0 80px var(--frame-glow-2),
+          0 25px 50px rgba(0, 0, 0, 0.5),
+          inset 0 0 30px rgba(255, 255, 255, 0.05);
+      }
+
+      #user-video-frame.show {
+        opacity: 1;
+        animation: frameBreathing 4s ease-in-out infinite;
+      }
+
+      @keyframes frameBreathing {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.008); }
+      }
+
+      /* Dynamic Christmas light border */
+      #user-video-frame::before {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        border-radius: 47px;
+        background: linear-gradient(
+          135deg,
+          var(--frame-color-1, rgba(250, 204, 107, 0.6)),
+          var(--frame-color-2, rgba(236, 72, 153, 0.6)),
+          var(--frame-color-3, rgba(56, 189, 248, 0.6)),
+          var(--frame-color-4, rgba(34, 197, 94, 0.5))
+        );
+        background-size: 300% 300%;
+        z-index: -1;
+        opacity: 0.7;
+        animation: christmasLightGlow 6s ease-in-out infinite;
+      }
+
+      @keyframes christmasLightGlow {
+        0% { background-position: 0% 50%; opacity: 0.5; }
+        25% { background-position: 50% 100%; opacity: 0.8; }
+        50% { background-position: 100% 50%; opacity: 0.6; }
+        75% { background-position: 50% 0%; opacity: 0.9; }
+        100% { background-position: 0% 50%; opacity: 0.5; }
+      }
+
+      /* Vignette overlay on video */
+      #user-video-frame::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 42px;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 50%,
+          rgba(0, 0, 0, 0.35) 100%
+        );
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      #user-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 42px; /* Match squircle */
+        display: block;
+      }
+
+      /* PERSONALITY FRAME TONES */
+      #user-video-frame.tone-classic {
+        --frame-color-1: rgba(250, 204, 107, 0.7);
+        --frame-color-2: rgba(249, 115, 22, 0.6);
+        --frame-color-3: rgba(250, 204, 107, 0.5);
+        --frame-color-4: rgba(234, 179, 8, 0.6);
+        --frame-glow-1: rgba(250, 204, 107, 0.5);
+        --frame-glow-2: rgba(249, 115, 22, 0.3);
+      }
+
+      #user-video-frame.tone-funny {
+        --frame-color-1: rgba(168, 85, 247, 0.7);
+        --frame-color-2: rgba(236, 72, 153, 0.7);
+        --frame-color-3: rgba(139, 92, 246, 0.6);
+        --frame-color-4: rgba(168, 85, 247, 0.5);
+        --frame-glow-1: rgba(168, 85, 247, 0.5);
+        --frame-glow-2: rgba(236, 72, 153, 0.4);
+      }
+
+      #user-video-frame.tone-shadow {
+        --frame-color-1: rgba(251, 113, 133, 0.7);
+        --frame-color-2: rgba(236, 72, 153, 0.6);
+        --frame-color-3: rgba(244, 114, 182, 0.5);
+        --frame-color-4: rgba(251, 113, 133, 0.6);
+        --frame-glow-1: rgba(251, 113, 133, 0.5);
+        --frame-glow-2: rgba(236, 72, 153, 0.3);
+      }
+
+      #user-video-frame.tone-modern {
+        --frame-color-1: rgba(56, 189, 248, 0.7);
+        --frame-color-2: rgba(14, 165, 233, 0.6);
+        --frame-color-3: rgba(125, 211, 252, 0.5);
+        --frame-color-4: rgba(56, 189, 248, 0.6);
+        --frame-glow-1: rgba(56, 189, 248, 0.5);
+        --frame-glow-2: rgba(14, 165, 233, 0.3);
+      }
+
+      #user-video-frame.tone-intense {
+        --frame-color-1: rgba(249, 115, 22, 0.7);
+        --frame-color-2: rgba(234, 88, 12, 0.7);
+        --frame-color-3: rgba(251, 146, 60, 0.5);
+        --frame-color-4: rgba(249, 115, 22, 0.6);
+        --frame-glow-1: rgba(249, 115, 22, 0.5);
+        --frame-glow-2: rgba(234, 88, 12, 0.4);
+      }
+
+      #user-video-frame.tone-rebel {
+        --frame-color-1: rgba(34, 197, 94, 0.7);
+        --frame-color-2: rgba(22, 163, 74, 0.6);
+        --frame-color-3: rgba(74, 222, 128, 0.5);
+        --frame-color-4: rgba(34, 197, 94, 0.6);
+        --frame-glow-1: rgba(34, 197, 94, 0.5);
+        --frame-glow-2: rgba(22, 163, 74, 0.3);
+      }
+
+      /* LENS GLOW OVERLAY - ENHANCED FESTIVE */
+      #lens-overlay {
         position: absolute;
         inset: 0;
         pointer-events: none;
+        z-index: 3;
         background:
-          radial-gradient(circle at top, rgba(56, 189, 248, 0.2), transparent 55%),
-          radial-gradient(circle at bottom, rgba(236, 72, 153, 0.26), transparent 60%);
+          radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.35), transparent 55%),
+          radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.38), transparent 55%),
+          radial-gradient(circle at 50% 100%, rgba(250, 204, 107, 0.28), transparent 60%),
+          radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.2), transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.75), transparent 80%);
+        mix-blend-mode: screen;
+        opacity: 0.85;
+      }
+
+      /* Faux film grain */
+      #lens-overlay::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.12;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
         mix-blend-mode: soft-light;
       }
 
-      .phone-pill {
+      /* TEXT OVERLAYS */
+      .overlay-text {
         position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 82px;
-        height: 18px;
-        border-radius: 999px;
-        background: rgba(15, 23, 42, 0.85);
-      }
-
-      .phone-caption {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 6px 12px;
-        border-radius: 999px;
-        background: rgba(15, 23, 42, 0.9);
-        color: #e5e7eb;
-        font-size: 11px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .phone-caption-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 999px;
-        background: radial-gradient(circle at center, #22c55e, #15803d);
-        box-shadow: 0 0 10px rgba(34, 197, 94, 0.85);
-      }
-
-      /* SECTIONS */
-
-      main {
-        flex: 1;
-      }
-
-      .section {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 26px 16px;
-      }
-
-      .section-tight {
-        padding-top: 10px;
-      }
-
-      .section-title {
-        font-size: 18px;
-        text-transform: lowercase;
-        margin-bottom: 10px;
-      }
-
-      .section-sub {
-        font-size: 13px;
-        color: var(--text-soft);
-        max-width: 420px;
-      }
-
-      .section-sub-wall-tagline {
-        font-size: 12px;
-        margin-top: 6px;
-        color: var(--accent-emerald);
-      }
-
-      .pill-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 12px;
-      }
-
-      .pill-step {
-        padding: 8px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.55);
-        background: radial-gradient(
-          circle at top left,
-          rgba(56, 189, 248, 0.16),
-          rgba(15, 23, 42, 0.96)
-        );
-        font-size: 12px;
-        color: var(--text-main);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .pill-step span {
-        font-size: 11px;
-        color: var(--text-soft);
-      }
-
-      .grid-3 {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 14px;
-      }
-
-      .card {
-        border-radius: 18px;
-        padding: 12px 12px 13px;
-        background: var(--card-bg);
-        border: 1px solid rgba(31, 41, 55, 0.9);
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
-      }
-
-      .card-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        color: var(--text-soft);
-        margin-bottom: 6px;
-      }
-
-      .card-main {
-        font-size: 13px;
-      }
-
-      .card-soft {
-        font-size: 12px;
-        color: var(--text-soft);
-        margin-top: 6px;
-      }
-
-      .badge-strip {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.55);
-        background: radial-gradient(
-          circle at left,
-          rgba(236, 72, 153, 0.24),
-          rgba(15, 23, 42, 0.96)
-        );
-        font-size: 11px;
-        color: #e5e7eb;
-        margin-top: 12px;
-      }
-
-      .badge-strip span {
-        color: #f97316;
-        font-weight: 600;
-      }
-
-      .wall-mock {
-        margin-top: 16px;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 6px;
-        max-width: 360px;
-      }
-
-      .wall-tile {
-        height: 64px;
-        border-radius: 14px;
-        border: 1px solid rgba(55, 65, 81, 0.9);
-        background: radial-gradient(
-          circle at top,
-          rgba(56, 189, 248, 0.18),
-          rgba(15, 23, 42, 0.98)
-        );
+        inset: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 11px;
-        color: #e5e7eb;
-        text-transform: lowercase;
-      }
-
-      .wall-tile.dim {
-        opacity: 0.65;
-        background: radial-gradient(
-          circle at top,
-          rgba(148, 163, 184, 0.1),
-          rgba(15, 23, 42, 0.98)
-        );
-      }
-
-      .wall-pill {
-        margin-top: 10px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 11px;
-        color: var(--text-soft);
-      }
-
-      .final-cta {
+        padding: 18px;
         text-align: center;
-        padding: 32px 16px 50px;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #f9fafb;
+        text-shadow:
+          0 0 18px rgba(0, 0, 0, 0.9),
+          0 0 30px rgba(0, 0, 0, 0.9);
+        opacity: 0;
+        z-index: 7;
+        transition: opacity 320ms ease;
       }
 
-      .final-line {
-        font-size: 18px;
-        margin-bottom: 8px;
-      }
-
-      .final-sub {
-        font-size: 13px;
-        color: var(--text-soft);
-        margin-bottom: 16px;
-      }
-
-      /* FOOTER */
-
-      footer {
-        border-top: 1px solid rgba(15, 23, 42, 0.9);
-        background: linear-gradient(to top, #020617, rgba(2, 6, 23, 0.92));
-      }
-
-      .footer-inner {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 14px 16px 18px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        font-size: 11px;
-        color: var(--text-soft);
-      }
-
-      .footer-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .footer-links a {
-        opacity: 0.8;
-      }
-
-      .footer-links a:hover {
+      .overlay-text.show {
         opacity: 1;
       }
 
-      /* RESPONSIVE */
+      /* OUTRO (yyovvo + tagline) */
+      .overlay-outro {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-align: center;
+        color: #f9fafb;
+        text-shadow:
+          0 0 18px rgba(0, 0, 0, 0.95),
+          0 0 30px rgba(0, 0, 0, 0.95);
+        opacity: 0;
+        z-index: 8;
+        transition: opacity 400ms ease;
+      }
 
-      @media (max-width: 768px) {
-        .hero {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 32px;
-          padding-top: 30px;
+      .overlay-outro.show {
+        opacity: 1;
+      }
+
+      .outro-title {
+        font-size: 2.2rem;
+        letter-spacing: 0.18em;
+        text-transform: lowercase;
+      }
+
+      .outro-sub {
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .heart {
+        display: inline-block;
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.16); opacity: 1; }
+      }
+
+      /* TAP TO UNMUTE */
+      #tap-to-unmute {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 999px;
+        padding: 12px 24px;
+        font-size: 14px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0;
+        transition: opacity 300ms ease;
+        display: none;
+      }
+
+      #tap-to-unmute.show {
+        display: block;
+        opacity: 1;
+      }
+
+      /* FINAL END SCREEN */
+      .end-screen {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, #020617, #000);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 26px 22px 34px;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 10;
+        transition: opacity 500ms ease;
+      }
+
+      .end-screen.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .end-pulse {
+        width: 170px;
+        height: 170px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle at center,
+          rgba(236, 72, 153, 0.45),
+          transparent 70%
+        );
+        opacity: 0.75;
+        filter: blur(14px);
+        animation: endPulseGlow 2.4s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes endPulseGlow {
+        0%, 100% { transform: scale(0.9); opacity: 0.7; }
+        50% { transform: scale(1.08); opacity: 0.95; }
+      }
+
+      .end-text-block {
+        position: relative;
+        margin-top: -44px;
+        text-align: center;
+        max-width: 330px;
+      }
+
+      .end-line1 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .end-line2 {
+        font-size: 0.95rem;
+        opacity: 0.86;
+      }
+
+      .end-buttons {
+        margin-top: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 360px;
+      }
+
+      .end-btn {
+        border-radius: 999px;
+        border: 1px solid rgba(156, 163, 175, 0.55);
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-align: center;
+        text-decoration: none;
+        color: #f9fafb;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+      }
+
+      .end-btn.primary {
+        background: radial-gradient(
+          circle at top left,
+          rgba(236, 72, 153, 0.95),
+          rgba(59, 130, 246, 0.95)
+        );
+        border-color: transparent;
+        box-shadow: 0 0 32px rgba(236, 72, 153, 0.5);
+      }
+
+      .end-btn.ghost {
+        background: rgba(15, 23, 42, 0.92);
+      }
+
+      .end-btn.outline {
+        background: transparent;
+        border-color: rgba(148, 163, 184, 0.8);
+        opacity: 0.9;
+      }
+
+      .end-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.9);
+      }
+
+      .end-btn.primary:hover {
+        box-shadow: 0 0 40px rgba(236, 72, 153, 0.8);
+      }
+
+      .end-footer {
+        margin-top: 22px;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0;
+        animation: footerIn 800ms ease forwards 900ms;
+      }
+
+      .end-heart {
+        font-size: 0.9rem;
+      }
+
+      @keyframes footerIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (min-width: 768px) {
+        #user-video-frame {
+          max-width: 420px;
         }
-
-        .hero-right {
-          order: -1;
+        .end-text-block {
+          max-width: 420px;
         }
-
-        .nav {
-          padding-inline: 12px;
+        .end-line1 {
+          font-size: 1.25rem;
         }
-
-        .nav-right {
-          gap: 6px;
+        .end-line2 {
+          font-size: 1rem;
         }
-
-        .nav-pill {
-          display: none;
-        }
-
-        .section {
-          padding-inline: 14px;
-        }
-
-        .grid-3 {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .wall-mock {
-          max-width: 100%;
+        .end-buttons {
+          max-width: 420px;
         }
       }
 
-      @media (max-width: 480px) {
-        .hero-title {
+      @media (max-width: 640px) {
+        #user-video-frame {
+          width: 90%;
+          max-width: 320px;
+          border-radius: 36px;
+        }
+        #user-video-frame::before {
+          border-radius: 39px;
+        }
+        #user-video-frame::after {
+          border-radius: 34px;
+        }
+        #user-video {
+          border-radius: 34px;
+        }
+        .overlay-outro {
+          padding: 0 1.5rem;
+        }
+        .overlay-outro .outro-title {
           font-size: 24px;
+          letter-spacing: 0.16em;
         }
-
-        .hero-sub {
-          font-size: 13px;
-        }
-
-        .hero-ctas {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .btn-main,
-        .btn-ghost {
-          width: 100%;
-          justify-content: center;
+        .overlay-outro .outro-sub {
+          font-size: 12px;
+          margin-top: 6px;
         }
       }
     </style>
   </head>
 
   <body>
-    <div class="page-shell">
-      <header>
-        <nav class="nav">
-          <div class="nav-left">
-            <div class="nav-logo">yyovvo</div>
-            <div class="nav-pill">
-              <span class="nav-pill-dot"></span>
-              <span>moments you can feel</span>
-            </div>
-          </div>
-          <div class="nav-right">
-            <a
-              class="nav-link"
-              href="https://yyovvo.com/wall"
-              rel="noopener noreferrer"
-              >my wall</a
-            >
-            <a
-              class="nav-cta"
-              href="https://studio.yyovvo.com/CreateYyovvo"
-              rel="noopener noreferrer"
-              >send</a
-            >
-          </div>
-        </nav>
-      </header>
+    <div id="yyovvo-container">
+      <!-- BACKGROUND VIDEO (mood skin / outro snow) -->
+      <video id="bg-scene" playsinline autoplay muted loop></video>
 
-      <main>
-        <!-- HERO -->
-        <section class="hero">
-          <div class="hero-left">
-            <div class="hero-kicker">christmas 2025 hits different</div>
+      <!-- USER VIDEO IN PREMIUM SQUIRCLE FRAME -->
+      <div id="user-video-frame">
+        <video id="user-video" playsinline></video>
+      </div>
 
-            <div class="hero-social-promo">
-              <span class="pulse-dot"></span>
-              <a
-                href="https://studio.yyovvo.com/CreateYyovvo"
-                class="social-link"
-              >
-                made for tiktok / insta — <strong>join the trend →</strong>
-              </a>
-            </div>
+      <!-- LENS GLOW OVERLAY -->
+      <div id="lens-overlay"></div>
 
-            <h1 class="hero-title">
-              every yyovvo is
-              <span class="hero-title-gold">an eternal moment on their wall.</span>
-            </h1>
-            <p class="hero-sub">
-              not a card. not a dm. a tiny cinematic scene they can replay
-              whenever they miss you.
-            </p>
+      <!-- SNOW DUST PARTICLES -->
+      <div id="snow-dust"></div>
 
-            <div class="hero-counter">
-              <span class="hero-counter-number" id="yyv-counter-number">
-                1,777,777
-              </span>
-              <span>yyovvos sent</span>
-            </div>
+      <!-- INTRO TEXT OVERLAY -->
+      <div id="overlay-intro" class="overlay-text"></div>
 
-            <div class="hero-ctas">
-              <a
-                class="btn-main"
-                href="https://studio.yyovvo.com/CreateYyovvo"
-                rel="noopener noreferrer"
-              >
-                send a yyovvo →
-              </a>
-              <a class="btn-ghost" href="#how-it-works">
-                how it works
-              </a>
-            </div>
-            <div class="hero-note">
-              free to create · no app · just a link and a feeling
-            </div>
-          </div>
+      <!-- MAIN MESSAGE TEXT OVERLAY (for text-mode yyovvos) -->
+      <div id="overlay-main-text" class="overlay-text"></div>
 
-          <div class="hero-right">
-            <div class="phone-shell">
-              <div class="phone-inner">
-                <video
-                  class="phone-video"
-                  src="/videos/yyovvo-hero.mp4"
-                  autoplay
-                  muted
-                  playsinline
-                  loop
-                  poster="/images/yyovvo-hero-poster.jpg"
-                ></video>
-                <div class="phone-glow-overlay"></div>
-                <div class="phone-pill"></div>
-                <div class="phone-caption">
-                  <div class="phone-caption-dot"></div>
-                  yyovvo · playing a feeling
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- WHAT IS YYOVVO -->
-        <section class="section section-tight" id="what">
-          <h2 class="section-title">what is yyovvo?</h2>
-          <p class="section-sub">
-            an emphatic short cinematic trailer of your personality &amp; message,
-            wrapped by ai in mood &amp; skin, delivered as an eternal moment that
-            lives on their wall.
-          </p>
-
-          <div class="grid-3">
-            <div class="card">
-              <div class="card-label">your voice</div>
-              <div class="card-main">
-                whisper, laugh, say “merry christmas” — yyovvo captures how you
-                actually sound, not just what you type.
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-label">our wrap</div>
-              <div class="card-main">
-                you choose your personality, yyovvo ai picks the right mood +
-                skin. no timelines, no editing, no templates.
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-label">their wall</div>
-              <div class="card-main">
-                every yyovvo becomes a tile on their wall — a private gallery of
-                the moments you made them feel something.
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- HOW IT WORKS -->
-        <section class="section" id="how-it-works">
-          <h2 class="section-title">how it works</h2>
-          <p class="section-sub">
-            built for humans, not creators. 3 taps, under 40 seconds, and you’ve
-            made something they’ll replay all year.
-          </p>
-
-          <div class="pill-row">
-            <div class="pill-step">
-              1 · choose your personality →
-              <span>yyovvo ai wraps the rest</span>
-            </div>
-            <div class="pill-step">
-              2 · speak or write your moment →
-              <span>8 seconds is the sweet spot</span>
-            </div>
-            <div class="pill-step">
-              3 · send it like a heartbeat →
-              <span>sms, whatsapp, ig dm, anywhere</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- TIKTOK / SOCIAL -->
-        <section class="section section-tight">
-          <h2 class="section-title">made for now</h2>
-          <p class="section-sub">
-            trending on tiktok, made for social — but still feels like it was
-            only ever meant for one person.
-          </p>
-
-          <div class="badge-strip">
-            <span>portrait ·</span>
-            a5 format · vertical cinema · one tap to share on tiktok / reels /
-            shorts
-          </div>
-        </section>
-
-        <!-- WALL -->
-        <section class="section">
-          <h2 class="section-title">the yyovvo wall</h2>
-          <p class="section-sub">
-            every yyovvo you send becomes a tile on their wall — a living
-            timeline of how you’ve shown up for them.
-          </p>
-          <p class="section-sub-wall-tagline">
-            the new cinematic journal of special moments — forever re-lived,
-            re-shared, re-loved.
-          </p>
-
-          <div class="grid-3">
-            <div class="card">
-              <div class="card-label">sent</div>
-              <div class="card-main">
-                see every yyovvo you’ve ever sent — grouped by who you sent them
-                to, like an emotional history.
-              </div>
-              <div class="card-soft">
-                your wall splits into sent + received. you control privacy:
-                only me / followers / public.
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-label">received</div>
-              <div class="card-main">
-                one tap and they’re back inside the moment — voice, mood, skin,
-                everything, exactly how you made it.
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-label">feels like</div>
-              <div class="card-main">
-                not a pile of cards. not a forgotten dm. a permanent gallery of
-                the times you made their heart move.
-              </div>
-            </div>
-          </div>
-
-          <div class="wall-mock">
-            <div class="wall-tile">loved</div>
-            <div class="wall-tile">midnight</div>
-            <div class="wall-tile dim">again</div>
-            <div class="wall-tile dim">saved me</div>
-            <div class="wall-tile">that christmas</div>
-            <div class="wall-tile dim">call me</div>
-          </div>
-
-          <div class="wall-pill">
-            your first yyovvo creates your wall automatically.
-          </div>
-
-          <div style="margin-top: 14px;">
-            <a
-              class="btn-ghost"
-              href="https://yyovvo.com/wall"
-              rel="noopener noreferrer"
-            >
-              open my wall →
-            </a>
-          </div>
-        </section>
-
-        <!-- FINAL CTA -->
-        <section class="final-cta">
-          <div class="final-line">
-            someone will go mental when they receive this.
-          </div>
-          <div class="final-sub">
-            don’t send another notification. send a yyovvo they’ll replay
-            forever.
-          </div>
-          <div class="hero-ctas" style="justify-content:center;">
-            <a
-              class="btn-main"
-              href="https://studio.yyovvo.com/CreateYyovvo"
-              rel="noopener noreferrer"
-            >
-              send a yyovvo →
-            </a>
-            <a
-              class="btn-ghost"
-              href="https://yyovvo.com/wall"
-              rel="noopener noreferrer"
-            >
-              open my wall →
-            </a>
-          </div>
-        </section>
-      </main>
-
-      <footer>
-        <div class="footer-inner">
-          <div>yyovvo · designed for emotion.</div>
-          <div class="footer-links">
-            <a href="https://studio.yyovvo.com/CreateYyovvo">send</a>
-            <a href="https://yyovvo.com/wall">my wall</a>
-            <a href="#">help</a>
-            <a href="#">terms</a>
-            <a href="#">privacy</a>
-          </div>
+      <!-- OUTRO OVERLAY (yyovvo + tagline) -->
+      <div id="overlay-outro" class="overlay-outro">
+        <div class="outro-title">yyovvo</div>
+        <div class="outro-sub">
+          designed for emotion <span class="heart">♡</span>
         </div>
-      </footer>
+      </div>
+
+      <!-- TAP TO UNMUTE -->
+      <button id="tap-to-unmute">🔊 Tap to unmute</button>
+
+      <!-- OUTRO JINGLE -->
+      <audio id="yyo-jingle" src="/audio/yyovvo-jingle.mp3"></audio>
+
+      <!-- FINAL POST-YYOVVO END SCREEN -->
+      <div id="end-screen" class="end-screen">
+        <div class="end-pulse"></div>
+        <div class="end-text-block">
+          <div class="end-line1">this moment was made for you.</div>
+          <div class="end-line2">by someone who really cares about you.</div>
+        </div>
+
+        <div class="end-buttons">
+          <a
+            href__="https://studio.yyovvo.com/CreateYyovvo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="end-btn primary"
+          >
+            reply with your own yyovvo
+          </a>
+
+          <button type="button" id="share-btn" class="end-btn ghost">
+            share this moment on tiktok / instagram
+          </button>
+
+          <a
+            href__="https://studio.yyovvo.com/upgrade"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="end-btn outline"
+          >
+            unlock all yyovvo features
+          </a>
+        </div>
+
+        <div class="end-footer">
+          <span class="end-heart">❤️</span>
+          <span id="yyovvo-counter">2,777,777 yyovvos sent this season</span>
+        </div>
+      </div>
     </div>
 
     <script>
-      // yyovvo counter animation
-      (function () {
-        const el = document.getElementById("yyv-counter-number");
-        if (!el) return;
+      (async function () {
+        console.log("yyovvo cinematic player v3 — squircle frame + personality tones + snow dust");
 
-        const target = 1777777;
-        const start = target - 7777;
-        const duration = 1400;
-        const startTime = performance.now();
+        const bgScene = document.getElementById("bg-scene");
+        const userVideoFrame = document.getElementById("user-video-frame");
+        const userVideo = document.getElementById("user-video");
+        const introEl = document.getElementById("overlay-intro");
+        const mainEl = document.getElementById("overlay-main-text");
+        const outroEl = document.getElementById("overlay-outro");
+        const jingle = document.getElementById("yyo-jingle");
+        const endScreen = document.getElementById("end-screen");
+        const shareBtn = document.getElementById("share-btn");
+        const tapToUnmute = document.getElementById("tap-to-unmute");
+        const snowDust = document.getElementById("snow-dust");
 
-        function format(n) {
-          return n.toLocaleString("en-US");
+        // TIMELINE
+        const INTRO_START_MS = 2500;
+        const INTRO_END_MS = 5500;
+        const MAIN_START_MS = 6000;
+        const OUTRO_DURATION_MS = 4000;
+
+        // State
+        let contentType = "text";
+        let contentUrl = "";
+        let introText = "this moment was made for you.";
+        let mainText = "someone out there really cares about you.";
+        let personalityTone = "";
+        let hasUserInteracted = false;
+
+        // 1) Start mood skin background
+        bgScene.src = "/videos/moodskin01.mp4";
+        bgScene.loop = true;
+        bgScene.muted = true;
+        bgScene.play().catch(() => {});
+
+        // 2) Load data from Base44
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const id = params.get("id");
+
+          if (id) {
+            const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(id)}`;
+            const res = await fetch(url);
+
+            if (res.ok) {
+              const data = await res.json();
+              console.log("yyovvo data:", data);
+
+              introText = data.intro_text || introText;
+              mainText = data.content_text || mainText;
+              contentType = (data.content_type || "text").toLowerCase();
+              contentUrl = data.content_url || "";
+              personalityTone = data.personality_tone || "";
+
+              console.log("contentType:", contentType, "contentUrl:", contentUrl, "personalityTone:", personalityTone);
+            }
+          }
+        } catch (err) {
+          console.warn("Error loading yyovvo:", err);
         }
 
-        function tick(now) {
-          const progress = Math.min(1, (now - startTime) / duration);
-          const value = Math.floor(start + (target - start) * progress);
-          el.textContent = format(value);
-          if (progress < 1) {
-            requestAnimationFrame(tick);
+        // 3) Handle unmute on tap
+        function enableAudio() {
+          if (hasUserInteracted) return;
+          hasUserInteracted = true;
+          tapToUnmute.classList.remove("show");
+          
+          if (contentType === "video" && userVideo.src) {
+            userVideo.muted = false;
           }
         }
 
-        requestAnimationFrame(tick);
-      })();
+        tapToUnmute.addEventListener("click", enableAudio);
+        document.addEventListener("click", enableAudio, { once: true });
+        document.addEventListener("touchstart", enableAudio, { once: true });
 
-      // smooth scroll for "how it works"
-      (function () {
-        const link = document.querySelector('a.btn-ghost[href="#how-it-works"]');
-        if (!link) return;
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          const target = document.getElementById("how-it-works");
-          if (!target) return;
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
+        // 4) Show intro text
+        setTimeout(() => {
+          introEl.textContent = introText;
+          introEl.classList.add("show");
+        }, INTRO_START_MS);
+
+        setTimeout(() => {
+          introEl.classList.remove("show");
+        }, INTRO_END_MS);
+
+        // 5) Main content start
+        setTimeout(() => {
+          if (contentType === "video" && contentUrl) {
+            console.log("Playing user video:", contentUrl);
+            
+            // Apply personality tone class for dynamic frame styling
+            if (personalityTone) {
+              const toneClass = "tone-" + personalityTone.toLowerCase().replace(/[^a-z0-9]/g, '');
+              userVideoFrame.classList.add(toneClass);
+              console.log("Applied frame tone:", toneClass);
+            }
+            
+            // Show the premium squircle frame
+            userVideoFrame.classList.add("show");
+            
+            // Load and play video
+            userVideo.src = contentUrl;
+            userVideo.muted = !hasUserInteracted;
+            userVideo.playsInline = true;
+            
+            userVideo.play().then(() => {
+              if (!hasUserInteracted) {
+                tapToUnmute.classList.add("show");
+              }
+            }).catch(err => {
+              console.warn("Video autoplay failed:", err);
+              tapToUnmute.classList.add("show");
+            });
+
+            // Wait for video to END before showing outro
+            userVideo.addEventListener("ended", () => {
+              console.log("User video ended, triggering outro");
+              triggerOutro();
+            }, { once: true });
+
+          } else {
+            // TEXT MODE
+            mainEl.textContent = mainText;
+            mainEl.classList.add("show");
+
+            // For text, use a fixed duration
+            setTimeout(() => {
+              mainEl.classList.remove("show");
+              triggerOutro();
+            }, 6000);
+          }
+        }, MAIN_START_MS);
+
+        // 6) Outro function
+        function triggerOutro() {
+          console.log("OUTRO START");
+
+          // Hide video frame
+          userVideoFrame.classList.remove("show");
+
+          // Switch background to outro snow
+          bgScene.src = "/videos/outro-snow.mp4";
+          bgScene.loop = true;
+          bgScene.play().catch(() => {});
+
+          // Hide snow dust during outro (let the outro-snow video do the snow effect)
+          snowDust.style.opacity = "0";
+
+          // Show outro overlay
+          outroEl.classList.add("show");
+
+          // Play jingle
+          try {
+            jingle.currentTime = 0;
+            jingle.play().catch(() => {});
+          } catch (e) {}
+
+          // After outro duration, show end screen
+          setTimeout(() => {
+            console.log("END SCREEN");
+            bgScene.pause();
+            bgScene.style.opacity = "0.3";
+            outroEl.classList.remove("show");
+            endScreen.classList.add("show");
+          }, OUTRO_DURATION_MS);
+        }
+
+        // 7) Share button
+        if (shareBtn) {
+          shareBtn.addEventListener("click", async () => {
+            const shareUrl = window.location.href;
+            const shareText = "Someone made this yyovvo moment just for me. 💌";
+
+            if (navigator.share) {
+              try {
+                await navigator.share({
+                  title: "yyovvo — designed for emotion",
+                  text: shareText,
+                  url: shareUrl,
+                });
+              } catch (err) {}
+            } else {
+              navigator.clipboard.writeText(shareUrl);
+              alert("Link copied!");
+            }
+          });
+        }
       })();
     </script>
   </body>
