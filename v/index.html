@@ -76,6 +76,7 @@
         transition: opacity 400ms ease;
         filter: brightness(0.7) contrast(1.05) saturate(1.1);
         z-index: 1;
+        opacity: 0; /* start hidden, fade in when correct mood is ready */
       }
 
       /* USER VIDEO FRAME - PREMIUM SQUIRCLE STYLING */
@@ -665,7 +666,7 @@
 
     <script>
       (async function () {
-        console.log("yyovvo cinematic player v4.0 — mood skins + tones + snow dust + bells");
+        console.log("yyovvo cinematic player v4.1 — mood skins + tones + snow dust + bells");
 
         const bgScene = document.getElementById("bg-scene");
         const userVideoFrame = document.getElementById("user-video-frame");
@@ -694,12 +695,13 @@
         let mainText = "someone out there really cares about you.";
         let personalityTone = "";
 
-        // Mood skin state with safe defaults (legacy behaviour)
-        let moodMainVideoUrl = "/videos/moodskin01.mp4";
-        let moodOutroVideoUrl = "/videos/outro-snow.mp4";
+        // Mood skin state – will be filled from backend / fallback
+        let moodMainVideoUrl = null;
+        let moodOutroVideoUrl = null;
         let moodSnowEffectMode = null;
 
         let hasUserInteracted = false;
+        let bgStarted = false;
 
         // 0) Default snow effect (can be overridden by mood)
         let currentEffectMode = "snow";
@@ -718,7 +720,6 @@
             const BASE_COUNT = 2777777;
             const DAILY_INCREMENT = 777777;
 
-            // season start (can tweak if you want another anchor)
             const seasonStart = new Date("2025-12-01T00:00:00Z");
             const now = new Date();
             const msPerDay = 24 * 60 * 60 * 1000;
@@ -732,13 +733,32 @@
           console.warn("Could not update yyovvo counter", e);
         }
 
-        // 1) Start background with default moodskin; may be overridden after data load
-        bgScene.src = moodMainVideoUrl;
-        bgScene.loop = true;
-        bgScene.muted = true;
-        bgScene.play().catch(() => {});
+        // Helper: start background ONCE with final src, fade in when loaded
+        function startBackground(src) {
+          if (bgStarted) return;
+          bgStarted = true;
 
-        // 2) Load data from Base44
+          const finalSrc = src || "/videos/moodskin01.mp4";
+          try {
+            bgScene.src = finalSrc;
+            bgScene.loop = true;
+            bgScene.muted = true;
+
+            bgScene.addEventListener(
+              "loadeddata",
+              () => {
+                bgScene.style.opacity = "1"; // fade in now that correct mood is ready
+              },
+              { once: true }
+            );
+
+            bgScene.play().catch(() => {});
+          } catch (e) {
+            console.warn("Error starting background video:", e);
+          }
+        }
+
+        // 2) Load data from Base44, THEN start background with correct mood
         try {
           const params = new URLSearchParams(window.location.search);
           const id = params.get("id");
@@ -779,22 +799,19 @@
                   document.body.dataset.effect = currentEffectMode;
                 }
               }
-
-              // If a custom mood background is set, update bg video
-              if (moodMainVideoUrl && moodMainVideoUrl !== "/videos/moodskin01.mp4") {
-                try {
-                  bgScene.src = moodMainVideoUrl;
-                  bgScene.loop = true;
-                  bgScene.muted = true;
-                  await bgScene.play();
-                } catch (e) {
-                  console.warn("Could not play mood main video, keeping default:", e);
-                }
-              }
             }
           }
         } catch (err) {
           console.warn("Error loading yyovvo:", err);
+        } finally {
+          // Decide final bg src and start ONCE, after yyovvoGet is done (or failed)
+          const finalMain = moodMainVideoUrl || "/videos/moodskin01.mp4";
+          startBackground(finalMain);
+
+          // Ensure outro video has a fallback
+          if (!moodOutroVideoUrl) {
+            moodOutroVideoUrl = "/videos/outro-snow.mp4";
+          }
         }
 
         // Show unmute CTA early so they can "prime" sound from the start
@@ -834,7 +851,6 @@
         }
 
         tapToUnmute.addEventListener("click", enableAudio);
-        // Also count first tap anywhere as "interaction" to allow audio later
         document.addEventListener("click", enableAudio, { once: true });
         document.addEventListener("touchstart", enableAudio, { once: true });
 
@@ -870,7 +886,6 @@
             
             userVideo.play().then(() => {
               if (!hasUserInteracted) {
-                // If we somehow got autoplay but no explicit tap yet, keep CTA visible
                 tapToUnmute.classList.add("show");
               }
             }).catch(err => {
@@ -929,9 +944,14 @@
 
           // Use mood-specific outro if provided, else default
           const outroSrc = moodOutroVideoUrl || "/videos/outro-snow.mp4";
-          bgScene.src = outroSrc;
-          bgScene.loop = true;
-          bgScene.play().catch(() => {});
+          try {
+            bgScene.src = outroSrc;
+            bgScene.loop = true;
+            bgScene.muted = true;
+            bgScene.play().catch(() => {});
+          } catch (e) {
+            console.warn("Error starting outro background:", e);
+          }
 
           // Hide snow dust during outro (let the outro-snow video do the snow effect)
           snowDust.style.opacity = "0";
@@ -951,7 +971,9 @@
           // After outro duration, show end screen
           setTimeout(() => {
             console.log("END SCREEN");
-            bgScene.pause();
+            try {
+              bgScene.pause();
+            } catch {}
             bgScene.style.opacity = "0.3";
             outroEl.classList.remove("show");
             endScreen.classList.add("show");
