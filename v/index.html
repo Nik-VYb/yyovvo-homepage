@@ -277,6 +277,24 @@
         opacity: 1;
       }
 
+      /* INTRO: brighter, more playful + slightly bigger */
+      .overlay-intro {
+        font-size: 1.35rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        color: #ff7ae5;
+        text-shadow:
+          0 0 24px rgba(236, 72, 153, 0.95),
+          0 0 40px rgba(59, 130, 246, 0.9),
+          0 0 60px rgba(14, 165, 233, 0.8);
+        font-family: "Comic Neue", system-ui, -apple-system, BlinkMacSystemFont,
+          "SF Pro Text", "Segoe UI", sans-serif;
+      }
+
+      .overlay-main {
+        font-size: 1.05rem;
+      }
+
       /* OUTRO (yyovvo + tagline) */
       .overlay-outro {
         position: absolute;
@@ -308,12 +326,23 @@
 
       .outro-sub {
         font-size: 0.95rem;
-        opacity: 0.9;
+        opacity: 0.95;
+        color: #ff4fd6; /* electric pink */
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: lowercase;
+        font-family: "Comic Neue", system-ui, -apple-system, BlinkMacSystemFont,
+          "SF Pro Text", "Segoe UI", sans-serif;
+        text-shadow:
+          0 0 18px rgba(236, 72, 153, 0.95),
+          0 0 32px rgba(59, 130, 246, 0.9);
       }
 
       .heart {
         display: inline-block;
         animation: pulse 1.2s ease-in-out infinite;
+        color: #ff9cf0; /* brighter heart */
+        font-size: 1.1em;
       }
 
       @keyframes pulse {
@@ -570,10 +599,10 @@
       <div id="snow-dust"></div>
 
       <!-- INTRO TEXT OVERLAY -->
-      <div id="overlay-intro" class="overlay-text"></div>
+      <div id="overlay-intro" class="overlay-text overlay-intro"></div>
 
       <!-- MAIN MESSAGE TEXT OVERLAY (for text-mode yyovvos) -->
-      <div id="overlay-main-text" class="overlay-text"></div>
+      <div id="overlay-main-text" class="overlay-text overlay-main"></div>
 
       <!-- OUTRO OVERLAY (yyovvo + tagline) -->
       <div id="overlay-outro" class="overlay-outro">
@@ -636,7 +665,7 @@
 
     <script>
       (async function () {
-        console.log("yyovvo cinematic player v3.1 — squircle frame + personality tones + snow dust + bells");
+        console.log("yyovvo cinematic player v4.0 — mood skins + tones + snow dust + bells");
 
         const bgScene = document.getElementById("bg-scene");
         const userVideoFrame = document.getElementById("user-video-frame");
@@ -650,6 +679,7 @@
         const shareBtn = document.getElementById("share-btn");
         const tapToUnmute = document.getElementById("tap-to-unmute");
         const snowDust = document.getElementById("snow-dust");
+        const counterEl = document.getElementById("yyovvo-counter");
 
         // TIMELINE
         const INTRO_START_MS = 2500;
@@ -663,19 +693,47 @@
         let introText = "this moment was made for you.";
         let mainText = "someone out there really cares about you.";
         let personalityTone = "";
+
+        // Mood skin state with safe defaults (legacy behaviour)
+        let moodMainVideoUrl = "/videos/moodskin01.mp4";
+        let moodOutroVideoUrl = "/videos/outro-snow.mp4";
+        let moodSnowEffectMode = null;
+
         let hasUserInteracted = false;
 
-        // Random effect mode for this yyovvo (snow / twinkles / sparkles)
+        // 0) Default snow effect (can be overridden by mood)
+        let currentEffectMode = "snow";
         try {
           const effectModes = ["snow", "twinkles", "sparkles"];
           const idx = Math.floor(Math.random() * effectModes.length);
-          document.body.dataset.effect = effectModes[idx];
+          currentEffectMode = effectModes[idx];
+          document.body.dataset.effect = currentEffectMode;
         } catch (e) {
-          console.warn("Could not set effect mode", e);
+          console.warn("Could not set default effect mode", e);
         }
 
-        // 1) Start mood skin background
-        bgScene.src = "/videos/moodskin01.mp4";
+        // 0.5) Animated global counter: base + 777,777 per day
+        try {
+          if (counterEl) {
+            const BASE_COUNT = 2777777;
+            const DAILY_INCREMENT = 777777;
+
+            // season start (can tweak if you want another anchor)
+            const seasonStart = new Date("2025-12-01T00:00:00Z");
+            const now = new Date();
+            const msPerDay = 24 * 60 * 60 * 1000;
+            const days = Math.max(0, Math.floor((now - seasonStart) / msPerDay));
+            const total = BASE_COUNT + days * DAILY_INCREMENT;
+
+            const formatted = total.toLocaleString("en-GB");
+            counterEl.textContent = `${formatted} yyovvos sent this season`;
+          }
+        } catch (e) {
+          console.warn("Could not update yyovvo counter", e);
+        }
+
+        // 1) Start background with default moodskin; may be overridden after data load
+        bgScene.src = moodMainVideoUrl;
         bgScene.loop = true;
         bgScene.muted = true;
         bgScene.play().catch(() => {});
@@ -699,7 +757,40 @@
               contentUrl = data.content_url || "";
               personalityTone = data.personality_tone || "";
 
+              // Mood skin fields (if yyovvoGet has been upgraded)
+              if (data.mood_main_video_url) {
+                moodMainVideoUrl = data.mood_main_video_url;
+              }
+              if (data.mood_outro_video_url) {
+                moodOutroVideoUrl = data.mood_outro_video_url;
+              }
+              if (data.mood_snow_effect_mode) {
+                moodSnowEffectMode = data.mood_snow_effect_mode;
+              }
+
               console.log("contentType:", contentType, "contentUrl:", contentUrl, "personalityTone:", personalityTone);
+              console.log("moodMainVideoUrl:", moodMainVideoUrl, "moodOutroVideoUrl:", moodOutroVideoUrl, "moodSnowEffectMode:", moodSnowEffectMode);
+
+              // Apply mood snow effect if valid
+              if (moodSnowEffectMode) {
+                const allowed = ["snow", "twinkles", "sparkles"];
+                if (allowed.includes(moodSnowEffectMode)) {
+                  currentEffectMode = moodSnowEffectMode;
+                  document.body.dataset.effect = currentEffectMode;
+                }
+              }
+
+              // If a custom mood background is set, update bg video
+              if (moodMainVideoUrl && moodMainVideoUrl !== "/videos/moodskin01.mp4") {
+                try {
+                  bgScene.src = moodMainVideoUrl;
+                  bgScene.loop = true;
+                  bgScene.muted = true;
+                  await bgScene.play();
+                } catch (e) {
+                  console.warn("Could not play mood main video, keeping default:", e);
+                }
+              }
             }
           }
         } catch (err) {
@@ -836,8 +927,9 @@
           // Hide video frame
           userVideoFrame.classList.remove("show");
 
-          // Switch background to outro snow
-          bgScene.src = "/videos/outro-snow.mp4";
+          // Use mood-specific outro if provided, else default
+          const outroSrc = moodOutroVideoUrl || "/videos/outro-snow.mp4";
+          bgScene.src = outroSrc;
           bgScene.loop = true;
           bgScene.play().catch(() => {});
 
