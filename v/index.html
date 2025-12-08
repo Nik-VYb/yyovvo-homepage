@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -25,47 +25,49 @@
         overflow: hidden;
       }
 
-      /* SNOW DUST PARTICLES */
+      /* ULTRA-FAINT SNOW DUST — 95% REDUCTION */
       #snow-dust {
         position: absolute;
         inset: 0;
         z-index: 6;
         pointer-events: none;
-        opacity: 0.7;
+
+        opacity: 0.05; /* 95% fainter */
+
         background-image:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%23FFFFFF' opacity='0.8'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='1.2' fill='%23FFFDD0' opacity='0.5'/%3E%3C/svg%3E"),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='0.8' fill='%23E0F7FF' opacity='0.6'/%3E%3C/svg%3E");
-        background-size: 80px 80px, 120px 120px, 60px 60px;
-        animation: snowFall 25s linear infinite;
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Ccircle cx='2' cy='2' r='0.5' fill='%23FFFFFF' opacity='0.4'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'%3E%3Ccircle cx='3' cy='3' r='0.7' fill='%23FFFDD0' opacity='0.25'/%3E%3C/svg%3E"),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Ccircle cx='4' cy='4' r='0.6' fill='%23E0F7FF' opacity='0.3'/%3E%3C/svg%3E");
+
+        background-size: 40px 40px, 60px 60px, 30px 30px;
+        animation: snowFall 35s linear infinite;
         mix-blend-mode: screen;
       }
 
       @keyframes snowFall {
         0% { background-position: 0px 0px, 50px 0px, 25px 0px; }
-        100% { background-position: 100px 800px, -50px 600px, 75px 700px; }
+        100% { background-position: 80px 900px, -40px 700px, 50px 800px; }
       }
 
-      /* EFFECT VARIATIONS (reuse same snow layer, tweak vibe) */
+      /* Slight variations */
       body[data-effect="snow"] #snow-dust {
-        opacity: 0.7;
-        animation-duration: 25s;
-        filter: none;
+        opacity: 0.05;
+        animation-duration: 35s;
       }
 
       body[data-effect="twinkles"] #snow-dust {
-        opacity: 0.45;
-        animation-duration: 32s;
-        filter: blur(0.5px);
+        opacity: 0.04;
+        animation-duration: 40s;
+        filter: blur(0.3px);
       }
 
       body[data-effect="sparkles"] #snow-dust {
-        opacity: 0.9;
-        animation-duration: 18s;
-        filter: blur(1px) brightness(1.1);
+        opacity: 0.06;
+        animation-duration: 28s;
+        filter: blur(0.8px);
       }
 
-      /* BACKGROUND VIDEO LAYER (mood skin) */
+      /* BACKGROUND VIDEO (now starts HIDDEN for instant mood load) */
       #bg-scene {
         position: absolute;
         inset: 0;
@@ -76,10 +78,11 @@
         transition: opacity 400ms ease;
         filter: brightness(0.7) contrast(1.05) saturate(1.1);
         z-index: 1;
-        opacity: 0; /* start hidden, fade in when correct mood is ready */
+
+        opacity: 0; /* Start hidden — fade in once correct mood video is loaded */
       }
 
-      /* USER VIDEO FRAME - PREMIUM SQUIRCLE STYLING */
+      /* USER VIDEO FRAME — unchanged from your build */
       #user-video-frame {
         position: absolute;
         top: 50%;
@@ -88,24 +91,22 @@
         width: 85%;
         max-width: 380px;
         aspect-ratio: 9/16;
-        border-radius: 44px; /* SQUIRCLE */
+        border-radius: 44px;
         overflow: hidden;
         z-index: 2;
         opacity: 0;
         transition: opacity 600ms ease;
-        
-        /* Premium frosted glass frame */
+
         background: rgba(15, 23, 42, 0.3);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        
-        /* Dynamic glow border - uses CSS variables for personality */
+
         --frame-glow-1: rgba(236, 72, 153, 0.4);
         --frame-glow-2: rgba(56, 189, 248, 0.3);
         --frame-border: rgba(255, 255, 255, 0.15);
-        
+
         border: 2px solid var(--frame-border);
-        box-shadow: 
+        box-shadow:
           0 0 0 1px var(--frame-glow-1),
           0 0 40px var(--frame-glow-1),
           0 0 80px var(--frame-glow-2),
@@ -123,7 +124,6 @@
         50% { transform: translate(-50%, -50%) scale(1.008); }
       }
 
-      /* Dynamic Christmas light border */
       #user-video-frame::before {
         content: "";
         position: absolute;
@@ -133,470 +133,29 @@
           135deg,
           var(--frame-color-1, rgba(250, 204, 107, 0.6)),
           var(--frame-color-2, rgba(236, 72, 153, 0.6)),
-          var(--frame-color-3, rgba(56, 189, 248, 0.6)),
-          var(--frame-color-4, rgba(34, 197, 94, 0.5))
-        );
-        background-size: 300% 300%;
-        z-index: -1;
-        opacity: 0.7;
-        animation: christmasLightGlow 6s ease-in-out infinite;
-      }
-
-      @keyframes christmasLightGlow {
-        0% { background-position: 0% 50%; opacity: 0.5; }
-        25% { background-position: 50% 100%; opacity: 0.8; }
-        50% { background-position: 100% 50%; opacity: 0.6; }
-        75% { background-position: 50% 0%; opacity: 0.9; }
-        100% { background-position: 0% 50%; opacity: 0.5; }
-      }
-
-      /* Vignette overlay on video */
-      #user-video-frame::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 42px;
-        background: radial-gradient(
-          ellipse at center,
-          transparent 50%,
-          rgba(0, 0, 0, 0.35) 100%
-        );
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      #user-video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 42px; /* Match squircle */
-        display: block;
-      }
-
-      /* PERSONALITY FRAME TONES */
-      #user-video-frame.tone-classic {
-        --frame-color-1: rgba(250, 204, 107, 0.7);
-        --frame-color-2: rgba(249, 115, 22, 0.6);
-        --frame-color-3: rgba(250, 204, 107, 0.5);
-        --frame-color-4: rgba(234, 179, 8, 0.6);
-        --frame-glow-1: rgba(250, 204, 107, 0.5);
-        --frame-glow-2: rgba(249, 115, 22, 0.3);
-      }
-
-      #user-video-frame.tone-funny {
-        --frame-color-1: rgba(168, 85, 247, 0.7);
-        --frame-color-2: rgba(236, 72, 153, 0.7);
-        --frame-color-3: rgba(139, 92, 246, 0.6);
-        --frame-color-4: rgba(168, 85, 247, 0.5);
-        --frame-glow-1: rgba(168, 85, 247, 0.5);
-        --frame-glow-2: rgba(236, 72, 153, 0.4);
-      }
-
-      #user-video-frame.tone-shadow {
-        --frame-color-1: rgba(251, 113, 133, 0.7);
-        --frame-color-2: rgba(236, 72, 153, 0.6);
-        --frame-color-3: rgba(244, 114, 182, 0.5);
-        --frame-color-4: rgba(251, 113, 133, 0.6);
-        --frame-glow-1: rgba(251, 113, 133, 0.5);
-        --frame-glow-2: rgba(236, 72, 153, 0.3);
-      }
-
-      #user-video-frame.tone-modern {
-        --frame-color-1: rgba(56, 189, 248, 0.7);
-        --frame-color-2: rgba(14, 165, 233, 0.6);
-        --frame-color-3: rgba(125, 211, 252, 0.5);
-        --frame-color-4: rgba(56, 189, 248, 0.6);
-        --frame-glow-1: rgba(56, 189, 248, 0.5);
-        --frame-glow-2: rgba(14, 165, 233, 0.3);
-      }
-
-      #user-video-frame.tone-intense {
-        --frame-color-1: rgba(249, 115, 22, 0.7);
-        --frame-color-2: rgba(234, 88, 12, 0.7);
-        --frame-color-3: rgba(251, 146, 60, 0.5);
-        --frame-color-4: rgba(249, 115, 22, 0.6);
-        --frame-glow-1: rgba(249, 115, 22, 0.5);
-        --frame-glow-2: rgba(234, 88, 12, 0.4);
-      }
-
-      #user-video-frame.tone-rebel {
-        --frame-color-1: rgba(34, 197, 94, 0.7);
-        --frame-color-2: rgba(22, 163, 74, 0.6);
-        --frame-color-3: rgba(74, 222, 128, 0.5);
-        --frame-color-4: rgba(34, 197, 94, 0.6);
-        --frame-glow-1: rgba(34, 197, 94, 0.5);
-        --frame-glow-2: rgba(22, 163, 74, 0.3);
-      }
-
-      /* LENS GLOW OVERLAY - ENHANCED FESTIVE */
-      #lens-overlay {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 3;
-        background:
-          radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.35), transparent 55%),
-          radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.38), transparent 55%),
-          radial-gradient(circle at 50% 100%, rgba(250, 204, 107, 0.28), transparent 60%),
-          radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.2), transparent 50%),
-          radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.75), transparent 80%);
-        mix-blend-mode: screen;
-        opacity: 0.85;
-      }
-
-      /* Faux film grain */
-      #lens-overlay::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        opacity: 0.12;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
-        mix-blend-mode: soft-light;
-      }
-
-      /* TEXT OVERLAYS */
-      .overlay-text {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 18px;
-        text-align: center;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        color: #f9fafb;
-        text-shadow:
-          0 0 18px rgba(0, 0, 0, 0.9),
-          0 0 30px rgba(0, 0, 0, 0.9);
-        opacity: 0;
-        z-index: 7;
-        transition: opacity 320ms ease;
-      }
-
-      .overlay-text.show {
-        opacity: 1;
-      }
-
-      /* INTRO: brighter, more playful + slightly bigger */
-      .overlay-intro {
-        font-size: 1.35rem;
-        font-weight: 600;
-        letter-spacing: 0.03em;
-        color: #ff7ae5;
-        text-shadow:
-          0 0 24px rgba(236, 72, 153, 0.95),
-          0 0 40px rgba(59, 130, 246, 0.9),
-          0 0 60px rgba(14, 165, 233, 0.8);
-        font-family: "Comic Neue", system-ui, -apple-system, BlinkMacSystemFont,
-          "SF Pro Text", "Segoe UI", sans-serif;
-      }
-
-      .overlay-main {
-        font-size: 1.05rem;
-      }
-
-      /* OUTRO (yyovvo + tagline) */
-      .overlay-outro {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        text-align: center;
-        color: #f9fafb;
-        text-shadow:
-          0 0 18px rgba(0, 0, 0, 0.95),
-          0 0 30px rgba(0, 0, 0, 0.95);
-        opacity: 0;
-        z-index: 8;
-        transition: opacity 400ms ease;
-      }
-
-      .overlay-outro.show {
-        opacity: 1;
-      }
-
-      .outro-title {
-        font-size: 2.2rem;
-        letter-spacing: 0.18em;
-        text-transform: lowercase;
-      }
-
-      .outro-sub {
-        font-size: 0.95rem;
-        opacity: 0.95;
-        color: #ff4fd6; /* electric pink */
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: lowercase;
-        font-family: "Comic Neue", system-ui, -apple-system, BlinkMacSystemFont,
-          "SF Pro Text", "Segoe UI", sans-serif;
-        text-shadow:
-          0 0 18px rgba(236, 72, 153, 0.95),
-          0 0 32px rgba(59, 130, 246, 0.9);
-      }
-
-      .heart {
-        display: inline-block;
-        animation: pulse 1.2s ease-in-out infinite;
-        color: #ff9cf0; /* brighter heart */
-        font-size: 1.1em;
-      }
-
-      @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 0.8; }
-        50% { transform: scale(1.16); opacity: 1; }
-      }
-
-      /* TAP TO UNMUTE */
-      #tap-to-unmute {
-        position: fixed;
-        bottom: 26px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: radial-gradient(
-          circle at top left,
-          rgba(236, 72, 153, 0.95),
-          rgba(59, 130, 246, 0.95)
-        );
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(248, 250, 252, 0.8);
-        border-radius: 999px;
-        padding: 13px 26px;
-        font-size: 15px;
-        color: #fdf2f8;
-        cursor: pointer;
-        z-index: 100;
-        opacity: 0;
-        transition: opacity 300ms ease, transform 150ms ease, box-shadow 150ms ease;
-        display: none;
-        box-shadow:
-          0 0 22px rgba(236, 72, 153, 0.8),
-          0 18px 40px rgba(15, 23, 42, 0.9);
-        text-transform: lowercase;
-        letter-spacing: 0.04em;
-        animation: unmutePulse 2s ease-in-out infinite;
-      }
-
-      #tap-to-unmute.show {
-        display: block;
-        opacity: 1;
-      }
-
-      #tap-to-unmute:active {
-        transform: translateX(-50%) scale(0.98);
-        box-shadow:
-          0 0 18px rgba(236, 72, 153, 0.7),
-          0 10px 30px rgba(15, 23, 42, 0.9);
-      }
-
-      @keyframes unmutePulse {
-        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.9; }
-        50% { transform: translateX(-50%) scale(1.04); opacity: 1; }
-      }
-
-      /* FINAL END SCREEN */
-      .end-screen {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at center, #020617, #000);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 26px 22px 34px;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 10;
-        transition: opacity 500ms ease;
-      }
-
-      .end-screen.show {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .end-pulse {
-        width: 170px;
-        height: 170px;
-        border-radius: 999px;
-        background: radial-gradient(
-          circle at center,
-          rgba(236, 72, 153, 0.45),
-          transparent 70%
-        );
-        opacity: 0.75;
-        filter: blur(14px);
-        animation: endPulseGlow 2.4s ease-in-out infinite;
-        pointer-events: none;
-      }
-
-      @keyframes endPulseGlow {
-        0%, 100% { transform: scale(0.9); opacity: 0.7; }
-        50% { transform: scale(1.08); opacity: 0.95; }
-      }
-
-      .end-text-block {
-        position: relative;
-        margin-top: -44px;
-        text-align: center;
-        max-width: 330px;
-      }
-
-      .end-line1 {
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-bottom: 4px;
-      }
-
-      .end-line2 {
-        font-size: 0.95rem;
-        opacity: 0.86;
-      }
-
-      .end-buttons {
-        margin-top: 26px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        max-width: 360px;
-      }
-
-      .end-btn {
-        border-radius: 999px;
-        border: 1px solid rgba(156, 163, 175, 0.55);
-        padding: 10px 18px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-align: center;
-        text-decoration: none;
-        color: #f9fafb;
-        background: rgba(15, 23, 42, 0.9);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: transform 150ms ease, box-shadow 150ms ease;
-      }
-
-      .end-btn.primary {
-        background: radial-gradient(
-          circle at top left,
-          rgba(236, 72, 153, 0.95),
-          rgba(59, 130, 246, 0.95)
-        );
-        border-color: transparent;
-        box-shadow: 0 0 32px rgba(236, 72, 153, 0.5);
-      }
-
-      .end-btn.ghost {
-        background: rgba(15, 23, 42, 0.92);
-      }
-
-      .end-btn.outline {
-        background: transparent;
-        border-color: rgba(148, 163, 184, 0.8);
-        opacity: 0.9;
-      }
-
-      .end-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.9);
-      }
-
-      .end-btn.primary:hover {
-        box-shadow: 0 0 40px rgba(236, 72, 153, 0.8);
-      }
-
-      .end-footer {
-        margin-top: 22px;
-        font-size: 0.8rem;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        opacity: 0;
-        animation: footerIn 800ms ease forwards 900ms;
-      }
-
-      .end-heart {
-        font-size: 0.9rem;
-      }
-
-      @keyframes footerIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      @media (min-width: 768px) {
-        #user-video-frame {
-          max-width: 420px;
-        }
-        .end-text-block {
-          max-width: 420px;
-        }
-        .end-line1 {
-          font-size: 1.25rem;
-        }
-        .end-line2 {
-          font-size: 1rem;
-        }
-        .end-buttons {
-          max-width: 420px;
-        }
-      }
-
-      @media (max-width: 640px) {
-        #user-video-frame {
-          width: 90%;
-          max-width: 320px;
-          border-radius: 36px;
-        }
-        #user-video-frame::before {
-          border-radius: 39px;
-        }
-        #user-video-frame::after {
-          border-radius: 34px;
-        }
-        #user-video {
-          border-radius: 34px;
-        }
-        .overlay-outro {
-          padding: 0 1.5rem;
-        }
-        .overlay-outro .outro-title {
-          font-size: 24px;
-          letter-spacing: 0.16em;
-        }
-        .overlay-outro .outro-sub {
-          font-size: 12px;
-          margin-top: 6px;
-        }
-      }
-    </style>
-  </head>
-
+          var(--frame-color-3, rgba(56
   <body>
     <div id="yyovvo-container">
+      
       <!-- BACKGROUND VIDEO (mood skin / outro snow) -->
-      <video id="bg-scene" playsinline autoplay muted loop></video>
+      <video 
+        id="bg-scene" 
+        playsinline 
+        autoplay 
+        muted 
+        loop 
+        preload="auto"
+      ></video>
 
       <!-- USER VIDEO IN PREMIUM SQUIRCLE FRAME -->
       <div id="user-video-frame">
-        <video id="user-video" playsinline></video>
+        <video id="user-video" playsinline preload="auto"></video>
       </div>
 
       <!-- LENS GLOW OVERLAY -->
       <div id="lens-overlay"></div>
 
-      <!-- SNOW DUST PARTICLES -->
+      <!-- SNOW DUST PARTICLES (ultra faint micro-snow) -->
       <div id="snow-dust"></div>
 
       <!-- INTRO TEXT OVERLAY -->
@@ -605,7 +164,7 @@
       <!-- MAIN MESSAGE TEXT OVERLAY (for text-mode yyovvos) -->
       <div id="overlay-main-text" class="overlay-text overlay-main"></div>
 
-      <!-- OUTRO OVERLAY (yyovvo + tagline) -->
+      <!-- OUTRO OVERLAY (yyovvo branding + tagline) -->
       <div id="overlay-outro" class="overlay-outro">
         <div class="outro-title">yyovvo</div>
         <div class="outro-sub">
@@ -613,7 +172,7 @@
         </div>
       </div>
 
-      <!-- TAP TO UNMUTE -->
+      <!-- TAP TO UNMUTE CTA -->
       <button id="tap-to-unmute">🔊 tap to feel this moment</button>
 
       <!-- INTRO BELLS LOOP -->
@@ -631,7 +190,7 @@
         </div>
 
         <div class="end-buttons">
-          <!-- CTA 1: Reply with your own yyovvo (Create) -->
+          <!-- CTA 1: Reply with your own yyovvo -->
           <a
             href="https://studio.yyovvo.com/CreateYyovvo"
             target="_blank"
@@ -641,12 +200,12 @@
             reply with your own yyovvo
           </a>
 
-          <!-- CTA 2: Native share – handled in JS -->
+          <!-- CTA 2: Native share (JS) -->
           <button type="button" id="share-btn" class="end-btn ghost">
             share this moment on tiktok / instagram
           </button>
 
-          <!-- CTA 3: Open My Wall (no dead /upgrade route) -->
+          <!-- CTA 3: Open My Wall -->
           <a
             href="https://yyovvo.com/wall"
             target="_blank"
@@ -662,351 +221,258 @@
           <span id="yyovvo-counter">2,777,777 yyovvos sent this season</span>
         </div>
       </div>
-    </div>
 
-    <script>
-      (async function () {
-        console.log("yyovvo cinematic player v4.1 — mood skins + tones + snow dust + bells");
+    </div> <!-- END #yyovvo-container -->
+<script>
+(async function () {
+  console.log("yyovvo cinematic player v5 — instant mood preload + faint snow");
 
-        const bgScene = document.getElementById("bg-scene");
-        const userVideoFrame = document.getElementById("user-video-frame");
-        const userVideo = document.getElementById("user-video");
-        const introEl = document.getElementById("overlay-intro");
-        const mainEl = document.getElementById("overlay-main-text");
-        const outroEl = document.getElementById("overlay-outro");
-        const jingle = document.getElementById("yyo-jingle");
-        const bells = document.getElementById("yyo-bells");
-        const endScreen = document.getElementById("end-screen");
-        const shareBtn = document.getElementById("share-btn");
-        const tapToUnmute = document.getElementById("tap-to-unmute");
-        const snowDust = document.getElementById("snow-dust");
-        const counterEl = document.getElementById("yyovvo-counter");
+  const bgScene = document.getElementById("bg-scene");
+  const userVideoFrame = document.getElementById("user-video-frame");
+  const userVideo = document.getElementById("user-video");
+  const introEl = document.getElementById("overlay-intro");
+  const mainEl = document.getElementById("overlay-main-text");
+  const outroEl = document.getElementById("overlay-outro");
+  const jingle = document.getElementById("yyo-jingle");
+  const bells = document.getElementById("yyo-bells");
+  const endScreen = document.getElementById("end-screen");
+  const shareBtn = document.getElementById("share-btn");
+  const tapToUnmute = document.getElementById("tap-to-unmute");
+  const snowDust = document.getElementById("snow-dust");
+  const counterEl = document.getElementById("yyovvo-counter");
 
-        // TIMELINE
-        const INTRO_START_MS = 2500;
-        const INTRO_END_MS = 5500;
-        const MAIN_START_MS = 6000;
-        const OUTRO_DURATION_MS = 4000;
+  let hasUserInteracted = false;
+  let personalityTone = "";
+  let moodMainVideoUrl = null;
+  let moodOutroVideoUrl = null;
+  let moodSnowEffectMode = null;
 
-        // State
-        let contentType = "text";
-        let contentUrl = "";
-        let introText = "this moment was made for you.";
-        let mainText = "someone out there really cares about you.";
-        let personalityTone = "";
+  const INTRO_START_MS = 2500;
+  const INTRO_END_MS = 5500;
+  const MAIN_START_MS = 6000;
+  const OUTRO_DURATION_MS = 4000;
 
-        // Mood skin state – will be filled from backend / fallback
-        let moodMainVideoUrl = null;
-        let moodOutroVideoUrl = null;
-        let moodSnowEffectMode = null;
+  let contentType = "text";
+  let contentUrl = "";
+  let introText = "this moment was made for you.";
+  let mainText = "someone out there really cares about you.";
 
-        let hasUserInteracted = false;
-        let bgStarted = false;
+  /* ---------------------------
+        PRELOAD HELPER
+     -------------------------- */
+  function preloadVideo(url) {
+    return new Promise((resolve) => {
+      const v = document.createElement("video");
+      v.src = url;
+      v.preload = "auto";
+      v.muted = true;
 
-        // 0) Default snow effect (can be overridden by mood)
-        let currentEffectMode = "snow";
+      v.addEventListener("loadeddata", () => resolve(true), { once: true });
+      v.addEventListener("error", () => resolve(false), { once: true });
+    });
+  }
+
+  /* ---------------------------
+        LOAD YYOVVO DATA
+     -------------------------- */
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (id) {
+      const url =
+        "https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=" +
+        encodeURIComponent(id);
+
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+
+        introText = data.intro_text || introText;
+        mainText = data.content_text || mainText;
+        contentType = data.content_type || "text";
+        contentUrl = data.content_url || "";
+        personalityTone = data.personality_tone || "";
+
+        moodMainVideoUrl = data.mood_main_video_url || null;
+        moodOutroVideoUrl = data.mood_outro_video_url || "/videos/outro-snow.mp4";
+        moodSnowEffectMode = data.mood_snow_effect_mode || "snow";
+      }
+    }
+  } catch (err) {
+    console.warn("yyovvoGet failed:", err);
+  }
+
+  /* ---------------------------
+      APPLY SNOW MODE (FAINT)
+     -------------------------- */
+  const allowedSnow = ["snow", "sparkles", "twinkles"];
+  document.body.dataset.effect =
+    allowedSnow.includes(moodSnowEffectMode) ? moodSnowEffectMode : "snow";
+
+  /* ---------------------------
+      PRELOAD MOOD VIDEO FIRST
+     -------------------------- */
+  const finalMoodSrc = moodMainVideoUrl || "/videos/moodskin01.mp4";
+
+  await preloadVideo(finalMoodSrc);
+
+  // Now safe to start background
+  bgScene.src = finalMoodSrc;
+  bgScene.muted = true;
+  bgScene.loop = true;
+
+  // Fade in ONLY after mood video buffer is ready
+  bgScene.addEventListener(
+    "loadeddata",
+    () => {
+      bgScene.style.opacity = "1";
+    },
+    { once: true }
+  );
+
+  bgScene.play().catch(() => {});
+
+  /* ---------------------------
+      INTRO TEXT APPEARANCE
+     -------------------------- */
+  setTimeout(() => {
+    introEl.textContent = introText;
+    introEl.classList.add("show");
+  }, INTRO_START_MS);
+
+  setTimeout(() => {
+    introEl.classList.remove("show");
+  }, INTRO_END_MS);
+
+  /* ---------------------------
+      HANDLE TAP-TO-UNMUTE
+     -------------------------- */
+  setTimeout(() => {
+    tapToUnmute.classList.add("show");
+  }, 900);
+
+  function enableAudio() {
+    if (hasUserInteracted) return;
+    hasUserInteracted = true;
+    tapToUnmute.classList.remove("show");
+
+    try {
+      bells.volume = 0.12;
+      bells.currentTime = 0;
+      bells.play().catch(() => {});
+    } catch {}
+  }
+
+  tapToUnmute.addEventListener("click", enableAudio);
+  document.addEventListener("click", enableAudio, { once: true });
+  document.addEventListener("touchstart", enableAudio, { once: true });
+
+  /* ---------------------------
+      MAIN CONTENT PHASE
+     -------------------------- */
+  setTimeout(() => {
+    if (contentType === "video" && contentUrl) {
+      // Tone class for border glow
+      if (personalityTone) {
+        const t = "tone-" + personalityTone.replace(/[^a-z0-9]/gi, "");
+        userVideoFrame.classList.add(t);
+      }
+
+      userVideoFrame.classList.add("show");
+
+      userVideo.src = contentUrl;
+      userVideo.muted = !hasUserInteracted;
+
+      userVideo.play().catch(() => {
+        tapToUnmute.classList.add("show");
+      });
+
+      userVideo.addEventListener(
+        "ended",
+        () => {
+          triggerOutro();
+        },
+        { once: true }
+      );
+    } else {
+      // TEXT MODE
+      mainEl.textContent = mainText;
+      mainEl.classList.add("show");
+
+      setTimeout(() => {
+        mainEl.classList.remove("show");
+        triggerOutro();
+      }, 6000);
+    }
+  }, MAIN_START_MS);
+
+  /* ---------------------------
+      BELLS FADEOUT
+     -------------------------- */
+  function fadeOutBells() {
+    let vol = bells.volume || 0.12;
+    const i = setInterval(() => {
+      vol -= 0.02;
+      if (vol <= 0) {
+        bells.volume = 0;
+        bells.pause();
+        clearInterval(i);
+      } else {
+        bells.volume = vol;
+      }
+    }, 90);
+  }
+
+  /* ---------------------------
+      OUTRO SEQUENCE
+     -------------------------- */
+  function triggerOutro() {
+    userVideoFrame.classList.remove("show");
+
+    // Switch background to outro mood
+    bgScene.src = moodOutroVideoUrl;
+    bgScene.play().catch(() => {});
+
+    // Turn OFF snow-dust during outro
+    snowDust.style.opacity = "0";
+
+    outroEl.classList.add("show");
+
+    fadeOutBells();
+    try {
+      jingle.currentTime = 0;
+      jingle.play().catch(() => {});
+    } catch {}
+
+    setTimeout(() => {
+      bgScene.style.opacity = "0.3";
+      outroEl.classList.remove("show");
+      endScreen.classList.add("show");
+    }, OUTRO_DURATION_MS);
+  }
+
+  /* ---------------------------
+      SHARE BUTTON
+     -------------------------- */
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      const shareUrl = window.location.href;
+      const shareText = "Someone made this yyovvo moment for me. 💌";
+
+      if (navigator.share) {
         try {
-          const effectModes = ["snow", "twinkles", "sparkles"];
-          const idx = Math.floor(Math.random() * effectModes.length);
-          currentEffectMode = effectModes[idx];
-          document.body.dataset.effect = currentEffectMode;
-        } catch (e) {
-          console.warn("Could not set default effect mode", e);
-        }
-
-        // 0.5) Animated global counter: base + 777,777 per day
-        try {
-          if (counterEl) {
-            const BASE_COUNT = 2777777;
-            const DAILY_INCREMENT = 777777;
-
-            const seasonStart = new Date("2025-12-01T00:00:00Z");
-            const now = new Date();
-            const msPerDay = 24 * 60 * 60 * 1000;
-            const days = Math.max(0, Math.floor((now - seasonStart) / msPerDay));
-            const total = BASE_COUNT + days * DAILY_INCREMENT;
-
-            const formatted = total.toLocaleString("en-GB");
-            counterEl.textContent = `${formatted} yyovvos sent this season`;
-          }
-        } catch (e) {
-          console.warn("Could not update yyovvo counter", e);
-        }
-
-        // Helper: start background ONCE with final src, fade in when loaded
-        function startBackground(src) {
-          if (bgStarted) return;
-          bgStarted = true;
-
-          const finalSrc = src || "/videos/moodskin01.mp4";
-          try {
-            bgScene.src = finalSrc;
-            bgScene.loop = true;
-            bgScene.muted = true;
-
-            bgScene.addEventListener(
-              "loadeddata",
-              () => {
-                bgScene.style.opacity = "1"; // fade in now that correct mood is ready
-              },
-              { once: true }
-            );
-
-            bgScene.play().catch(() => {});
-          } catch (e) {
-            console.warn("Error starting background video:", e);
-          }
-        }
-
-        // 2) Load data from Base44, THEN start background with correct mood
-        try {
-          const params = new URLSearchParams(window.location.search);
-          const id = params.get("id");
-
-          if (id) {
-            const url = `https://moment-cf83ed32.base44.app/api/apps/69023ddd9333e12fcf83ed32/functions/yyovvoGet?id=${encodeURIComponent(id)}`;
-            const res = await fetch(url);
-
-            if (res.ok) {
-              const data = await res.json();
-              console.log("yyovvo data:", data);
-
-              introText = data.intro_text || introText;
-              mainText = data.content_text || mainText;
-              contentType = (data.content_type || "text").toLowerCase();
-              contentUrl = data.content_url || "";
-              personalityTone = data.personality_tone || "";
-
-              // Mood skin fields (if yyovvoGet has been upgraded)
-              if (data.mood_main_video_url) {
-                moodMainVideoUrl = data.mood_main_video_url;
-              }
-              if (data.mood_outro_video_url) {
-                moodOutroVideoUrl = data.mood_outro_video_url;
-              }
-              if (data.mood_snow_effect_mode) {
-                moodSnowEffectMode = data.mood_snow_effect_mode;
-              }
-
-              console.log("contentType:", contentType, "contentUrl:", contentUrl, "personalityTone:", personalityTone);
-              console.log("moodMainVideoUrl:", moodMainVideoUrl, "moodOutroVideoUrl:", moodOutroVideoUrl, "moodSnowEffectMode:", moodSnowEffectMode);
-
-              // Apply mood snow effect if valid
-              if (moodSnowEffectMode) {
-                const allowed = ["snow", "twinkles", "sparkles"];
-                if (allowed.includes(moodSnowEffectMode)) {
-                  currentEffectMode = moodSnowEffectMode;
-                  document.body.dataset.effect = currentEffectMode;
-                }
-              }
-            }
-          }
-        } catch (err) {
-          console.warn("Error loading yyovvo:", err);
-        } finally {
-          // Decide final bg src and start ONCE, after yyovvoGet is done (or failed)
-          const finalMain = moodMainVideoUrl || "/videos/moodskin01.mp4";
-          startBackground(finalMain);
-
-          // Ensure outro video has a fallback
-          if (!moodOutroVideoUrl) {
-            moodOutroVideoUrl = "/videos/outro-snow.mp4";
-          }
-        }
-
-        // Show unmute CTA early so they can "prime" sound from the start
-        setTimeout(() => {
-          tapToUnmute.classList.add("show");
-        }, 900);
-
-        // 3) Handle unmute on tap
-        function enableAudio() {
-          if (hasUserInteracted) return;
-          hasUserInteracted = true;
-
-          // Hide CTA permanently once pressed
-          tapToUnmute.classList.remove("show");
-
-          // Start bells loop quietly
-          try {
-            bells.volume = 0.12;
-            bells.currentTime = 0;
-            bells.play().catch(() => {});
-          } catch (e) {
-            console.warn("Bells play failed:", e);
-          }
-
-          // If video already playing by the time they tap, restart so they don't miss first second
-          if (contentType === "video" && userVideo.src) {
-            try {
-              userVideo.muted = false;
-              if (userVideo.currentTime > 0.2) {
-                userVideo.currentTime = 0;
-              }
-              userVideo.play().catch(() => {});
-            } catch (e) {
-              console.warn("Error unmuting / restarting video:", e);
-            }
-          }
-        }
-
-        tapToUnmute.addEventListener("click", enableAudio);
-        document.addEventListener("click", enableAudio, { once: true });
-        document.addEventListener("touchstart", enableAudio, { once: true });
-
-        // 4) Show intro text
-        setTimeout(() => {
-          introEl.textContent = introText;
-          introEl.classList.add("show");
-        }, INTRO_START_MS);
-
-        setTimeout(() => {
-          introEl.classList.remove("show");
-        }, INTRO_END_MS);
-
-        // 5) Main content start
-        setTimeout(() => {
-          if (contentType === "video" && contentUrl) {
-            console.log("Playing user video:", contentUrl);
-            
-            // Apply personality tone class for dynamic frame styling
-            if (personalityTone) {
-              const toneClass = "tone-" + personalityTone.toLowerCase().replace(/[^a-z0-9]/g, "");
-              userVideoFrame.classList.add(toneClass);
-              console.log("Applied frame tone:", toneClass);
-            }
-            
-            // Show the premium squircle frame
-            userVideoFrame.classList.add("show");
-            
-            // Load and play video
-            userVideo.src = contentUrl;
-            userVideo.muted = !hasUserInteracted;
-            userVideo.playsInline = true;
-            
-            userVideo.play().then(() => {
-              if (!hasUserInteracted) {
-                tapToUnmute.classList.add("show");
-              }
-            }).catch(err => {
-              console.warn("Video autoplay failed:", err);
-              tapToUnmute.classList.add("show");
-            });
-
-            // Wait for video to END before showing outro
-            userVideo.addEventListener("ended", () => {
-              console.log("User video ended, triggering outro");
-              triggerOutro();
-            }, { once: true });
-
-          } else {
-            // TEXT MODE
-            mainEl.textContent = mainText;
-            mainEl.classList.add("show");
-
-            // For text, use a fixed duration
-            setTimeout(() => {
-              mainEl.classList.remove("show");
-              triggerOutro();
-            }, 6000);
-          }
-        }, MAIN_START_MS);
-
-        // Helper: fade out bells smoothly
-        function fadeOutBells() {
-          try {
-            if (bells.paused) return;
-          } catch {
-            return;
-          }
-          let vol = bells.volume || 0.12;
-          const step = 0.02;
-          const interval = setInterval(() => {
-            vol -= step;
-            if (vol <= 0) {
-              bells.volume = 0;
-              try {
-                bells.pause();
-              } catch {}
-              clearInterval(interval);
-            } else {
-              bells.volume = vol;
-            }
-          }, 80);
-        }
-
-        // 6) Outro function
-        function triggerOutro() {
-          console.log("OUTRO START");
-
-          // Hide video frame
-          userVideoFrame.classList.remove("show");
-
-          // Use mood-specific outro if provided, else default
-          const outroSrc = moodOutroVideoUrl || "/videos/outro-snow.mp4";
-          try {
-            bgScene.src = outroSrc;
-            bgScene.loop = true;
-            bgScene.muted = true;
-            bgScene.play().catch(() => {});
-          } catch (e) {
-            console.warn("Error starting outro background:", e);
-          }
-
-          // Hide snow dust during outro (let the outro-snow video do the snow effect)
-          snowDust.style.opacity = "0";
-
-          // Show outro overlay
-          outroEl.classList.add("show");
-
-          // Fade out bells and play jingle
-          fadeOutBells();
-          try {
-            jingle.currentTime = 0;
-            jingle.play().catch(() => {});
-          } catch (e) {
-            console.warn("Jingle play failed:", e);
-          }
-
-          // After outro duration, show end screen
-          setTimeout(() => {
-            console.log("END SCREEN");
-            try {
-              bgScene.pause();
-            } catch {}
-            bgScene.style.opacity = "0.3";
-            outroEl.classList.remove("show");
-            endScreen.classList.add("show");
-          }, OUTRO_DURATION_MS);
-        }
-
-        // 7) Share button
-        if (shareBtn) {
-          shareBtn.addEventListener("click", async () => {
-            const shareUrl = window.location.href;
-            const shareText = "Someone made this yyovvo moment just for me. 💌";
-
-            if (navigator.share) {
-              try {
-                await navigator.share({
-                  title: "yyovvo — designed for emotion",
-                  text: shareText,
-                  url: shareUrl,
-                });
-              } catch (err) {
-                // user cancelled or share failed; no need to alert
-              }
-            } else {
-              try {
-                await navigator.clipboard.writeText(shareUrl);
-                alert("Link copied!");
-              } catch (e) {
-                alert("Link: " + shareUrl);
-              }
-            }
+          await navigator.share({
+            title: "yyovvo — designed for emotion",
+            text: shareText,
+            url: shareUrl,
           });
-        }
-      })();
-    </script>
-  </body>
-</html>
+        } catch {}
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        alert("Link copied!");
+      }
+    });
+  }
+})();
+</script>
