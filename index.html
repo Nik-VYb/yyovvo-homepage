@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head><meta name="p:domain_verify" content="b71a740b02af7c0bfaa38edad7c33475"/>
+  <head>
+    <meta name="p:domain_verify" content="b71a740b02af7c0bfaa38edad7c33475" />
     <meta charset="UTF-8" />
-    <title>yyovvo — moments you can feel.</title>
+    <title>yyovvo — yyo-voice</title>
     <meta
       name="description"
-      content="send a cinematic moment that lives forever on their wall. your voice, your feeling — instantly delivered."
+      content="Christmas isn’t texts. It’s talking avatars. Send yyo-voice in one tap."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Open Graph / Share -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="yyovvo — moments you can feel." />
+    <meta property="og:title" content="yyovvo — yyo-voice" />
     <meta
       property="og:description"
-      content="send a cinematic moment that lives forever on their wall. your voice, your feeling — instantly delivered."
+      content="Christmas isn’t texts. It’s talking avatars. Send yyo-voice in one tap."
     />
     <meta property="og:url" content="https://yyovvo.com" />
     <meta property="og:image" content="/og-image.jpg" />
@@ -66,7 +67,6 @@
       }
 
       /* HEADER */
-
       header {
         position: sticky;
         top: 0;
@@ -181,7 +181,6 @@
       }
 
       /* HERO */
-
       .hero {
         max-width: 1120px;
         margin: 0 auto;
@@ -205,8 +204,6 @@
         color: var(--text-soft);
       }
 
-      /* NEW: social promo row under kicker */
-
       .hero-social-promo {
         display: flex;
         align-items: center;
@@ -227,18 +224,9 @@
       }
 
       @keyframes pulseDot {
-        0% {
-          transform: scale(0.9);
-          opacity: 0.7;
-        }
-        50% {
-          transform: scale(1.4);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(0.9);
-          opacity: 0.7;
-        }
+        0% { transform: scale(0.9); opacity: 0.7; }
+        50% { transform: scale(1.4); opacity: 1; }
+        100% { transform: scale(0.9); opacity: 0.7; }
       }
 
       .social-link {
@@ -276,7 +264,7 @@
       .hero-sub {
         font-size: 14px;
         color: var(--text-soft);
-        max-width: 360px;
+        max-width: 420px;
       }
 
       .hero-counter {
@@ -448,10 +436,7 @@
       }
 
       /* SECTIONS */
-
-      main {
-        flex: 1;
-      }
+      main { flex: 1; }
 
       .section {
         max-width: 1120px;
@@ -459,9 +444,7 @@
         padding: 26px 16px;
       }
 
-      .section-tight {
-        padding-top: 10px;
-      }
+      .section-tight { padding-top: 10px; }
 
       .section-title {
         font-size: 18px;
@@ -472,13 +455,7 @@
       .section-sub {
         font-size: 13px;
         color: var(--text-soft);
-        max-width: 420px;
-      }
-
-      .section-sub-wall-tagline {
-        font-size: 12px;
-        margin-top: 6px;
-        color: var(--accent-emerald);
+        max-width: 520px;
       }
 
       .pill-row {
@@ -532,15 +509,7 @@
         margin-bottom: 6px;
       }
 
-      .card-main {
-        font-size: 13px;
-      }
-
-      .card-soft {
-        font-size: 12px;
-        color: var(--text-soft);
-        margin-top: 6px;
-      }
+      .card-main { font-size: 13px; }
 
       .badge-strip {
         display: inline-flex;
@@ -564,49 +533,6 @@
         font-weight: 600;
       }
 
-      .wall-mock {
-        margin-top: 16px;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 6px;
-        max-width: 360px;
-      }
-
-      .wall-tile {
-        height: 64px;
-        border-radius: 14px;
-        border: 1px solid rgba(55, 65, 81, 0.9);
-        background: radial-gradient(
-          circle at top,
-          rgba(56, 189, 248, 0.18),
-          rgba(15, 23, 42, 0.98)
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 11px;
-        color: #e5e7eb;
-        text-transform: lowercase;
-      }
-
-      .wall-tile.dim {
-        opacity: 0.65;
-        background: radial-gradient(
-          circle at top,
-          rgba(148, 163, 184, 0.1),
-          rgba(15, 23, 42, 0.98)
-        );
-      }
-
-      .wall-pill {
-        margin-top: 10px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 11px;
-        color: var(--text-soft);
-      }
-
       .final-cta {
         text-align: center;
         padding: 32px 16px 50px;
@@ -624,7 +550,6 @@
       }
 
       /* FOOTER */
-
       footer {
         border-top: 1px solid rgba(15, 23, 42, 0.9);
         background: linear-gradient(to top, #020617, rgba(2, 6, 23, 0.92));
@@ -649,71 +574,29 @@
         gap: 10px;
       }
 
-      .footer-links a {
-        opacity: 0.8;
-      }
-
-      .footer-links a:hover {
-        opacity: 1;
-      }
+      .footer-links a { opacity: 0.8; }
+      .footer-links a:hover { opacity: 1; }
 
       /* RESPONSIVE */
-
       @media (max-width: 768px) {
         .hero {
           grid-template-columns: minmax(0, 1fr);
           gap: 32px;
           padding-top: 30px;
         }
-
-        .hero-right {
-          order: -1;
-        }
-
-        .nav {
-          padding-inline: 12px;
-        }
-
-        .nav-right {
-          gap: 6px;
-        }
-
-        .nav-pill {
-          display: none;
-        }
-
-        .section {
-          padding-inline: 14px;
-        }
-
-        .grid-3 {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .wall-mock {
-          max-width: 100%;
-        }
+        .hero-right { order: -1; }
+        .nav { padding-inline: 12px; }
+        .nav-right { gap: 6px; }
+        .nav-pill { display: none; }
+        .section { padding-inline: 14px; }
+        .grid-3 { grid-template-columns: minmax(0, 1fr); }
       }
 
       @media (max-width: 480px) {
-        .hero-title {
-          font-size: 24px;
-        }
-
-        .hero-sub {
-          font-size: 13px;
-        }
-
-        .hero-ctas {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .btn-main,
-        .btn-ghost {
-          width: 100%;
-          justify-content: center;
-        }
+        .hero-title { font-size: 24px; }
+        .hero-sub { font-size: 13px; }
+        .hero-ctas { flex-direction: column; align-items: flex-start; }
+        .btn-main, .btn-ghost { width: 100%; justify-content: center; }
       }
     </style>
   </head>
@@ -726,22 +609,12 @@
             <div class="nav-logo">yyovvo</div>
             <div class="nav-pill">
               <span class="nav-pill-dot"></span>
-              <span>moments you can feel</span>
+              <span>yyo-voice</span>
             </div>
           </div>
           <div class="nav-right">
-            <a
-              class="nav-link"
-              href="https://yyovvo.com/wall"
-              rel="noopener noreferrer"
-              >my wall</a
-            >
-            <a
-              class="nav-cta"
-              href="https://studio.yyovvo.com/CreateYyovvo"
-              rel="noopener noreferrer"
-              >send</a
-            >
+            <a class="nav-link" href="https://yyovvo.com/wall" rel="noopener noreferrer">my wall</a>
+            <a class="nav-cta" href="https://studio.yyovvo.com/xmas" rel="noopener noreferrer">send</a>
           </div>
         </nav>
       </header>
@@ -750,46 +623,36 @@
         <!-- HERO -->
         <section class="hero">
           <div class="hero-left">
-            <div class="hero-kicker">christmas 2025 hits different</div>
+            <div class="hero-kicker">christmas hits different</div>
 
             <div class="hero-social-promo">
               <span class="pulse-dot"></span>
-              <a
-                href="https://studio.yyovvo.com/CreateYyovvo"
-                class="social-link"
-              >
+              <a href="https://studio.yyovvo.com/xmas" class="social-link">
                 made for tiktok / insta — <strong>join the trend →</strong>
               </a>
             </div>
 
             <h1 class="hero-title">
-              every yyovvo is
-              <span class="hero-title-gold">an eternal moment on their wall.</span>
+              christmas isn’t texts.
+              <span class="hero-title-gold">it’s talking avatars.</span>
             </h1>
+
             <p class="hero-sub">
-              not a card. not a dm. a tiny cinematic scene they can replay
-              whenever they miss you.
+              send a cinematic talking avatar in one tap. they watch. then they send.
             </p>
 
             <div class="hero-counter">
-              <span class="hero-counter-number" id="yyv-counter-number">
-                1,777,777
-              </span>
-              <span>yyovvos sent</span>
+              <span class="hero-counter-number" id="yyv-counter-number">1,777,777</span>
+              <span>yyovvos dropped this season</span>
             </div>
 
             <div class="hero-ctas">
-              <a
-                class="btn-main"
-                href="https://studio.yyovvo.com/CreateYyovvo"
-                rel="noopener noreferrer"
-              >
-                send a yyovvo →
+              <a class="btn-main" href="https://studio.yyovvo.com/xmas" rel="noopener noreferrer">
+                send yyo-voice →
               </a>
-              <a class="btn-ghost" href="#how-it-works">
-                how it works
-              </a>
+              <a class="btn-ghost" href="#how-it-works">how it works</a>
             </div>
+
             <div class="hero-note">
               free to create · no app · just a link and a feeling
             </div>
@@ -800,18 +663,18 @@
               <div class="phone-inner">
                 <video
                   class="phone-video"
-                  src="/videos/yyovvo-hero.mp4"
+                  src="/videos/yyovvo-avatar-hero.mp4"
                   autoplay
                   muted
                   playsinline
                   loop
-                  poster="/images/yyovvo-hero-poster.jpg"
+                  poster="/images/yyovvo-avatar-hero-poster.jpg"
                 ></video>
                 <div class="phone-glow-overlay"></div>
                 <div class="phone-pill"></div>
                 <div class="phone-caption">
                   <div class="phone-caption-dot"></div>
-                  yyovvo · playing a feeling
+                  yyovvo · yyo-voice
                 </div>
               </div>
             </div>
@@ -822,31 +685,26 @@
         <section class="section section-tight" id="what">
           <h2 class="section-title">what is yyovvo?</h2>
           <p class="section-sub">
-            an emphatic short cinematic trailer of your personality &amp; message,
-            wrapped by ai in mood &amp; skin, delivered as an eternal moment that
-            lives on their wall.
+            a talking avatar message built for christmas. ai writes the script. your voice drives it. one tap to drop it.
           </p>
 
           <div class="grid-3">
             <div class="card">
-              <div class="card-label">your voice</div>
+              <div class="card-label">real voice</div>
               <div class="card-main">
-                whisper, laugh, say “merry christmas” — yyovvo captures how you
-                actually sound, not just what you type.
+                whisper, laugh, say “merry christmas” — yyovvo captures how it sounds, not just what you type.
               </div>
             </div>
             <div class="card">
-              <div class="card-label">our wrap</div>
+              <div class="card-label">ai script</div>
               <div class="card-main">
-                you choose your personality, yyovvo ai picks the right mood +
-                skin. no timelines, no editing, no templates.
+                pick the vibe. yyovvo writes the words. you record. the avatar delivers.
               </div>
             </div>
             <div class="card">
-              <div class="card-label">their wall</div>
+              <div class="card-label">instant fomo</div>
               <div class="card-main">
-                every yyovvo becomes a tile on their wall — a private gallery of
-                the moments you made them feel something.
+                they watch it — then the outro dares them to send one back.
               </div>
             </div>
           </div>
@@ -856,102 +714,35 @@
         <section class="section" id="how-it-works">
           <h2 class="section-title">how it works</h2>
           <p class="section-sub">
-            built for humans, not creators. 3 taps, under 40 seconds, and you’ve
-            made something they’ll replay all year.
+            built for humans, not creators. 3 taps and it’s done.
           </p>
 
           <div class="pill-row">
             <div class="pill-step">
-              1 · choose your personality →
-              <span>yyovvo ai wraps the rest</span>
+              1 · choose vibe →
+              <span>ai writes the script</span>
             </div>
             <div class="pill-step">
-              2 · speak or write your moment →
-              <span>8 seconds is the sweet spot</span>
+              2 · record voice →
+              <span>real voice. instant energy</span>
             </div>
             <div class="pill-step">
-              3 · send it like a heartbeat →
-              <span>sms, whatsapp, ig dm, anywhere</span>
+              3 · forge + send →
+              <span>they watch. then they send</span>
             </div>
           </div>
         </section>
 
-        <!-- TIKTOK / SOCIAL -->
+        <!-- MADE FOR NOW -->
         <section class="section section-tight">
           <h2 class="section-title">made for now</h2>
           <p class="section-sub">
-            trending on tiktok, made for social — but still feels like it was
-            only ever meant for one person.
+            built for tiktok / reels / shorts — but it still hits like it was only meant for one person.
           </p>
 
           <div class="badge-strip">
             <span>portrait ·</span>
-            a5 format · vertical cinema · one tap to share on tiktok / reels /
-            shorts
-          </div>
-        </section>
-
-        <!-- WALL -->
-        <section class="section">
-          <h2 class="section-title">the yyovvo wall</h2>
-          <p class="section-sub">
-            every yyovvo you send becomes a tile on their wall — a living
-            timeline of how you’ve shown up for them.
-          </p>
-          <p class="section-sub-wall-tagline">
-            the new cinematic journal of special moments — forever re-lived,
-            re-shared, re-loved.
-          </p>
-
-          <div class="grid-3">
-            <div class="card">
-              <div class="card-label">sent</div>
-              <div class="card-main">
-                see every yyovvo you’ve ever sent — grouped by who you sent them
-                to, like an emotional history.
-              </div>
-              <div class="card-soft">
-                your wall splits into sent + received. you control privacy:
-                only me / followers / public.
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-label">received</div>
-              <div class="card-main">
-                one tap and they’re back inside the moment — voice, mood, skin,
-                everything, exactly how you made it.
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-label">feels like</div>
-              <div class="card-main">
-                not a pile of cards. not a forgotten dm. a permanent gallery of
-                the times you made their heart move.
-              </div>
-            </div>
-          </div>
-
-          <div class="wall-mock">
-            <div class="wall-tile">loved</div>
-            <div class="wall-tile">midnight</div>
-            <div class="wall-tile dim">again</div>
-            <div class="wall-tile dim">saved me</div>
-            <div class="wall-tile">that christmas</div>
-            <div class="wall-tile dim">call me</div>
-          </div>
-
-          <div class="wall-pill">
-            your first yyovvo creates your wall automatically.
-          </div>
-
-          <div style="margin-top: 14px;">
-            <a
-              class="btn-ghost"
-              href="https://yyovvo.com/wall"
-              rel="noopener noreferrer"
-            >
-              open my wall →
-            </a>
+            vertical cinema · one tap share · christmas momentum
           </div>
         </section>
 
@@ -961,22 +752,13 @@
             someone will go mental when they receive this.
           </div>
           <div class="final-sub">
-            don’t send another notification. send a yyovvo they’ll replay
-            forever.
+            don’t text. send yyo-voice.
           </div>
           <div class="hero-ctas" style="justify-content:center;">
-            <a
-              class="btn-main"
-              href="https://studio.yyovvo.com/CreateYyovvo"
-              rel="noopener noreferrer"
-            >
-              send a yyovvo →
+            <a class="btn-main" href="https://studio.yyovvo.com/xmas" rel="noopener noreferrer">
+              send yyo-voice →
             </a>
-            <a
-              class="btn-ghost"
-              href="https://yyovvo.com/wall"
-              rel="noopener noreferrer"
-            >
+            <a class="btn-ghost" href="https://yyovvo.com/wall" rel="noopener noreferrer">
               open my wall →
             </a>
           </div>
@@ -985,9 +767,9 @@
 
       <footer>
         <div class="footer-inner">
-          <div>yyovvo · designed for emotion.</div>
+          <div>yyovvo · yyo-voice</div>
           <div class="footer-links">
-            <a href="https://studio.yyovvo.com/CreateYyovvo">send</a>
+            <a href="https://studio.yyovvo.com/xmas">send</a>
             <a href="https://yyovvo.com/wall">my wall</a>
             <a href="#">help</a>
             <a href="#">terms</a>
@@ -998,33 +780,7 @@
     </div>
 
     <script>
-      // yyovvo counter animation
-      (function () {
-        const el = document.getElementById("yyv-counter-number");
-        if (!el) return;
-
-        const target = 1777777;
-        const start = target - 7777;
-        const duration = 1400;
-        const startTime = performance.now();
-
-        function format(n) {
-          return n.toLocaleString("en-US");
-        }
-
-        function tick(now) {
-          const progress = Math.min(1, (now - startTime) / duration);
-          const value = Math.floor(start + (target - start) * progress);
-          el.textContent = format(value);
-          if (progress < 1) {
-            requestAnimationFrame(tick);
-          }
-        }
-
-        requestAnimationFrame(tick);
-      })();
-
-      // smooth scroll for "how it works"
+      // Smooth scroll for "how it works"
       (function () {
         const link = document.querySelector('a.btn-ghost[href="#how-it-works"]');
         if (!link) return;
@@ -1034,6 +790,55 @@
           if (!target) return;
           target.scrollIntoView({ behavior: "smooth", block: "start" });
         });
+      })();
+
+      // Counter: single source of truth (Base44 season_stats)
+      // 1) Fetch live total_dropped from Base44 public endpoint
+      // 2) Animate from current displayed value to fetched total
+      // 3) If fetch fails, keep existing number (no fake drift)
+      (function () {
+        const el = document.getElementById("yyv-counter-number");
+        if (!el) return;
+
+        function format(n) {
+          try { return Number(n).toLocaleString("en-US"); }
+          catch { return String(n); }
+        }
+
+        function parseDisplayed() {
+          const raw = (el.textContent || "").replace(/,/g, "").trim();
+          const n = Number(raw);
+          return Number.isFinite(n) ? n : 0;
+        }
+
+        function animateTo(target) {
+          const start = parseDisplayed();
+          const duration = 900;
+          const startTime = performance.now();
+
+          function tick(now) {
+            const progress = Math.min(1, (now - startTime) / duration);
+            const value = Math.floor(start + (target - start) * progress);
+            el.textContent = format(value);
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }
+
+        // TODO: Replace this URL with the real Base44 function URL for getSeasonCounterPublic
+        const COUNTER_URL = "https://studio.yyovvo.com/api/functions/getSeasonCounterPublic";
+
+        fetch(COUNTER_URL, { method: "GET" })
+          .then((r) => r.json())
+          .then((data) => {
+            const total = data && data.total_dropped;
+            if (typeof total === "number" && Number.isFinite(total)) {
+              animateTo(total);
+            }
+          })
+          .catch(() => {
+            // Fail silently; no fake increments here.
+          });
       })();
     </script>
   </body>
