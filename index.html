@@ -34,12 +34,9 @@
         --radius-xl: 24px;
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
@@ -55,10 +52,7 @@
         flex-direction: column;
       }
 
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
+      a { color: inherit; text-decoration: none; }
 
       .page-shell {
         min-height: 100vh;
@@ -237,9 +231,7 @@
         opacity: 0.9;
       }
 
-      .social-link strong {
-        font-weight: 600;
-      }
+      .social-link strong { font-weight: 600; }
 
       .social-link:hover {
         opacity: 1;
@@ -354,10 +346,7 @@
         margin-top: 4px;
       }
 
-      .hero-right {
-        display: flex;
-        justify-content: center;
-      }
+      .hero-right { display: flex; justify-content: center; }
 
       .phone-shell {
         position: relative;
@@ -435,7 +424,6 @@
         box-shadow: 0 0 10px rgba(34, 197, 94, 0.85);
       }
 
-      /* SECTIONS */
       main { flex: 1; }
 
       .section {
@@ -528,10 +516,7 @@
         margin-top: 12px;
       }
 
-      .badge-strip span {
-        color: #f97316;
-        font-weight: 600;
-      }
+      .badge-strip span { color: #f97316; font-weight: 600; }
 
       .final-cta {
         text-align: center;
@@ -549,7 +534,6 @@
         margin-bottom: 16px;
       }
 
-      /* FOOTER */
       footer {
         border-top: 1px solid rgba(15, 23, 42, 0.9);
         background: linear-gradient(to top, #020617, rgba(2, 6, 23, 0.92));
@@ -577,7 +561,6 @@
       .footer-links a { opacity: 0.8; }
       .footer-links a:hover { opacity: 1; }
 
-      /* RESPONSIVE */
       @media (max-width: 768px) {
         .hero {
           grid-template-columns: minmax(0, 1fr);
@@ -620,7 +603,6 @@
       </header>
 
       <main>
-        <!-- HERO -->
         <section class="hero">
           <div class="hero-left">
             <div class="hero-kicker">christmas hits different</div>
@@ -681,7 +663,6 @@
           </div>
         </section>
 
-        <!-- WHAT IS YYOVVO -->
         <section class="section section-tight" id="what">
           <h2 class="section-title">what is yyovvo?</h2>
           <p class="section-sub">
@@ -698,7 +679,7 @@
             <div class="card">
               <div class="card-label">ai script</div>
               <div class="card-main">
-                pick the vibe. yyovvo writes the words. you record. the avatar delivers.
+                choose vibe. yyovvo writes the words. you record. the avatar delivers.
               </div>
             </div>
             <div class="card">
@@ -710,7 +691,6 @@
           </div>
         </section>
 
-        <!-- HOW IT WORKS -->
         <section class="section" id="how-it-works">
           <h2 class="section-title">how it works</h2>
           <p class="section-sub">
@@ -723,7 +703,7 @@
               <span>ai writes the script</span>
             </div>
             <div class="pill-step">
-              2 · record voice →
+              2 · drop the voice →
               <span>real voice. instant energy</span>
             </div>
             <div class="pill-step">
@@ -733,7 +713,6 @@
           </div>
         </section>
 
-        <!-- MADE FOR NOW -->
         <section class="section section-tight">
           <h2 class="section-title">made for now</h2>
           <p class="section-sub">
@@ -746,7 +725,6 @@
           </div>
         </section>
 
-        <!-- FINAL CTA -->
         <section class="final-cta">
           <div class="final-line">
             someone will go mental when they receive this.
@@ -793,9 +771,7 @@
       })();
 
       // Counter: single source of truth (Base44 season_stats)
-      // Fetch live total_dropped from Base44 public endpoint
-      // Animate from current displayed value to fetched total
-      // If fetch fails, keep existing number (no fake drift)
+      // Fetch live total_dropped from Base44 public endpoint, animate to it.
       (function () {
         const el = document.getElementById("yyv-counter-number");
         if (!el) return;
@@ -825,19 +801,19 @@
           requestAnimationFrame(tick);
         }
 
-        // ✅ Base44 public function URL (source of truth)
+        // ✅ REQUIRED EXACT LINE (single source of truth)
         const COUNTER_URL = "https://studio.yyovvo.com/api/functions/getSeasonCounterPublic";
 
         fetch(COUNTER_URL, { method: "GET" })
           .then((r) => r.json())
           .then((data) => {
-            const total = data && data.total_dropped;
+            const total = data && (data.total_dropped ?? data.total_sent ?? data.count);
             if (typeof total === "number" && Number.isFinite(total)) {
               animateTo(total);
             }
           })
           .catch(() => {
-            // Fail silently; do not invent numbers.
+            // Fail silently; never fake drift.
           });
       })();
     </script>
