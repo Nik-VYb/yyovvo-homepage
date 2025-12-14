@@ -793,9 +793,9 @@
       })();
 
       // Counter: single source of truth (Base44 season_stats)
-      // 1) Fetch live total_dropped from Base44 public endpoint
-      // 2) Animate from current displayed value to fetched total
-      // 3) If fetch fails, keep existing number (no fake drift)
+      // Fetch live total_dropped from Base44 public endpoint
+      // Animate from current displayed value to fetched total
+      // If fetch fails, keep existing number (no fake drift)
       (function () {
         const el = document.getElementById("yyv-counter-number");
         if (!el) return;
@@ -825,7 +825,7 @@
           requestAnimationFrame(tick);
         }
 
-        // TODO: Replace this URL with the real Base44 function URL for getSeasonCounterPublic
+        // ✅ Base44 public function URL (source of truth)
         const COUNTER_URL = "https://studio.yyovvo.com/api/functions/getSeasonCounterPublic";
 
         fetch(COUNTER_URL, { method: "GET" })
@@ -837,7 +837,7 @@
             }
           })
           .catch(() => {
-            // Fail silently; no fake increments here.
+            // Fail silently; do not invent numbers.
           });
       })();
     </script>
