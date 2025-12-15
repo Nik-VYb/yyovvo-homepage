@@ -6,7 +6,7 @@
     <title>yyovvo — yyo-voice</title>
     <meta
       name="description"
-      content="Christmas isn’t texts. It’s talking avatars. Send yyo-voice in one tap."
+      content="Talking avatars with your real voice. Christmas, birthdays, just because — send yyo-voice in one tap."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -15,7 +15,7 @@
     <meta property="og:title" content="yyovvo — yyo-voice" />
     <meta
       property="og:description"
-      content="Christmas isn’t texts. It’s talking avatars. Send yyo-voice in one tap."
+      content="Talking avatars with your real voice. Christmas, birthdays, just because — send yyo-voice in one tap."
     />
     <meta property="og:url" content="https://yyovvo.com" />
     <meta property="og:image" content="/og-image.jpg" />
@@ -128,6 +128,8 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
       }
 
       .nav-link {
@@ -137,6 +139,7 @@
         color: var(--text-soft);
         border: 1px solid transparent;
         cursor: pointer;
+        white-space: nowrap;
       }
 
       .nav-link:hover {
@@ -165,6 +168,7 @@
         color: #fdf2f8;
         cursor: pointer;
         text-transform: lowercase;
+        white-space: nowrap;
       }
 
       .nav-cta:hover {
@@ -204,6 +208,7 @@
         gap: 8px;
         margin-top: -4px;
         margin-bottom: 4px;
+        flex-wrap: wrap;
       }
 
       .pulse-dot {
@@ -229,6 +234,7 @@
         color: var(--accent-emerald);
         text-transform: lowercase;
         opacity: 0.9;
+        white-space: nowrap;
       }
 
       .social-link strong { font-weight: 600; }
@@ -256,7 +262,50 @@
       .hero-sub {
         font-size: 14px;
         color: var(--text-soft);
-        max-width: 420px;
+        max-width: 520px;
+      }
+
+      .occasion-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .occasion-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.55);
+        background: radial-gradient(
+          circle at top left,
+          rgba(56, 189, 248, 0.12),
+          rgba(15, 23, 42, 0.96)
+        );
+        color: #e5e7eb;
+        font-size: 12px;
+        cursor: pointer;
+        text-transform: lowercase;
+        white-space: nowrap;
+        transition: transform 120ms ease, filter 120ms ease, border-color 120ms ease;
+      }
+
+      .occasion-chip:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+        border-color: rgba(209, 213, 219, 0.9);
+      }
+
+      .occasion-chip .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: radial-gradient(circle at center, #22c55e, #15803d);
+        box-shadow: 0 0 10px rgba(34, 197, 94, 0.85);
+        opacity: 0.9;
       }
 
       .hero-counter {
@@ -273,7 +322,7 @@
         );
         font-size: 11px;
         color: var(--text-soft);
-        margin-top: 4px;
+        margin-top: 6px;
       }
 
       .hero-counter-number {
@@ -596,6 +645,10 @@
             </div>
           </div>
           <div class="nav-right">
+            <!-- Occasion entry points -->
+            <a class="nav-link" href="https://studio.yyovvo.com/xmas">christmas</a>
+            <a class="nav-link" href="https://studio.yyovvo.com/xmas?occasion=birthday">birthday</a>
+            <a class="nav-link" href="https://studio.yyovvo.com/xmas?occasion=just-because">just because</a>
             <a class="nav-link" href="https://yyovvo.com/wall" rel="noopener noreferrer">my wall</a>
             <a class="nav-cta" href="https://studio.yyovvo.com/xmas" rel="noopener noreferrer">send</a>
           </div>
@@ -622,6 +675,19 @@
             <p class="hero-sub">
               send a cinematic talking avatar in one tap. they watch. then they send.
             </p>
+
+            <!-- NEW: Occasion deep links (hero) -->
+            <div class="occasion-row" aria-label="Occasions">
+              <a class="occasion-chip" href="https://studio.yyovvo.com/xmas">
+                <span class="dot"></span> send christmas →
+              </a>
+              <a class="occasion-chip" href="https://studio.yyovvo.com/xmas?occasion=birthday">
+                <span class="dot"></span> send birthday →
+              </a>
+              <a class="occasion-chip" href="https://studio.yyovvo.com/xmas?occasion=just-because">
+                <span class="dot"></span> send just because →
+              </a>
+            </div>
 
             <div class="hero-counter">
               <span class="hero-counter-number" id="yyv-counter-number">1,777,777</span>
@@ -666,14 +732,14 @@
         <section class="section section-tight" id="what">
           <h2 class="section-title">what is yyovvo?</h2>
           <p class="section-sub">
-            a talking avatar message built for christmas. ai writes the script. your voice drives it. one tap to drop it.
+            a talking avatar message built for christmas, birthdays, and just because. ai writes the words. your voice drives it. one tap to drop it.
           </p>
 
           <div class="grid-3">
             <div class="card">
               <div class="card-label">real voice</div>
               <div class="card-main">
-                whisper, laugh, say “merry christmas” — yyovvo captures how it sounds, not just what you type.
+                whisper, laugh, say “happy birthday” — yyovvo captures how it sounds, not just what you type.
               </div>
             </div>
             <div class="card">
@@ -721,7 +787,7 @@
 
           <div class="badge-strip">
             <span>portrait ·</span>
-            vertical cinema · one tap share · christmas momentum
+            vertical cinema · one tap share · always in motion
           </div>
         </section>
 
@@ -747,7 +813,9 @@
         <div class="footer-inner">
           <div>yyovvo · yyo-voice</div>
           <div class="footer-links">
-            <a href="https://studio.yyovvo.com/xmas">send</a>
+            <a href="https://studio.yyovvo.com/xmas">christmas</a>
+            <a href="https://studio.yyovvo.com/xmas?occasion=birthday">birthday</a>
+            <a href="https://studio.yyovvo.com/xmas?occasion=just-because">just because</a>
             <a href="https://yyovvo.com/wall">my wall</a>
             <a href="#">help</a>
             <a href="#">terms</a>
