@@ -97,7 +97,7 @@
       -webkit-text-fill-color:transparent;
       text-shadow: 0 0 28px rgba(255,47,164,0.55);
     }
-    /* “Christmas” must be snow-white */
+    /* “CHRISTMAS” must be snow-white */
     .snow{
       color: var(--white);
       text-shadow:
@@ -138,7 +138,7 @@
     .cta:active{transform:scale(1.02)}
     .cta-sub{margin-top:.55rem;font-size:.92rem;opacity:.76}
 
-    /* ===== COUNTER (3D slot machine) ===== */
+    /* ===== COUNTER WRAP (kept) ===== */
     .counterWrap{
       text-align:center;
       padding: 3.6rem 1.25rem 2.4rem;
@@ -167,56 +167,77 @@
       backdrop-filter: blur(14px);
       cursor:pointer;
       user-select:none;
-    }
-    .slot{
-      width: 0.85em;
-      height: 1.20em;
+      position:relative;
       overflow:hidden;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.35);
+    }
+    .counterLabel{margin-top: .85rem;font-size: 1.05rem;opacity:.85}
+    .counterNote{margin-top: .45rem;font-size: .95rem;opacity:.72}
+
+    /* ===== COUNTER UPGRADE: HOLO 3D ODOMETER (bulletproof) ===== */
+    .holoCounter{position:relative;display:inline-block;padding:.15rem .25rem}
+    .holoSheen{
+      position:absolute; inset:-6px;
+      border-radius: 26px;
+      pointer-events:none;
+      background: radial-gradient(1200px 200px at 50% 10%, rgba(255,255,255,0.18), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: .55;
+    }
+    .holoScan{
+      position:absolute; left:-10%; right:-10%; top:0; height:2px;
+      background: linear-gradient(90deg, transparent, rgba(77,220,255,0.55), rgba(255,47,164,0.55), transparent);
+      opacity:.55;
+      filter: blur(.4px);
+      animation: scanline 2.8s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes scanline{0%{transform:translateY(0)}100%{transform:translateY(64px)}}
+
+    .holoOdometer{
+      display:flex;
+      align-items:center;
+      gap: .12rem;
+      perspective: 900px;
+      transform-style: preserve-3d;
+    }
+    .holoSep{
+      font-weight: 950;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1;
+      color: rgba(248,251,255,0.78);
+      text-shadow: 0 0 14px rgba(248,251,255,0.25);
+      transform: translateY(-0.02em);
+      margin: 0 .10rem;
+    }
+    .holoDigit{
+      width: 0.95em;
+      height: 1.25em;
+      position:relative;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.38);
       border: 1px solid rgba(255,255,255,0.10);
       box-shadow:
         inset 0 10px 18px rgba(0,0,0,0.45),
         inset 0 -10px 18px rgba(255,255,255,0.05),
-        0 0 30px rgba(255,47,164,0.18);
-      transform: perspective(700px) rotateX(10deg);
-      position:relative;
+        0 0 30px rgba(255,47,164,0.16),
+        0 0 35px rgba(77,220,255,0.10);
+      overflow:hidden;
+      transform: translateZ(0) rotateX(10deg);
     }
-    .slot::before{
-      content:"";
-      position:absolute;inset:-2px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.18), transparent 35%, transparent 65%, rgba(255,255,255,0.10));
-      pointer-events:none;
-      mix-blend-mode: screen;
-    }
-    .reel{display:block;transform:translateY(0);will-change:transform}
-    .digit{
-      height: 1.20em;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .holoWheel{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(0deg)}
+    .holoFace{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
       font-weight: 950;
-      font-size: clamp(2.2rem, 6vw, 3.5rem);
-      line-height:1;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1;
       letter-spacing:-0.02em;
       background: linear-gradient(90deg, var(--pink), var(--pinkHot));
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
-      text-shadow:
-        0 0 22px rgba(255,47,164,0.45),
-        0 10px 30px rgba(0,0,0,0.40);
+      text-shadow: 0 0 22px rgba(255,47,164,0.45), 0 10px 30px rgba(0,0,0,0.40);
+      backface-visibility: hidden;
     }
-    .comma{
-      font-weight:950;
-      font-size: clamp(2.2rem, 6vw, 3.5rem);
-      line-height:1;
-      color: rgba(248,251,255,0.75);
-      text-shadow: 0 0 12px rgba(248,251,255,0.25);
-      transform: translateY(-0.03em);
-      margin: 0 .05em;
-    }
-    .counterLabel{margin-top: .85rem;font-size: 1.05rem;opacity:.85}
-    .counterNote{margin-top: .45rem;font-size: .95rem;opacity:.72}
 
     /* ===== SECTIONS ===== */
     section{
@@ -320,9 +341,12 @@
   <div class="counterWrap">
     <div class="counterTitle">LIVE MOMENTUM</div>
 
-    <!-- Clickable (hook later to real outro moment) -->
     <div class="counter3d" id="counterLink" title="See the outro counter moment">
-      <div id="slots" style="display:flex;align-items:center;gap:.08rem"></div>
+      <div class="holoCounter">
+        <div id="holoOdometer" class="holoOdometer" aria-label="yyovvos sent counter"></div>
+        <div class="holoSheen"></div>
+        <div class="holoScan"></div>
+      </div>
     </div>
 
     <div class="counterLabel"><span class="snow" style="font-weight:900">yyovvos</span> sent</div>
@@ -406,7 +430,7 @@
       });
     })();
 
-    // ===== COUNTER: HOURLY ONLY + SLOT ROLL =====
+    // ===== COUNTER: HOURLY ONLY + HOLO 3D ODOMETER (BULLETPROOF) =====
     const COUNTER = {
       baseCount: 4789234,
       baseTimeISO: "2025-12-23T00:00:00Z",
@@ -420,77 +444,100 @@
       return COUNTER.baseCount + Math.max(0, hours) * COUNTER.perHour;
     }
 
-    function buildSlots(container, finalNumberStr){
-      container.innerHTML = "";
-      const chars = finalNumberStr.split("");
-      chars.forEach((ch, idx) => {
+    function buildHoloOdometer(targetStr){
+      const host = document.getElementById("holoOdometer");
+      if (!host) return null;
+
+      host.innerHTML = "";
+
+      const chars = targetStr.split("");
+      const wheels = [];
+
+      chars.forEach((ch) => {
         if (ch === ",") {
-          const comma = document.createElement("div");
-          comma.className = "comma";
-          comma.textContent = ",";
-          container.appendChild(comma);
+          const sep = document.createElement("div");
+          sep.className = "holoSep";
+          sep.textContent = ",";
+          host.appendChild(sep);
           return;
         }
 
-        const slot = document.createElement("div");
-        slot.className = "slot";
+        const digitWrap = document.createElement("div");
+        digitWrap.className = "holoDigit";
 
-        const reel = document.createElement("div");
-        reel.className = "reel";
+        const wheel = document.createElement("div");
+        wheel.className = "holoWheel";
 
-        const cycles = 20;
-        for (let c=0; c<cycles; c++){
-          for (let d=0; d<10; d++){
-            const digit = document.createElement("div");
-            digit.className = "digit";
-            digit.textContent = d;
-            reel.appendChild(digit);
-          }
+        const radius = 34; // px - stable across browsers
+        for (let d = 0; d < 10; d++) {
+          const face = document.createElement("div");
+          face.className = "holoFace";
+          face.textContent = String(d);
+          face.style.transform = `rotateX(${d * 36}deg) translateZ(${radius}px)`;
+          wheel.appendChild(face);
         }
-        const finalDigit = document.createElement("div");
-        finalDigit.className = "digit";
-        finalDigit.textContent = ch;
-        reel.appendChild(finalDigit);
 
-        slot.appendChild(reel);
-        container.appendChild(slot);
+        digitWrap.appendChild(wheel);
+        host.appendChild(digitWrap);
 
-        requestAnimationFrame(() => {
-          const cell = reel.querySelector(".digit");
-          const cellH = (cell && cell.getBoundingClientRect().height) ? cell.getBoundingClientRect().height : 40;
-          const totalDigits = reel.children.length;
-          const finalIndex = totalDigits - 1;
-          const targetY = -finalIndex * cellH;
+        wheels.push({ wheelEl: wheel, currentAngle: 0 });
+      });
 
-          const delay = 60 + idx * 55;
-          const duration = 1200 + idx * 90;
+      return wheels;
+    }
 
-          reel.animate(
-            [
-              { transform: "translateY(0px)" },
-              { transform: `translateY(${targetY}px)` }
-            ],
-            {
-              duration,
-              delay,
-              easing: "cubic-bezier(0.08, 0.85, 0.1, 1)",
-              fill: "forwards"
-            }
-          );
-        });
+    function animateHoloTo(wheels, targetStr){
+      if (!wheels) return;
+
+      const digits = targetStr.replaceAll(",", "").split("").map(x => parseInt(x, 10));
+
+      wheels.forEach((w, i) => {
+        const target = digits[i];
+        if (Number.isNaN(target)) return;
+
+        const extraTurns = 2 + (i % 3); // 2–4 full turns
+        const targetAngle = -((extraTurns * 360) + (target * 36));
+
+        const delay = 80 + i * 70;
+        const duration = 1200 + i * 110;
+
+        w.wheelEl.animate(
+          [
+            { transform: `rotateX(${w.currentAngle}deg)` },
+            { transform: `rotateX(${targetAngle}deg)` }
+          ],
+          {
+            duration,
+            delay,
+            easing: "cubic-bezier(0.08, 0.85, 0.1, 1)",
+            fill: "forwards"
+          }
+        );
+
+        w.currentAngle = targetAngle;
       });
     }
 
     (function initCounter(){
       const count = computeHourlyCount();
       const formatted = count.toLocaleString("en-GB");
-      const slots = document.getElementById("slots");
-      if (!slots) return;
-      buildSlots(slots, formatted);
 
-      document.getElementById("counterLink").addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+      const wheels = buildHoloOdometer(formatted);
+      animateHoloTo(wheels, formatted);
+
+      const link = document.getElementById("counterLink");
+      if (link) link.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+      // Update once at the next UTC hour boundary (then it'll be correct after refresh)
+      const now = new Date();
+      const msToNextHour = (60 - now.getUTCMinutes()) * 60 * 1000
+                         - now.getUTCSeconds() * 1000
+                         - now.getUTCMilliseconds();
+      setTimeout(() => {
+        const newFormatted = computeHourlyCount().toLocaleString("en-GB");
+        const newWheels = buildHoloOdometer(newFormatted);
+        animateHoloTo(newWheels, newFormatted);
+      }, Math.max(500, msToNextHour));
     })();
 
     // ===== CONFETTI =====
@@ -566,7 +613,6 @@
     function hookCTA(id){
       const el = document.getElementById(id);
       if (!el) return;
-      // hard lock href (belt & braces)
       el.setAttribute("href", GAME_HOME_URL);
 
       el.addEventListener("click", (e) => {
@@ -580,15 +626,6 @@
     }
     hookCTA("cta");
     hookCTA("cta2");
-
-    // Safety: ensure counter shows even if animation fails
-    window.addEventListener("load", () => {
-      const slots = document.getElementById("slots");
-      if (slots && slots.childElementCount === 0) {
-        const c = computeHourlyCount().toLocaleString("en-GB");
-        slots.innerHTML = `<div style="font-size:clamp(2.2rem,6vw,3.5rem);font-weight:950;color:#ff2fa4;text-shadow:0 0 22px rgba(255,47,164,.45)">${c}</div>`;
-      }
-    });
   </script>
 </body>
 </html>
