@@ -2,169 +2,309 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>yyovvo — Spread the Love™</title>
+  <title>YYOVVO — The Most Viral Christmas Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="This Christmas, SPREAD THE LOVE™ — the viral game everyone’s playing." />
+  <meta name="description" content="Start a love-spreading chain reaction. The biggest Christmas reveal happens at midnight." />
+
+  <!-- NOINDEX TEMP IF NEEDED -->
+  <!-- <meta name="robots" content="noindex,nofollow"> -->
 
   <style>
+    :root {
+      --pink: #ff2fa4;
+      --pink-hot: #ff4fd8;
+      --blue-electric: #4ddcff;
+      --bg: #05050a;
+      --glass: rgba(255,255,255,0.08);
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      background: #000;
-      color: #fff;
+    body {
+      background: radial-gradient(ellipse at top, #0a0014 0%, #05050a 70%);
+      color: white;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ===== HEART PARTICLES ===== */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
       overflow: hidden;
     }
+    .heart {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: var(--pink);
+      transform: rotate(45deg);
+      opacity: 0.25;
+      animation: float 20s linear infinite;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: var(--pink);
+      border-radius: 50%;
+    }
+    .heart::before { top: -7px; left: 0; }
+    .heart::after { left: -7px; top: 0; }
 
-    .page {
-      position: relative;
-      width: 100%;
-      height: 100vh;
+    @keyframes float {
+      from { transform: translateY(100vh) rotate(45deg); }
+      to { transform: translateY(-120vh) rotate(45deg); }
     }
 
-    video {
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 1.5rem;
+      z-index: 5;
+    }
+
+    .hero video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 0;
+      opacity: 0.25;
+      z-index: -1;
     }
 
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.85));
-      z-index: 1;
-    }
-
-    .content {
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 24px;
-    }
-
-    .kicker {
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-size: 12px;
-      opacity: 0.7;
-      margin-bottom: 12px;
+    .hero-content {
+      max-width: 900px;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(
+        135deg,
+        rgba(255,47,164,0.15),
+        rgba(77,220,255,0.08)
+      );
+      border-radius: 32px;
+      padding: 3rem 2rem;
+      box-shadow: 0 0 80px rgba(255,47,164,0.35);
     }
 
     h1 {
-      font-size: clamp(32px, 6vw, 64px);
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 900;
       line-height: 1.05;
-      font-weight: 700;
-      max-width: 900px;
-      margin-bottom: 16px;
+      background: linear-gradient(90deg, var(--pink), var(--pink-hot));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(255,47,164,0.6);
+      margin-bottom: 1.2rem;
     }
 
     .sub {
-      font-size: clamp(16px, 2.5vw, 20px);
-      opacity: 0.85;
-      max-width: 600px;
-      margin-bottom: 32px;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      opacity: 0.9;
+      margin-bottom: 2rem;
     }
 
-    .ctas {
+    .cta {
+      display: inline-block;
+      font-size: 1.2rem;
+      font-weight: 800;
+      padding: 1.1rem 2.4rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--pink), var(--pink-hot));
+      color: #000;
+      text-decoration: none;
+      box-shadow: 0 0 40px rgba(255,47,164,0.7);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 70px rgba(255,47,164,0.9);
+    }
+
+    .cta-sub {
+      margin-top: .6rem;
+      font-size: .9rem;
+      opacity: .75;
+    }
+
+    /* ===== SHARE ===== */
+    .share {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 20;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      width: 100%;
-      max-width: 360px;
+      gap: 10px;
+      background: var(--glass);
+      padding: 14px;
+      border-radius: 18px;
+      backdrop-filter: blur(12px);
     }
-
-    .cta-primary {
-      padding: 18px;
-      font-size: 18px;
+    .share span {
       font-weight: 700;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
-      color: #fff;
-      box-shadow: 0 0 40px rgba(236,72,153,0.6);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .cta-primary:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 60px rgba(236,72,153,0.9);
-    }
-
-    .cta-secondary {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.7);
-      font-size: 14px;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 16px;
-      width: 100%;
+      color: var(--pink);
       text-align: center;
-      font-size: 12px;
-      opacity: 0.5;
-      z-index: 2;
+    }
+    .share a {
+      color: white;
+      text-decoration: none;
+      font-size: .9rem;
+      text-align: center;
+      padding: .4rem;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* ===== COUNTER ===== */
+    .counter {
+      text-align: center;
+      padding: 4rem 1.5rem;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      color: var(--pink);
+      text-shadow: 0 0 25px rgba(255,47,164,0.6);
+    }
+    .counter small {
+      display: block;
+      font-size: 1rem;
+      opacity: .8;
+      margin-top: .6rem;
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      color: var(--pink-hot);
+    }
+    section p {
+      font-size: 1.1rem;
+      opacity: .9;
+      margin-bottom: .8rem;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      font-size: .75rem;
+      opacity: .5;
+      padding: 2rem 1rem;
+    }
+    footer a {
+      color: inherit;
+      margin: 0 .6rem;
+      text-decoration: none;
     }
   </style>
 </head>
-
 <body>
-  <div class="page">
 
-    <!-- HERO VIDEO (KEEP CURRENT FILE PATH) -->
-    <video autoplay muted loop playsinline>
-      <source src="/hero.mp4" type="video/mp4" />
-    </video>
+<!-- HEARTS -->
+<div class="hearts" id="hearts"></div>
 
-    <div class="overlay"></div>
+<!-- SHARE -->
+<div class="share">
+  <span>SPREAD<br>THE LOVE</span>
+  <a href="#">WhatsApp</a>
+  <a href="#">Instagram</a>
+  <a href="#">TikTok</a>
+  <a href="#" onclick="navigator.clipboard.writeText(location.href)">Copy Link</a>
+</div>
 
-    <div class="content">
-      <div class="kicker">christmas 2025 · the viral game</div>
+<!-- HERO -->
+<div class="hero">
+  <!-- HERO VIDEO: THE MIDNIGHT REVEAL -->
+  <!-- Replace src with your video -->
+  <video autoplay muted loop playsinline>
+    <source src="midnight-reveal.mp4" type="video/mp4" />
+  </video>
 
-      <h1>
-        This Christmas,<br />
-        <strong>SPREAD THE LOVE™</strong>
-      </h1>
+  <div class="hero-content">
+    <h1>THE MOST VIRAL CHRISTMAS GAME ON THE INTERNET</h1>
+    <p class="sub">
+      The biggest reveal of Christmas happens at midnight.<br>
+      You don’t know what you’re playing for. Yet.
+    </p>
 
-      <div class="sub">
-        Create a character. Send a talking message.<br />
-        ❤️ Every send sparks another.
-      </div>
-
-      <div class="ctas">
-        <button
-          class="cta-primary"
-          onclick="window.location.href='https://studio.yyovvo.com/GameHome?src=home_hero';"
-        >
-          Enter the Game →
-        </button>
-
-        <button
-          class="cta-secondary"
-          onclick="window.location.href='https://studio.yyovvo.com/Leaderboard?src=home_leaderboard';"
-        >
-          View Leaderboard
-        </button>
-      </div>
-    </div>
-
-    <footer>
-      © yyovvo · designed for emotion
-    </footer>
-
+    <a class="cta" href="https://studio.yyovvo.com/CreateYyovvo">
+      START THE CHAIN REACTION
+    </a>
+    <div class="cta-sub">Send one. Watch what happens next.</div>
   </div>
+</div>
+
+<!-- COUNTER -->
+<div class="counter" id="counter">
+  3,791,834 yyovvos sent
+  <small>This number only goes one way.</small>
+</div>
+
+<!-- WTF EXPLANATION -->
+<section>
+  <p><strong>1.</strong> You send a talking Santa message.</p>
+  <p><strong>2.</strong> Someone hears their name — and feels something real.</p>
+  <p><strong>3.</strong> The chain reaction starts.</p>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <p>“My daughter froze when Santa said her name. Then she screamed. Then I cried.”</p>
+  <p>“I sent one… then three more. I didn’t expect this to hit like that.”</p>
+</section>
+
+<!-- GAME -->
+<section>
+  <h2>WHAT ARE YOU PLAYING FOR?</h2>
+  <p><strong>FIND OUT AT MIDNIGHT.</strong></p>
+  <p>It’s bigger than a giveaway. Better than the Hunger Games.</p>
+  <p>Top love-spreaders are being watched.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#">Game Rules</a>
+  <a href="#">Terms</a>
+  <a href="#">Support</a>
+  <div>Digital. Instant. Irreversible.</div>
+</footer>
+
+<script>
+  /* HEART GENERATOR */
+  const hearts = document.getElementById("hearts");
+  for (let i = 0; i < 40; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDuration = (15 + Math.random() * 20) + "s";
+    h.style.opacity = Math.random() * 0.4 + 0.1;
+    hearts.appendChild(h);
+  }
+
+  /* COUNTER — HOURLY ONLY */
+  const baseCount = 3791834;
+  const baseTime = new Date("2025-12-23T00:00:00Z").getTime();
+  const now = Date.now();
+  const hours = Math.floor((now - baseTime) / 3600000);
+  const count = baseCount + (hours * 77000);
+
+  document.getElementById("counter").firstChild.nodeValue =
+    count.toLocaleString() + " yyovvos sent";
+</script>
+
 </body>
 </html>
