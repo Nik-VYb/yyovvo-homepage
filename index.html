@@ -6,305 +6,568 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Start a love-spreading chain reaction. The biggest Christmas reveal happens at midnight." />
 
-  <!-- NOINDEX TEMP IF NEEDED -->
-  <!-- <meta name="robots" content="noindex,nofollow"> -->
-
   <style>
-    :root {
-      --pink: #ff2fa4;
-      --pink-hot: #ff4fd8;
-      --blue-electric: #4ddcff;
-      --bg: #05050a;
-      --glass: rgba(255,255,255,0.08);
+    :root{
+      --pink:#ff2fa4;
+      --pinkHot:#ff4fd8;
+      --blue:#4ddcff;
+      --bg:#05050a;
+      --glass:rgba(255,255,255,0.08);
+      --white:#f8fbff;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
       background: radial-gradient(ellipse at top, #0a0014 0%, #05050a 70%);
-      color: white;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      overflow-x: hidden;
+      color:#fff;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+      overflow-x:hidden;
     }
 
     /* ===== HEART PARTICLES ===== */
-    .hearts {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      overflow: hidden;
+    .hearts{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+    .heart{
+      position:absolute;width:14px;height:14px;background:var(--pink);
+      transform:rotate(45deg);opacity:.25;animation:float 20s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(255,47,164,.35));
     }
-    .heart {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      background: var(--pink);
-      transform: rotate(45deg);
-      opacity: 0.25;
-      animation: float 20s linear infinite;
+    .heart::before,.heart::after{
+      content:"";position:absolute;width:14px;height:14px;background:var(--pink);border-radius:50%;
     }
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      background: var(--pink);
-      border-radius: 50%;
-    }
-    .heart::before { top: -7px; left: 0; }
-    .heart::after { left: -7px; top: 0; }
+    .heart::before{top:-7px;left:0}
+    .heart::after{left:-7px;top:0}
+    @keyframes float{from{transform:translateY(100vh) rotate(45deg)}to{transform:translateY(-120vh) rotate(45deg)}}
 
-    @keyframes float {
-      from { transform: translateY(100vh) rotate(45deg); }
-      to { transform: translateY(-120vh) rotate(45deg); }
-    }
-
-    /* ===== HERO ===== */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 4rem 1.5rem;
-      z-index: 5;
-    }
-
-    .hero video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.25;
-      z-index: -1;
-    }
-
-    .hero-content {
-      max-width: 900px;
-      backdrop-filter: blur(14px);
-      background: linear-gradient(
-        135deg,
-        rgba(255,47,164,0.15),
-        rgba(77,220,255,0.08)
-      );
-      border-radius: 32px;
-      padding: 3rem 2rem;
-      box-shadow: 0 0 80px rgba(255,47,164,0.35);
-    }
-
-    h1 {
-      font-size: clamp(2.4rem, 6vw, 4.2rem);
-      font-weight: 900;
-      line-height: 1.05;
-      background: linear-gradient(90deg, var(--pink), var(--pink-hot));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 30px rgba(255,47,164,0.6);
-      margin-bottom: 1.2rem;
-    }
-
-    .sub {
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      opacity: 0.9;
-      margin-bottom: 2rem;
-    }
-
-    .cta {
-      display: inline-block;
-      font-size: 1.2rem;
-      font-weight: 800;
-      padding: 1.1rem 2.4rem;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--pink), var(--pink-hot));
-      color: #000;
-      text-decoration: none;
-      box-shadow: 0 0 40px rgba(255,47,164,0.7);
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-    .cta:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 70px rgba(255,47,164,0.9);
-    }
-
-    .cta-sub {
-      margin-top: .6rem;
-      font-size: .9rem;
-      opacity: .75;
+    /* ===== CONFETTI CANVAS ===== */
+    #confetti{
+      position:fixed;inset:0;z-index:50;pointer-events:none;
     }
 
     /* ===== SHARE ===== */
-    .share {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      background: var(--glass);
-      padding: 14px;
-      border-radius: 18px;
+    .share{
+      position:fixed;top:18px;right:18px;z-index:20;
+      display:flex;flex-direction:column;gap:10px;
+      background:var(--glass);padding:14px;border-radius:18px;
       backdrop-filter: blur(12px);
+      border:1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 0 40px rgba(77,220,255,0.12), 0 0 50px rgba(255,47,164,0.10);
     }
-    .share span {
-      font-weight: 700;
-      color: var(--pink);
-      text-align: center;
+    .share span{
+      font-weight:900;letter-spacing:.06em;color:var(--pinkHot);
+      text-align:center;line-height:1.0;
+      text-shadow:0 0 18px rgba(255,47,164,.45);
     }
-    .share a {
-      color: white;
-      text-decoration: none;
-      font-size: .9rem;
-      text-align: center;
-      padding: .4rem;
-      border-radius: 10px;
+    .share a{
+      color:#fff;text-decoration:none;font-size:.9rem;text-align:center;
+      padding:.55rem .65rem;border-radius:12px;
       background: rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.10);
+    }
+    .share a:hover{background: rgba(255,255,255,0.12)}
+
+    /* ===== HERO ===== */
+    .hero{
+      position:relative;min-height:100vh;
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      padding:4rem 1.25rem;z-index:5;
+    }
+    .hero video{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28;z-index:-1;
+      filter: contrast(1.05) saturate(1.05);
     }
 
-    /* ===== COUNTER ===== */
-    .counter {
-      text-align: center;
-      padding: 4rem 1.5rem;
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 900;
-      color: var(--pink);
-      text-shadow: 0 0 25px rgba(255,47,164,0.6);
+    .hero-content{
+      max-width:980px;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(135deg, rgba(255,47,164,0.16), rgba(77,220,255,0.08));
+      border-radius: 34px;
+      padding: 3.1rem 2rem;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow:
+        0 0 90px rgba(255,47,164,0.35),
+        0 0 70px rgba(77,220,255,0.18);
     }
-    .counter small {
-      display: block;
-      font-size: 1rem;
-      opacity: .8;
-      margin-top: .6rem;
+
+    h1{
+      font-size: clamp(2.4rem, 6vw, 4.3rem);
+      font-weight: 950;
+      line-height: 1.03;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.1rem;
+      text-shadow: 0 0 30px rgba(255,47,164,0.35);
+    }
+    .pink{
+      background: linear-gradient(90deg, var(--pink), var(--pinkHot));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow: 0 0 28px rgba(255,47,164,0.55);
+    }
+    /* “Christmas” must be snow-white */
+    .snow{
+      color: var(--white);
+      text-shadow:
+        0 0 14px rgba(248,251,255,0.45),
+        0 0 30px rgba(77,220,255,0.18);
+      -webkit-text-fill-color: unset;
+      background:none;
+    }
+
+    .sub{
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      opacity: .92;
+      margin-bottom: 1.9rem;
+    }
+    .whisper{opacity:.72;margin-top:.55rem;font-size:.95rem}
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.6rem;
+      font-size: 1.15rem;
+      font-weight: 950;
+      padding: 1.08rem 2.35rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--pink), var(--pinkHot));
+      color: #000;
+      text-decoration: none;
+      box-shadow: 0 0 44px rgba(255,47,164,0.70);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: transform .14s ease, box-shadow .14s ease, filter .14s ease;
+      cursor:pointer;
+    }
+    .cta:hover{
+      transform: scale(1.045);
+      box-shadow: 0 0 80px rgba(255,47,164,0.95);
+      filter: brightness(1.04);
+    }
+    .cta:active{transform:scale(1.02)}
+    .cta-sub{margin-top:.55rem;font-size:.92rem;opacity:.76}
+
+    /* ===== COUNTER (3D slot machine) ===== */
+    .counterWrap{
+      text-align:center;
+      padding: 3.6rem 1.25rem 2.4rem;
+      position:relative;
+      z-index:6;
+    }
+    .counterTitle{
+      font-size: .95rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      opacity:.72;
+      margin-bottom: .95rem;
+    }
+    .counter3d{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.55rem;
+      padding: 1.25rem 1.35rem;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,47,164,0.14), rgba(77,220,255,0.08));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 0 95px rgba(255,47,164,0.28),
+        inset 0 0 28px rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+      cursor:pointer;
+      user-select:none;
+    }
+    .slot{
+      width: 0.85em;
+      height: 1.20em;
+      overflow:hidden;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow:
+        inset 0 10px 18px rgba(0,0,0,0.45),
+        inset 0 -10px 18px rgba(255,255,255,0.05),
+        0 0 30px rgba(255,47,164,0.18);
+      transform: perspective(700px) rotateX(10deg);
+      position:relative;
+    }
+    .slot::before{
+      content:"";
+      position:absolute;inset:-2px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.18), transparent 35%, transparent 65%, rgba(255,255,255,0.10));
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    .reel{
+      display:block;
+      transform: translateY(0);
+      will-change: transform;
+    }
+    .digit{
+      height: 1.20em;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 950;
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      line-height:1;
+      letter-spacing:-0.02em;
+      background: linear-gradient(90deg, var(--pink), var(--pinkHot));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:
+        0 0 22px rgba(255,47,164,0.45),
+        0 10px 30px rgba(0,0,0,0.40);
+    }
+    .comma{
+      font-weight:950;
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      line-height:1;
+      color: rgba(248,251,255,0.75);
+      text-shadow: 0 0 12px rgba(248,251,255,0.25);
+      transform: translateY(-0.03em);
+      margin: 0 .05em;
+    }
+    .counterLabel{
+      margin-top: .85rem;
+      font-size: 1.05rem;
+      opacity:.85;
+    }
+    .counterNote{
+      margin-top: .45rem;
+      font-size: .95rem;
+      opacity:.72;
     }
 
     /* ===== SECTIONS ===== */
-    section {
-      max-width: 900px;
+    section{
+      max-width: 980px;
       margin: 0 auto;
-      padding: 3rem 1.5rem;
-      text-align: center;
+      padding: 2.8rem 1.25rem;
+      text-align:center;
+      position:relative;
+      z-index:6;
     }
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 1.2rem;
-      color: var(--pink-hot);
+    .steps p{
+      font-size: 1.16rem;
+      opacity:.92;
+      margin-bottom:.8rem;
     }
-    section p {
-      font-size: 1.1rem;
-      opacity: .9;
-      margin-bottom: .8rem;
+    .testimonials{
+      display:flex;
+      flex-direction:column;
+      gap: 1.0rem;
+      margin-top:.6rem;
+    }
+    .quote{
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      padding: 1.3rem 1.2rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 50px rgba(77,220,255,0.10), 0 0 60px rgba(255,47,164,0.10);
+      font-size: 1.08rem;
+      opacity:.95;
     }
 
-    /* ===== FOOTER ===== */
-    footer {
-      text-align: center;
-      font-size: .75rem;
-      opacity: .5;
-      padding: 2rem 1rem;
+    .game h2{
+      font-size: clamp(2.0rem, 5vw, 3.0rem);
+      font-weight: 950;
+      margin-bottom:.9rem;
+      letter-spacing:-0.02em;
+      color: var(--white);
+      text-shadow: 0 0 22px rgba(248,251,255,0.25);
     }
-    footer a {
-      color: inherit;
-      margin: 0 .6rem;
-      text-decoration: none;
+    .game .wtaf{
+      font-size: 1.12rem;
+      opacity:.9;
+      margin-bottom: .35rem;
+    }
+    .game .danger{
+      margin-top:.85rem;
+      font-weight: 900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color: var(--pinkHot);
+      text-shadow: 0 0 18px rgba(255,47,164,0.45);
+    }
+
+    footer{
+      text-align:center;
+      font-size:.75rem;
+      opacity:.55;
+      padding: 2.2rem 1rem 2.6rem;
+      position:relative;
+      z-index:6;
+    }
+    footer a{color:inherit;margin:0 .65rem;text-decoration:none}
+    footer a:hover{opacity:.85}
+
+    @media (max-width: 640px){
+      .share{right:12px;top:12px;gap:8px;padding:12px;border-radius:16px}
+      .share a{font-size:.85rem}
+      .hero-content{padding:2.4rem 1.35rem;border-radius:28px}
+      .counter3d{padding:1.05rem 1.05rem;border-radius:24px}
     }
   </style>
 </head>
+
 <body>
+  <canvas id="confetti"></canvas>
+  <div class="hearts" id="hearts"></div>
 
-<!-- HEARTS -->
-<div class="hearts" id="hearts"></div>
-
-<!-- SHARE -->
-<div class="share">
-  <span>SPREAD<br>THE LOVE</span>
-  <a href="#">WhatsApp</a>
-  <a href="#">Instagram</a>
-  <a href="#">TikTok</a>
-  <a href="#" onclick="navigator.clipboard.writeText(location.href)">Copy Link</a>
-</div>
-
-<!-- HERO -->
-<div class="hero">
-  <!-- HERO VIDEO: THE MIDNIGHT REVEAL -->
-  <!-- Replace src with your video -->
-  <video autoplay muted loop playsinline>
-    <source src="midnight-reveal.mp4" type="video/mp4" />
-  </video>
-
-  <div class="hero-content">
-    <h1>THE MOST VIRAL CHRISTMAS GAME ON THE INTERNET</h1>
-    <p class="sub">
-      The biggest reveal of Christmas happens at midnight.<br>
-      You don’t know what you’re playing for. Yet.
-    </p>
-
-    <a class="cta" href="https://studio.yyovvo.com/CreateYyovvo">
-      START THE CHAIN REACTION
-    </a>
-    <div class="cta-sub">Send one. Watch what happens next.</div>
+  <!-- SHARE -->
+  <div class="share">
+    <span>SPREAD<br>THE LOVE</span>
+    <a id="shareWhatsapp" href="#" rel="noopener">WhatsApp</a>
+    <a id="shareInstagram" href="#" rel="noopener">Instagram</a>
+    <a id="shareTiktok" href="#" rel="noopener">TikTok</a>
+    <a href="#" id="copyLink">Copy Link</a>
   </div>
-</div>
 
-<!-- COUNTER -->
-<div class="counter" id="counter">
-  3,791,834 yyovvos sent
-  <small>This number only goes one way.</small>
-</div>
+  <!-- HERO -->
+  <div class="hero">
+    <!-- HERO VIDEO: THE MIDNIGHT REVEAL (replace src) -->
+    <video autoplay muted loop playsinline>
+      <source src="the-midnight-reveal.mp4" type="video/mp4" />
+    </video>
 
-<!-- WTF EXPLANATION -->
-<section>
-  <p><strong>1.</strong> You send a talking Santa message.</p>
-  <p><strong>2.</strong> Someone hears their name — and feels something real.</p>
-  <p><strong>3.</strong> The chain reaction starts.</p>
-</section>
+    <div class="hero-content">
+      <h1>
+        <span class="pink">THE MOST VIRAL</span>
+        <span class="snow">CHRISTMAS</span>
+        <span class="pink">GAME ON THE INTERNET</span>
+      </h1>
 
-<!-- TESTIMONIALS -->
-<section>
-  <p>“My daughter froze when Santa said her name. Then she screamed. Then I cried.”</p>
-  <p>“I sent one… then three more. I didn’t expect this to hit like that.”</p>
-</section>
+      <p class="sub">
+        The biggest reveal of <span class="snow">Christmas</span> happens at midnight.<br>
+        You don’t know what you’re playing for. Yet.
+      </p>
 
-<!-- GAME -->
-<section>
-  <h2>WHAT ARE YOU PLAYING FOR?</h2>
-  <p><strong>FIND OUT AT MIDNIGHT.</strong></p>
-  <p>It’s bigger than a giveaway. Better than the Hunger Games.</p>
-  <p>Top love-spreaders are being watched.</p>
-</section>
+      <!-- IMPORTANT: KILL CreateYyovvo — use /GameHome -->
+      <a class="cta" id="cta" href="/GameHome">
+        START THE CHAIN REACTION
+      </a>
+      <div class="cta-sub">Send one. Watch what happens next.</div>
+      <div class="whisper">This is not a message. It’s a chain reaction.</div>
+    </div>
+  </div>
 
-<!-- FOOTER -->
-<footer>
-  <a href="#">Game Rules</a>
-  <a href="#">Terms</a>
-  <a href="#">Support</a>
-  <div>Digital. Instant. Irreversible.</div>
-</footer>
+  <!-- COUNTER -->
+  <div class="counterWrap">
+    <div class="counterTitle">LIVE MOMENTUM</div>
 
-<script>
-  /* HEART GENERATOR */
-  const hearts = document.getElementById("hearts");
-  for (let i = 0; i < 40; i++) {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.animationDuration = (15 + Math.random() * 20) + "s";
-    h.style.opacity = Math.random() * 0.4 + 0.1;
-    hearts.appendChild(h);
-  }
+    <!-- Clickable (link to your outro counter moment later) -->
+    <div class="counter3d" id="counterLink" title="See the outro counter moment">
+      <div id="slots" style="display:flex;align-items:center;gap:.08rem"></div>
+    </div>
 
-  /* COUNTER — HOURLY ONLY */
-  const baseCount = 3791834;
-  const baseTime = new Date("2025-12-23T00:00:00Z").getTime();
-  const now = Date.now();
-  const hours = Math.floor((now - baseTime) / 3600000);
-  const count = baseCount + (hours * 77000);
+    <div class="counterLabel"><span class="snow" style="font-weight:900">yyovvos</span> sent</div>
+    <div class="counterNote">Updates hourly. This number only goes one way.</div>
+  </div>
 
-  document.getElementById("counter").firstChild.nodeValue =
-    count.toLocaleString() + " yyovvos sent";
-</script>
+  <!-- STEPS -->
+  <section class="steps">
+    <p><strong>1.</strong> You send a talking Santa message.</p>
+    <p><strong>2.</strong> Someone hears their name — and feels something real.</p>
+    <p><strong>3.</strong> The chain reaction starts.</p>
+  </section>
 
-</body>
-</html>
+  <!-- TESTIMONIALS -->
+  <section>
+    <div class="testimonials">
+      <div class="quote">“My daughter froze when Santa said her name. Then she screamed. Then I cried.”</div>
+      <div class="quote">“I sent one… then three more. I didn’t expect this to hit like that.”</div>
+    </div>
+  </section>
+
+  <!-- THE GAME -->
+  <section class="game">
+    <h2>WHAT ARE YOU PLAYING FOR?</h2>
+    <div class="wtaf"><strong>FIND OUT AT MIDNIGHT.</strong></div>
+    <div class="wtaf">It’s bigger than a giveaway. Better than the Hunger Games.</div>
+    <div class="wtaf">And nobody knows who’s winning.</div>
+    <div class="danger">TOP LOVE-SPREADERS ARE BEING WATCHED</div>
+  </section>
+
+  <!-- SECOND CTA -->
+  <section>
+    <a class="cta" id="cta2" href="/GameHome">START THE CHAIN REACTION</a>
+    <div class="cta-sub">One message is enough to begin.</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="/game-rules">Game Rules</a>
+    <a href="/terms">Terms</a>
+    <a href="/support">Support</a>
+    <div style="margin-top:.5rem">Digital. Instant. Irreversible.</div>
+  </footer>
+
+  <script>
+    /***********************
+     * HEART GENERATOR
+     ***********************/
+    (function makeHearts(){
+      const hearts = document.getElementById("hearts");
+      const n = 44;
+      for (let i=0;i<n;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.style.left = (Math.random()*100) + "vw";
+        h.style.animationDuration = (14 + Math.random()*22) + "s";
+        h.style.opacity = (Math.random()*0.35 + 0.08).toFixed(2);
+        h.style.transform = `rotate(45deg) scale(${(Math.random()*0.75 + 0.7).toFixed(2)})`;
+        h.style.filter = `drop-shadow(0 0 ${(Math.random()*18+6).toFixed(0)}px rgba(255,47,164,${(Math.random()*0.35+0.12).toFixed(2)}))`;
+        hearts.appendChild(h);
+      }
+    })();
+
+    /***********************
+     * SHARE BUTTONS
+     ***********************/
+    (function shareSetup(){
+      const url = encodeURIComponent(location.href);
+      const text = encodeURIComponent("Start the love-spreading chain reaction on yyovvo. Midnight reveal.");
+      document.getElementById("shareWhatsapp").href = `https://wa.me/?text=${text}%20${url}`;
+      document.getElementById("shareInstagram").href = `https://www.instagram.com/`; // IG share is limited on web
+      document.getElementById("shareTiktok").href = `https://www.tiktok.com/`; // TikTok share is limited on web
+      document.getElementById("copyLink").addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          await navigator.clipboard.writeText(location.href);
+          e.target.textContent = "Copied ✅";
+          setTimeout(()=> e.target.textContent="Copy Link", 1200);
+        } catch {
+          e.target.textContent = "Copy failed";
+          setTimeout(()=> e.target.textContent="Copy Link", 1200);
+        }
+      });
+    })();
+
+    /***********************
+     * HOURLY COUNTER (+77k/hr)
+     * + 3D SLOT ROLL EFFECT
+     ***********************/
+    const COUNTER = {
+      // You said "4789234 whatever number" → using 4,789,234 as base
+      baseCount: 4789234,
+      // Anchor time for hour math (set to today midnight UTC for stability)
+      baseTimeISO: "2025-12-23T00:00:00Z",
+      perHour: 77000
+    };
+
+    function computeHourlyCount(){
+      const baseTime = new Date(COUNTER.baseTimeISO).getTime();
+      const now = Date.now();
+      const hours = Math.floor((now - baseTime) / 3600000);
+      return COUNTER.baseCount + Math.max(0, hours) * COUNTER.perHour;
+    }
+
+    function buildSlots(container, finalNumberStr){
+      container.innerHTML = "";
+      const chars = finalNumberStr.split("");
+      chars.forEach((ch, idx) => {
+        if (ch === ",") {
+          const comma = document.createElement("div");
+          comma.className = "comma";
+          comma.textContent = ",";
+          container.appendChild(comma);
+          return;
+        }
+        const slot = document.createElement("div");
+        slot.className = "slot";
+
+        const reel = document.createElement("div");
+        reel.className = "reel";
+
+        // Build reel digits (0-9 repeated) for smooth roll
+        // 25 cycles is plenty for “slot machine” feel
+        const cycles = 25;
+        for (let c=0; c<cycles; c++){
+          for (let d=0; d<10; d++){
+            const digit = document.createElement("div");
+            digit.className = "digit";
+            digit.textContent = d;
+            reel.appendChild(digit);
+          }
+        }
+        // Final digit at end (so we can land precisely)
+        const finalDigit = document.createElement("div");
+        finalDigit.className = "digit";
+        finalDigit.textContent = ch;
+        reel.appendChild(finalDigit);
+
+        slot.appendChild(reel);
+        container.appendChild(slot);
+
+        // Animate to final position
+        // Each digit cell height equals slot height (1.20em) in CSS, but in px we need computed after layout.
+        requestAnimationFrame(() => {
+          const cell = reel.querySelector(".digit");
+          const cellH = cell.getBoundingClientRect().height;
+          const totalDigits = reel.children.length;
+          // We want to end on the LAST digit (the finalDigit)
+          const finalIndex = totalDigits - 1;
+          const targetY = -finalIndex * cellH;
+
+          // Different durations and delays for juicy slot feel
+          const delay = 60 + idx * 55;
+          const duration = 1300 + idx * 90;
+
+          reel.animate(
+            [
+              { transform: "translateY(0px)" },
+              { transform: `translateY(${targetY}px)` }
+            ],
+            {
+              duration,
+              delay,
+              easing: "cubic-bezier(0.08, 0.85, 0.1, 1)",
+              fill: "forwards"
+            }
+          );
+        });
+      });
+    }
+
+    (function initCounter(){
+      const count = computeHourlyCount();
+      const formatted = count.toLocaleString("en-GB");
+      const slots = document.getElementById("slots");
+      buildSlots(slots, formatted);
+
+      // Click counter: for now scroll to top (replace later with actual outro anchor/route)
+      document.getElementById("counterLink").addEventListener("click", () => {
+        // TODO: replace with your real outro-counter anchor
+        // e.g. location.href = "/outro#counter"
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    })();
+
+    /***********************
+     * CONFETTI EXPLOSION ON CTA CLICK
+     ***********************/
+    const confettiCanvas = document.getElementById("confetti");
+    const ctx = confettiCanvas.getContext("2d");
+    let confetti = [];
+    let confettiRaf = null;
+
+    function resizeConfetti(){
+      confettiCanvas.width = window.innerWidth * devicePixelRatio;
+      confettiCanvas.height = window.innerHeight * devicePixelRatio;
+      confettiCanvas.style.width = window.innerWidth + "px";
+      confettiCanvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    }
+    resizeConfetti();
+    window.addEventListener("resize", resizeConfetti);
+
+    function burstConfetti(x, y){
+      const colors = ["#ff2fa4","#ff4fd8","#4ddcff","#f8fbff"];
+      const count = 140;
+      for (let i=0;i<count;i++){
+        const angle = Math.random()*Math.PI*2;
+        const speed = 4 + Math.random()*8;
+        confetti.push({
+          x, y,
+          vx: Math.cos(angle)*speed,
+          vy: Math.sin(angle)*speed - (3 + Math.random()*3),
+          g: 0.1
