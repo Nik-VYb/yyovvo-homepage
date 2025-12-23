@@ -15,7 +15,6 @@
       --glass:rgba(255,255,255,0.08);
       --white:#f8fbff;
     }
-
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       background: radial-gradient(ellipse at top, #0a0014 0%, #05050a 70%);
@@ -39,9 +38,7 @@
     @keyframes float{from{transform:translateY(100vh) rotate(45deg)}to{transform:translateY(-120vh) rotate(45deg)}}
 
     /* ===== CONFETTI CANVAS ===== */
-    #confetti{
-      position:fixed;inset:0;z-index:50;pointer-events:none;
-    }
+    #confetti{position:fixed;inset:0;z-index:50;pointer-events:none}
 
     /* ===== SHARE ===== */
     .share{
@@ -75,7 +72,6 @@
       position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28;z-index:-1;
       filter: contrast(1.05) saturate(1.05);
     }
-
     .hero-content{
       max-width:980px;
       backdrop-filter: blur(16px);
@@ -87,7 +83,6 @@
         0 0 90px rgba(255,47,164,0.35),
         0 0 70px rgba(77,220,255,0.18);
     }
-
     h1{
       font-size: clamp(2.4rem, 6vw, 4.3rem);
       font-weight: 950;
@@ -111,7 +106,6 @@
       -webkit-text-fill-color: unset;
       background:none;
     }
-
     .sub{
       font-size: clamp(1.05rem, 2.4vw, 1.35rem);
       opacity: .92;
@@ -195,11 +189,7 @@
       pointer-events:none;
       mix-blend-mode: screen;
     }
-    .reel{
-      display:block;
-      transform: translateY(0);
-      will-change: transform;
-    }
+    .reel{display:block;transform:translateY(0);will-change:transform}
     .digit{
       height: 1.20em;
       display:flex;
@@ -225,16 +215,8 @@
       transform: translateY(-0.03em);
       margin: 0 .05em;
     }
-    .counterLabel{
-      margin-top: .85rem;
-      font-size: 1.05rem;
-      opacity:.85;
-    }
-    .counterNote{
-      margin-top: .45rem;
-      font-size: .95rem;
-      opacity:.72;
-    }
+    .counterLabel{margin-top: .85rem;font-size: 1.05rem;opacity:.85}
+    .counterNote{margin-top: .45rem;font-size: .95rem;opacity:.72}
 
     /* ===== SECTIONS ===== */
     section{
@@ -245,17 +227,8 @@
       position:relative;
       z-index:6;
     }
-    .steps p{
-      font-size: 1.16rem;
-      opacity:.92;
-      margin-bottom:.8rem;
-    }
-    .testimonials{
-      display:flex;
-      flex-direction:column;
-      gap: 1.0rem;
-      margin-top:.6rem;
-    }
+    .steps p{font-size: 1.16rem;opacity:.92;margin-bottom:.8rem}
+    .testimonials{display:flex;flex-direction:column;gap: 1.0rem;margin-top:.6rem}
     .quote{
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.10);
@@ -266,7 +239,6 @@
       font-size: 1.08rem;
       opacity:.95;
     }
-
     .game h2{
       font-size: clamp(2.0rem, 5vw, 3.0rem);
       font-weight: 950;
@@ -275,11 +247,7 @@
       color: var(--white);
       text-shadow: 0 0 22px rgba(248,251,255,0.25);
     }
-    .game .wtaf{
-      font-size: 1.12rem;
-      opacity:.9;
-      margin-bottom: .35rem;
-    }
+    .game .wtaf{font-size: 1.12rem;opacity:.9;margin-bottom: .35rem}
     .game .danger{
       margin-top:.85rem;
       font-weight: 900;
@@ -341,10 +309,8 @@
         You don’t know what you’re playing for. Yet.
       </p>
 
-      <!-- IMPORTANT: KILL CreateYyovvo — use /GameHome -->
-      <a class="cta" id="cta" href="/GameHome">
-        START THE CHAIN REACTION
-      </a>
+      <!-- IMPORTANT: absolute URL so we NEVER land on moment-*.base44.app -->
+      <a class="cta" id="cta" href="https://studio.yyovvo.com/GameHome">START THE CHAIN REACTION</a>
       <div class="cta-sub">Send one. Watch what happens next.</div>
       <div class="whisper">This is not a message. It’s a chain reaction.</div>
     </div>
@@ -354,7 +320,7 @@
   <div class="counterWrap">
     <div class="counterTitle">LIVE MOMENTUM</div>
 
-    <!-- Clickable (link to your outro counter moment later) -->
+    <!-- Clickable (hook later to real outro moment) -->
     <div class="counter3d" id="counterLink" title="See the outro counter moment">
       <div id="slots" style="display:flex;align-items:center;gap:.08rem"></div>
     </div>
@@ -389,7 +355,7 @@
 
   <!-- SECOND CTA -->
   <section>
-    <a class="cta" id="cta2" href="/GameHome">START THE CHAIN REACTION</a>
+    <a class="cta" id="cta2" href="https://studio.yyovvo.com/GameHome">START THE CHAIN REACTION</a>
     <div class="cta-sub">One message is enough to begin.</div>
   </section>
 
@@ -402,9 +368,10 @@
   </footer>
 
   <script>
-    /***********************
-     * HEART GENERATOR
-     ***********************/
+    // ===== HARD LOCK DESTINATION =====
+    const GAME_HOME_URL = "https://studio.yyovvo.com/GameHome";
+
+    // ===== HEART GENERATOR =====
     (function makeHearts(){
       const hearts = document.getElementById("hearts");
       const n = 44;
@@ -415,20 +382,17 @@
         h.style.animationDuration = (14 + Math.random()*22) + "s";
         h.style.opacity = (Math.random()*0.35 + 0.08).toFixed(2);
         h.style.transform = `rotate(45deg) scale(${(Math.random()*0.75 + 0.7).toFixed(2)})`;
-        h.style.filter = `drop-shadow(0 0 ${(Math.random()*18+6).toFixed(0)}px rgba(255,47,164,${(Math.random()*0.35+0.12).toFixed(2)}))`;
         hearts.appendChild(h);
       }
     })();
 
-    /***********************
-     * SHARE BUTTONS
-     ***********************/
+    // ===== SHARE BUTTONS =====
     (function shareSetup(){
       const url = encodeURIComponent(location.href);
       const text = encodeURIComponent("Start the love-spreading chain reaction on yyovvo. Midnight reveal.");
       document.getElementById("shareWhatsapp").href = `https://wa.me/?text=${text}%20${url}`;
-      document.getElementById("shareInstagram").href = `https://www.instagram.com/`; // IG share is limited on web
-      document.getElementById("shareTiktok").href = `https://www.tiktok.com/`; // TikTok share is limited on web
+      document.getElementById("shareInstagram").href = `https://www.instagram.com/`;
+      document.getElementById("shareTiktok").href = `https://www.tiktok.com/`;
       document.getElementById("copyLink").addEventListener("click", async (e) => {
         e.preventDefault();
         try {
@@ -442,14 +406,9 @@
       });
     })();
 
-    /***********************
-     * HOURLY COUNTER (+77k/hr)
-     * + 3D SLOT ROLL EFFECT
-     ***********************/
+    // ===== COUNTER: HOURLY ONLY + SLOT ROLL =====
     const COUNTER = {
-      // You said "4789234 whatever number" → using 4,789,234 as base
       baseCount: 4789234,
-      // Anchor time for hour math (set to today midnight UTC for stability)
       baseTimeISO: "2025-12-23T00:00:00Z",
       perHour: 77000
     };
@@ -472,15 +431,14 @@
           container.appendChild(comma);
           return;
         }
+
         const slot = document.createElement("div");
         slot.className = "slot";
 
         const reel = document.createElement("div");
         reel.className = "reel";
 
-        // Build reel digits (0-9 repeated) for smooth roll
-        // 25 cycles is plenty for “slot machine” feel
-        const cycles = 25;
+        const cycles = 20;
         for (let c=0; c<cycles; c++){
           for (let d=0; d<10; d++){
             const digit = document.createElement("div");
@@ -489,7 +447,6 @@
             reel.appendChild(digit);
           }
         }
-        // Final digit at end (so we can land precisely)
         const finalDigit = document.createElement("div");
         finalDigit.className = "digit";
         finalDigit.textContent = ch;
@@ -498,19 +455,15 @@
         slot.appendChild(reel);
         container.appendChild(slot);
 
-        // Animate to final position
-        // Each digit cell height equals slot height (1.20em) in CSS, but in px we need computed after layout.
         requestAnimationFrame(() => {
           const cell = reel.querySelector(".digit");
-          const cellH = cell.getBoundingClientRect().height;
+          const cellH = (cell && cell.getBoundingClientRect().height) ? cell.getBoundingClientRect().height : 40;
           const totalDigits = reel.children.length;
-          // We want to end on the LAST digit (the finalDigit)
           const finalIndex = totalDigits - 1;
           const targetY = -finalIndex * cellH;
 
-          // Different durations and delays for juicy slot feel
           const delay = 60 + idx * 55;
-          const duration = 1300 + idx * 90;
+          const duration = 1200 + idx * 90;
 
           reel.animate(
             [
@@ -532,42 +485,110 @@
       const count = computeHourlyCount();
       const formatted = count.toLocaleString("en-GB");
       const slots = document.getElementById("slots");
+      if (!slots) return;
       buildSlots(slots, formatted);
 
-      // Click counter: for now scroll to top (replace later with actual outro anchor/route)
       document.getElementById("counterLink").addEventListener("click", () => {
-        // TODO: replace with your real outro-counter anchor
-        // e.g. location.href = "/outro#counter"
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
     })();
 
-    /***********************
-     * CONFETTI EXPLOSION ON CTA CLICK
-     ***********************/
+    // ===== CONFETTI =====
     const confettiCanvas = document.getElementById("confetti");
     const ctx = confettiCanvas.getContext("2d");
     let confetti = [];
     let confettiRaf = null;
 
     function resizeConfetti(){
-      confettiCanvas.width = window.innerWidth * devicePixelRatio;
-      confettiCanvas.height = window.innerHeight * devicePixelRatio;
+      const dpr = window.devicePixelRatio || 1;
+      confettiCanvas.width = Math.floor(window.innerWidth * dpr);
+      confettiCanvas.height = Math.floor(window.innerHeight * dpr);
       confettiCanvas.style.width = window.innerWidth + "px";
       confettiCanvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
     }
     resizeConfetti();
     window.addEventListener("resize", resizeConfetti);
 
     function burstConfetti(x, y){
       const colors = ["#ff2fa4","#ff4fd8","#4ddcff","#f8fbff"];
-      const count = 140;
+      const count = 160;
       for (let i=0;i<count;i++){
         const angle = Math.random()*Math.PI*2;
-        const speed = 4 + Math.random()*8;
+        const speed = 4 + Math.random()*9;
         confetti.push({
           x, y,
           vx: Math.cos(angle)*speed,
           vy: Math.sin(angle)*speed - (3 + Math.random()*3),
-          g: 0.1
+          g: 0.14 + Math.random()*0.10,
+          w: 4 + Math.random()*7,
+          h: 6 + Math.random()*11,
+          rot: Math.random()*Math.PI,
+          vr: (Math.random()-0.5)*0.25,
+          life: 90 + Math.random()*50,
+          color: colors[(Math.random()*colors.length)|0],
+          alpha: 1
+        });
+      }
+      if (!confettiRaf) confettiRaf = requestAnimationFrame(tickConfetti);
+    }
+
+    function tickConfetti(){
+      ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+      for (let i=confetti.length-1;i>=0;i--){
+        const p = confetti[i];
+        p.vy += p.g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.life -= 1;
+        p.alpha = Math.max(0, p.life/140);
+
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+        ctx.restore();
+
+        if (p.life <= 0 || p.y > window.innerHeight + 120) confetti.splice(i,1);
+      }
+      if (confetti.length){
+        confettiRaf = requestAnimationFrame(tickConfetti);
+      } else {
+        cancelAnimationFrame(confettiRaf);
+        confettiRaf = null;
+        ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+      }
+    }
+
+    function hookCTA(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      // hard lock href (belt & braces)
+      el.setAttribute("href", GAME_HOME_URL);
+
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        const rect = el.getBoundingClientRect();
+        const x = rect.left + rect.width/2;
+        const y = rect.top + rect.height/2;
+        burstConfetti(x, y);
+        setTimeout(() => { window.location.href = GAME_HOME_URL; }, 280);
+      });
+    }
+    hookCTA("cta");
+    hookCTA("cta2");
+
+    // Safety: ensure counter shows even if animation fails
+    window.addEventListener("load", () => {
+      const slots = document.getElementById("slots");
+      if (slots && slots.childElementCount === 0) {
+        const c = computeHourlyCount().toLocaleString("en-GB");
+        slots.innerHTML = `<div style="font-size:clamp(2.2rem,6vw,3.5rem);font-weight:950;color:#ff2fa4;text-shadow:0 0 22px rgba(255,47,164,.45)">${c}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
