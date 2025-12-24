@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>YYOVVO — The Most Viral Christmas Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Start a love-spreading chain reaction. The biggest Christmas reveal happens at midnight." />
+  <meta name="description" content="Spread the love. Start a ripple, watch it spread. Boxing Day midnight reveal." />
 
   <style>
     :root{
@@ -40,25 +40,37 @@
     /* ===== CONFETTI CANVAS ===== */
     #confetti{position:fixed;inset:0;z-index:50;pointer-events:none}
 
-    /* ===== SHARE ===== */
+    /* ===== SHARE (MOVE ACROSS TOP ABOVE HERO) ===== */
     .share{
-      position:fixed;top:18px;right:18px;z-index:20;
-      display:flex;flex-direction:column;gap:10px;
-      background:var(--glass);padding:14px;border-radius:18px;
+      position:fixed;top:14px;left:50%;transform:translateX(-50%);
+      z-index:30;
+      display:flex;flex-direction:row;align-items:center;gap:10px;
+      background:var(--glass);padding:10px 12px;border-radius:18px;
       backdrop-filter: blur(12px);
       border:1px solid rgba(255,255,255,0.10);
       box-shadow: 0 0 40px rgba(77,220,255,0.12), 0 0 50px rgba(255,47,164,0.10);
+      max-width: calc(100vw - 24px);
+      overflow-x:auto;
+      -webkit-overflow-scrolling: touch;
     }
     .share span{
-      font-weight:900;letter-spacing:.06em;color:var(--pinkHot);
+      font-weight:950;letter-spacing:.06em;color:var(--pinkHot);
       text-align:center;line-height:1.0;
       text-shadow:0 0 18px rgba(255,47,164,.45);
+      white-space:nowrap;
+      padding: .45rem .65rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.22);
+      border:1px solid rgba(255,255,255,0.10);
+      flex: 0 0 auto;
     }
     .share a{
       color:#fff;text-decoration:none;font-size:.9rem;text-align:center;
-      padding:.55rem .65rem;border-radius:12px;
+      padding:.55rem .75rem;border-radius:999px;
       background: rgba(255,255,255,0.08);
       border:1px solid rgba(255,255,255,0.10);
+      white-space:nowrap;
+      flex: 0 0 auto;
     }
     .share a:hover{background: rgba(255,255,255,0.12)}
 
@@ -66,7 +78,7 @@
     .hero{
       position:relative;min-height:100vh;
       display:flex;align-items:center;justify-content:center;text-align:center;
-      padding:4rem 1.25rem;z-index:5;
+      padding:5.2rem 1.25rem 4rem;z-index:5; /* extra top padding so share bar never overlaps */
     }
     .hero video{
       position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28;z-index:-1;
@@ -89,7 +101,7 @@
       line-height: 1.03;
       letter-spacing: -0.02em;
       margin-bottom: 1.1rem;
-      text-shadow: 0 0 30px rgba(255,47,164,0.35);
+      text-shadow:0 0 30px rgba(255,47,164,0.35);
     }
     .pink{
       background: linear-gradient(90deg, var(--pink), var(--pinkHot));
@@ -169,6 +181,7 @@
       user-select:none;
       position:relative;
       overflow:hidden;
+      min-height: 86px; /* makes it feel big + stable */
     }
     .counterLabel{margin-top: .85rem;font-size: 1.05rem;opacity:.85}
     .counterNote{margin-top: .45rem;font-size: .95rem;opacity:.72}
@@ -202,7 +215,7 @@
     }
     .holoSep{
       font-weight: 950;
-      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-size: clamp(2.6rem, 7vw, 4.2rem); /* bigger */
       line-height: 1;
       color: rgba(248,251,255,0.78);
       text-shadow: 0 0 14px rgba(248,251,255,0.25);
@@ -210,8 +223,8 @@
       margin: 0 .10rem;
     }
     .holoDigit{
-      width: 0.95em;
-      height: 1.25em;
+      width: 1.05em;   /* bigger */
+      height: 1.35em;  /* bigger */
       position:relative;
       border-radius: 16px;
       background: rgba(0,0,0,0.38);
@@ -229,7 +242,7 @@
       position:absolute;inset:0;
       display:flex;align-items:center;justify-content:center;
       font-weight: 950;
-      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-size: clamp(2.6rem, 7vw, 4.2rem); /* bigger */
       line-height: 1;
       letter-spacing:-0.02em;
       background: linear-gradient(90deg, var(--pink), var(--pinkHot));
@@ -237,6 +250,20 @@
       -webkit-text-fill-color:transparent;
       text-shadow: 0 0 22px rgba(255,47,164,0.45), 0 10px 30px rgba(0,0,0,0.40);
       backface-visibility: hidden;
+    }
+
+    /* Simple fallback number (if odometer animation doesn’t run) */
+    .simpleCount{
+      display:none;
+      font-weight: 950;
+      font-size: clamp(2.6rem, 7vw, 4.2rem);
+      line-height: 1;
+      letter-spacing:-0.02em;
+      background: linear-gradient(90deg, var(--pink), var(--pinkHot));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow: 0 0 22px rgba(255,47,164,0.45), 0 10px 30px rgba(0,0,0,0.40);
+      padding: .05rem .25rem;
     }
 
     /* ===== SECTIONS ===== */
@@ -290,10 +317,11 @@
     footer a:hover{opacity:.85}
 
     @media (max-width: 640px){
-      .share{right:12px;top:12px;gap:8px;padding:12px;border-radius:16px}
-      .share a{font-size:.85rem}
+      .share{top:10px;padding:9px 10px;border-radius:16px;gap:8px}
+      .share span{display:none} /* prevents “OnlyFans” vibe + reduces blockage */
+      .share a{font-size:.85rem;padding:.52rem .7rem}
       .hero-content{padding:2.4rem 1.35rem;border-radius:28px}
-      .counter3d{padding:1.05rem 1.05rem;border-radius:24px}
+      .counter3d{padding:1.05rem 1.05rem;border-radius:24px;min-height:78px}
     }
   </style>
 </head>
@@ -304,7 +332,7 @@
 
   <!-- SHARE -->
   <div class="share">
-    <span>SPREAD<br>THE LOVE</span>
+    <span>SPREAD THE LOVE</span>
     <a id="shareWhatsapp" href="#" rel="noopener">WhatsApp</a>
     <a id="shareInstagram" href="#" rel="noopener">Instagram</a>
     <a id="shareTiktok" href="#" rel="noopener">TikTok</a>
@@ -320,14 +348,14 @@
 
     <div class="hero-content">
       <h1>
+        <span class="snow">SPREAD THE LOVE</span><br>
         <span class="pink">THE MOST VIRAL</span>
         <span class="snow">CHRISTMAS</span>
         <span class="pink">GAME ON THE INTERNET</span>
       </h1>
 
       <p class="sub">
-        The biggest reveal of <span class="snow">Christmas</span> happens at midnight.<br>
-        You don’t know what you’re playing for. Yet.
+        Start a ripple, watch it spread — <strong>who has the largest ripple effect?</strong>
       </p>
 
       <!-- IMPORTANT: absolute URL so we NEVER land on moment-*.base44.app -->
@@ -344,6 +372,7 @@
     <div class="counter3d" id="counterLink" title="See the outro counter moment">
       <div class="holoCounter">
         <div id="holoOdometer" class="holoOdometer" aria-label="yyovvos sent counter"></div>
+        <div id="simpleCount" class="simpleCount" aria-label="yyovvos sent counter fallback"></div>
         <div class="holoSheen"></div>
         <div class="holoScan"></div>
       </div>
@@ -358,6 +387,7 @@
     <p><strong>1.</strong> You send a talking Santa message.</p>
     <p><strong>2.</strong> Someone hears their name — and feels something real.</p>
     <p><strong>3.</strong> The chain reaction starts.</p>
+    <p><strong>4.</strong> Will you finish in the top 100??</p>
   </section>
 
   <!-- TESTIMONIALS -->
@@ -371,7 +401,7 @@
   <!-- THE GAME -->
   <section class="game">
     <h2>WHAT ARE YOU PLAYING FOR?</h2>
-    <div class="wtaf"><strong>FIND OUT AT MIDNIGHT.</strong></div>
+    <div class="wtaf"><strong>FIND OUT AT BOXING DAY MIDNIGHT.</strong></div>
     <div class="wtaf">It’s bigger than a giveaway. Better than the Hunger Games.</div>
     <div class="wtaf">And nobody knows who’s winning.</div>
     <div class="danger">TOP LOVE-SPREADERS ARE BEING WATCHED</div>
@@ -395,10 +425,10 @@
     // ===== HARD LOCK DESTINATION =====
     const GAME_HOME_URL = "https://studio.yyovvo.com/GameHome";
 
-    // ===== HEART GENERATOR =====
+    // ===== HEART GENERATOR (REDUCED BY HALF) =====
     (function makeHearts(){
       const hearts = document.getElementById("hearts");
-      const n = 44;
+      const n = 22; // was 44 (too much / OnlyFans vibe)
       for (let i=0;i<n;i++){
         const h = document.createElement("div");
         h.className = "heart";
@@ -413,7 +443,7 @@
     // ===== SHARE BUTTONS =====
     (function shareSetup(){
       const url = encodeURIComponent(location.href);
-      const text = encodeURIComponent("Start the love-spreading chain reaction on yyovvo. Midnight reveal.");
+      const text = encodeURIComponent("Start the love-spreading chain reaction on yyovvo. Boxing Day midnight reveal.");
       document.getElementById("shareWhatsapp").href = `https://wa.me/?text=${text}%20${url}`;
       document.getElementById("shareInstagram").href = `https://www.instagram.com/`;
       document.getElementById("shareTiktok").href = `https://www.tiktok.com/`;
@@ -430,7 +460,7 @@
       });
     })();
 
-    // ===== COUNTER: HOURLY ONLY + HOLO 3D ODOMETER (BULLETPROOF) =====
+    // ===== COUNTER: HOURLY ONLY + HOLO 3D ODOMETER (WITH SIMPLE FALLBACK) =====
     const COUNTER = {
       baseCount: 4789234,
       baseTimeISO: "2025-12-23T00:00:00Z",
@@ -444,10 +474,24 @@
       return COUNTER.baseCount + Math.max(0, hours) * COUNTER.perHour;
     }
 
+    function showSimpleCount(formatted){
+      const od = document.getElementById("holoOdometer");
+      const simple = document.getElementById("simpleCount");
+      if (od) od.style.display = "none";
+      if (simple){
+        simple.style.display = "inline-block";
+        simple.textContent = formatted;
+      }
+    }
+
     function buildHoloOdometer(targetStr){
       const host = document.getElementById("holoOdometer");
       if (!host) return null;
 
+      // If Web Animations API is missing/limited, don’t bother with fancy.
+      if (!host.animate) return null;
+
+      host.style.display = "flex";
       host.innerHTML = "";
 
       const chars = targetStr.split("");
@@ -468,7 +512,7 @@
         const wheel = document.createElement("div");
         wheel.className = "holoWheel";
 
-        const radius = 34; // px - stable across browsers
+        const radius = 36; // slightly bigger for visibility
         for (let d = 0; d < 10; d++) {
           const face = document.createElement("div");
           face.className = "holoFace";
@@ -487,9 +531,10 @@
     }
 
     function animateHoloTo(wheels, targetStr){
-      if (!wheels) return;
+      if (!wheels) return false;
 
       const digits = targetStr.replaceAll(",", "").split("").map(x => parseInt(x, 10));
+      let didAnimate = false;
 
       wheels.forEach((w, i) => {
         const target = digits[i];
@@ -498,45 +543,55 @@
         const extraTurns = 2 + (i % 3); // 2–4 full turns
         const targetAngle = -((extraTurns * 360) + (target * 36));
 
-        const delay = 80 + i * 70;
-        const duration = 1200 + i * 110;
+        const delay = 70 + i * 65;
+        const duration = 1100 + i * 105;
 
-        w.wheelEl.animate(
-          [
-            { transform: `rotateX(${w.currentAngle}deg)` },
-            { transform: `rotateX(${targetAngle}deg)` }
-          ],
-          {
-            duration,
-            delay,
-            easing: "cubic-bezier(0.08, 0.85, 0.1, 1)",
-            fill: "forwards"
-          }
-        );
-
-        w.currentAngle = targetAngle;
+        try {
+          w.wheelEl.animate(
+            [
+              { transform: `rotateX(${w.currentAngle}deg)` },
+              { transform: `rotateX(${targetAngle}deg)` }
+            ],
+            {
+              duration,
+              delay,
+              easing: "cubic-bezier(0.08, 0.85, 0.1, 1)",
+              fill: "forwards"
+            }
+          );
+          didAnimate = true;
+          w.currentAngle = targetAngle;
+        } catch {
+          // If animate fails for any reason, fallback to simple.
+        }
       });
+
+      return didAnimate;
     }
 
     (function initCounter(){
       const count = computeHourlyCount();
       const formatted = count.toLocaleString("en-GB");
 
+      // Try fancy first, fallback if it doesn’t animate.
       const wheels = buildHoloOdometer(formatted);
-      animateHoloTo(wheels, formatted);
+      const ok = animateHoloTo(wheels, formatted);
+      if (!wheels || !ok) showSimpleCount(formatted);
 
       const link = document.getElementById("counterLink");
       if (link) link.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-      // Update once at the next UTC hour boundary (then it'll be correct after refresh)
+      // Update once at the next UTC hour boundary
       const now = new Date();
       const msToNextHour = (60 - now.getUTCMinutes()) * 60 * 1000
                          - now.getUTCSeconds() * 1000
                          - now.getUTCMilliseconds();
+
       setTimeout(() => {
         const newFormatted = computeHourlyCount().toLocaleString("en-GB");
         const newWheels = buildHoloOdometer(newFormatted);
-        animateHoloTo(newWheels, newFormatted);
+        const ok2 = animateHoloTo(newWheels, newFormatted);
+        if (!newWheels || !ok2) showSimpleCount(newFormatted);
       }, Math.max(500, msToNextHour));
     })();
 
