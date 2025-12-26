@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ZNthica SUN</title>
-  <meta name="description" content="ZNthica SUN — This is not a celebrity supplement. No celebrities. No dropshipping. Just sexy science." />
+  <meta name="description" content="ZNthica SUN — SUN — built from post-GLP-1 data. Not before. No celebrities. No dropshipping. Just sexy science." />
+
   <style>
     :root{
       /* Brand anchors */
@@ -13,11 +14,11 @@
       --gold: #C9B37E;     /* thin gold */
       --pink: #FF2DAA;     /* electric pink blade */
       --ink: rgba(6,10,8,.88);
-      --mist: rgba(255,255,255,.06);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
     body{
       margin:0;
       color:rgba(255,255,255,.92);
@@ -31,9 +32,7 @@
     }
 
     /* Cinematic grain + vignette */
-    .grain, .vignette{
-      position:fixed; inset:0; pointer-events:none; z-index:5;
-    }
+    .grain, .vignette{ position:fixed; inset:0; pointer-events:none; z-index:5; }
     .grain{
       opacity:.14;
       mix-blend-mode:overlay;
@@ -49,8 +48,7 @@
       100%{transform:translate3d(0,0,0)}
     }
     .vignette{
-      background:
-        radial-gradient(80% 60% at 50% 40%, transparent 0%, rgba(0,0,0,.15) 55%, rgba(0,0,0,.55) 100%);
+      background: radial-gradient(80% 60% at 50% 40%, transparent 0%, rgba(0,0,0,.15) 55%, rgba(0,0,0,.55) 100%);
       opacity:.9;
     }
 
@@ -75,11 +73,11 @@
 
     /* Left: copy */
     .copy{
-      max-width: 720px;
+      max-width: 760px;
       padding: 10px 0 10px 6px;
     }
 
-    /* A very thin gold “editorial” type vibe */
+    /* Thin gold kicker */
     .kicker{
       display:inline-flex;
       align-items:center;
@@ -104,47 +102,51 @@
       font-weight: 300;
       letter-spacing: -0.02em;
       line-height: 1.03;
-      font-size: clamp(42px, 5.2vw, 78px);
+      font-size: clamp(40px, 5.0vw, 76px);
       color: rgba(255,255,255,.95);
       text-shadow: 0 20px 70px rgba(0,0,0,.35);
     }
-    .hero-line .gold{
-      color: rgba(201,179,126,.92);
-      font-weight: 300;
+
+    /* Linked hero line (LABGLP1) */
+    .hero-link{
+      color: inherit;
+      text-decoration: none;
+      display:inline-block;
+      border-bottom: 1px solid rgba(201,179,126,.35);
+      padding-bottom: 6px;
+      transition: border-color .25s ease, opacity .25s ease, transform .25s ease;
+    }
+    .hero-link:hover{
+      border-color: rgba(201,179,126,.85);
+      transform: translateY(-1px);
+    }
+    .hero-link:focus{
+      outline: none;
+      border-color: rgba(255,45,170,.8);
     }
 
-    .sub{
-      margin-top: 18px;
-      max-width: 520px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: rgba(255,255,255,.72);
-      letter-spacing:.02em;
-    }
-
+    /* Positioning lines */
     .rules{
-      margin-top: 28px;
+      margin-top: 18px;
       display:flex;
       flex-direction:column;
-      gap: 10px;
+      gap: 12px;
+      font-size: 16px;
+      letter-spacing:.02em;
+      color: rgba(255,255,255,.88);
+    }
+    .rules .em{
+      color: rgba(201,179,126,.95);
+      font-style: normal;
+    }
+
+    .closer{
+      margin-top: 18px;
       font-size: 14px;
-      letter-spacing:.04em;
-    }
-    .rules .r{
-      color: rgba(255,255,255,.82);
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    .dot{
-      width: 6px; height: 6px; border-radius:999px;
-      background: rgba(201,179,126,.85);
-      box-shadow: 0 0 0 6px rgba(201,179,126,.08);
-      flex:0 0 auto;
-    }
-    .rules .r em{
-      font-style:normal;
-      color: rgba(201,179,126,.9);
+      letter-spacing:.16em;
+      text-transform: uppercase;
+      color: rgba(201,179,126,.85);
+      user-select:none;
     }
 
     .ctaRow{
@@ -173,7 +175,7 @@
       background: rgba(0,0,0,.30);
     }
     .email{
-      width: min(340px, 85vw);
+      width: min(360px, 85vw);
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.20);
       color: rgba(255,255,255,.92);
@@ -195,7 +197,7 @@
       padding: 8px;
     }
 
-    /* Glowing “museum plinth” */
+    /* Museum plinth */
     .plinth{
       position:absolute;
       width: min(520px, 42vw);
@@ -213,7 +215,7 @@
       filter: saturate(1.1);
     }
 
-    /* Bottle container rotates very slowly (placeholder now) */
+    /* Bottle rotation */
     .bottleWrap{
       position:relative;
       z-index:2;
@@ -240,7 +242,7 @@
       transform: translateZ(0);
     }
 
-    /* Tiny SUN color reference “paint slash” */
+    /* Tiny SUN color reference paint slash */
     .paintSlash{
       position:absolute;
       right: clamp(16px, 2vw, 28px);
@@ -255,7 +257,6 @@
           rgba(242,140,40,.75) 55%,
           rgba(255,45,170,.85) 78%,
           rgba(255,45,170,0) 100%);
-      filter: blur(.2px);
       opacity: .9;
       transform: rotate(-7deg);
       z-index:4;
@@ -299,17 +300,20 @@
       <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
         <feGaussianBlur stdDeviation="8" />
       </filter>
+
       <linearGradient id="mudGold" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="rgba(201,179,126,.0)"/>
         <stop offset=".35" stop-color="rgba(201,179,126,.18)"/>
         <stop offset="1" stop-color="rgba(201,179,126,.0)"/>
       </linearGradient>
+
       <linearGradient id="sunStroke" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0" stop-color="rgba(242,140,40,.0)"/>
         <stop offset=".25" stop-color="rgba(242,140,40,.40)"/>
         <stop offset=".55" stop-color="rgba(242,140,40,.18)"/>
         <stop offset="1" stop-color="rgba(242,140,40,.0)"/>
       </linearGradient>
+
       <linearGradient id="pinkKnife" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0" stop-color="rgba(255,45,170,0)"/>
         <stop offset=".45" stop-color="rgba(255,45,170,.22)"/>
@@ -317,56 +321,57 @@
       </linearGradient>
     </defs>
 
-    <!-- Big soft gold smear (super subtle) -->
-    <path filter="url(#softBlur)" d="M-40,220 C220,80 520,110 760,200 C980,280 1100,210 1260,120 L1260,-20 L-40,-20 Z"
+    <!-- Big soft gold smear -->
+    <path filter="url(#softBlur)"
+          d="M-40,220 C220,80 520,110 760,200 C980,280 1100,210 1260,120 L1260,-20 L-40,-20 Z"
           fill="url(#mudGold)" opacity=".9"/>
 
     <!-- SUN amber haze -->
-    <path filter="url(#softBlur)" d="M-40,720 C200,540 420,520 690,600 C980,700 1110,650 1260,560 L1260,860 L-40,860 Z"
+    <path filter="url(#softBlur)"
+          d="M-40,720 C200,540 420,520 690,600 C980,700 1110,650 1260,560 L1260,860 L-40,860 Z"
           fill="url(#sunStroke)" opacity=".9"/>
 
-    <!-- Electric pink knife stroke (tiny but dangerous) -->
-    <path d="M820,120 C940,130 1040,135 1210,120" stroke="url(#pinkKnife)" stroke-width="18" opacity=".85"/>
+    <!-- Electric pink knife stroke -->
+    <path d="M820,120 C940,130 1040,135 1210,120"
+          stroke="url(#pinkKnife)" stroke-width="18" opacity=".85"/>
   </svg>
 
   <div class="wrap">
+    <!-- LEFT COPY -->
     <div class="copy">
       <div class="kicker">ZNthica</div>
 
       <h1 class="hero-line">
-        This is not a <span class="gold">celebrity</span> supplement.
+        <a class="hero-link" href="https://labglp1.com" target="_blank" rel="noopener noreferrer">
+          SUN — built from post-GLP-1 data. Not before.
+        </a>
       </h1>
 
-      <div class="sub">
-        <span style="color: rgba(201,179,126,.92); letter-spacing:.12em; text-transform:uppercase; font-size:12px;">SUN</span>
-        <span style="opacity:.85"> — formulated after observing the post-GLP-1 transition at scale.</span>
+      <div class="rules" aria-label="Positioning">
+        <div>No celebrities. No dropshipping. — <span class="em">Just sexy science</span>.</div>
       </div>
 
-      <div class="rules" aria-label="Positioning">
-        <div class="r"><span class="dot"></span>no celebrities.</div>
-        <div class="r"><span class="dot"></span>no dropshipping.</div>
-        <div class="r"><span class="dot"></span>just <em>sexy science</em>.</div>
-      </div>
+      <div class="closer">We study. Then we craft.</div>
 
       <div class="ctaRow">
         <input class="email" type="email" placeholder="Enter email for early access" />
         <button class="btn" type="button">Request access</button>
       </div>
-
-      <div style="margin-top:14px; max-width:520px; font-size:12px; color:rgba(255,255,255,.52); line-height:1.5;">
-        No promises. No claims. Just disciplined formulation, built after observation — not trends.
-      </div>
     </div>
 
+    <!-- RIGHT STAGE -->
     <div class="stage">
       <div class="plinth" aria-hidden="true"></div>
 
-      <!-- Replace bottle.png with your real render OR swap to a <video> later -->
+      <!-- Replace with ./assets/bottle.png OR swap to bottle.mp4 later -->
       <div class="bottleWrap" aria-label="ZNthica SUN bottle (placeholder)">
         <img class="bottle" src="./assets/bottle.png" alt="ZNthica SUN bottle" />
+        <!-- For video later, replace the <img> with:
+        <video class="bottle" src="./assets/bottle.mp4" autoplay muted loop playsinline></video>
+        -->
       </div>
 
-      <!-- SUN amber + electric pink paint slash: pure cinematic reference -->
+      <!-- SUN amber + electric pink paint slash -->
       <div class="paintSlash" aria-hidden="true"></div>
     </div>
   </div>
@@ -376,11 +381,11 @@
   <div class="vignette"></div>
 
   <script>
-    // Optional: make "Request access" do something simple without backend.
+    // Simple capture without backend: mailto. Replace later with your API.
     document.querySelector(".btn").addEventListener("click", () => {
       const email = document.querySelector(".email").value.trim();
       if (!email) { alert("Enter your email."); return; }
-      // For now, just a mailto to capture quickly. Replace with your API later.
+
       const subject = encodeURIComponent("ZNthica SUN — Early Access");
       const body = encodeURIComponent("Please add me to early access:\n\n" + email);
       window.location.href = "mailto:hello@znthica.com?subject=" + subject + "&body=" + body;
